@@ -1,0 +1,125 @@
+/*
+*
+*
+navbar footer
+*
+*
+*/
+.navbar {
+  background-color: transparent !important;
+}
+.footer {
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  padding: 20px 50px;
+  margin-top: 40px;
+  align-items: center;
+}
+.footer ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin-bottom: 10px;
+}
+.footer li {
+  margin-right: 20px;
+}
+.footer p {
+  margin: 0;
+}
+
+/*index.html*/
+.outer_container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+.bk {
+  background: url(../img/bk.jpg) no-repeat;
+  background-size: 100% 250px;
+}
+.outer_container .content {
+  flex-grow: 1;
+  flex-shrink: 0;
+  width: 92%;
+  margin: 0px auto;
+}
+
+@media (min-width: 700px) {
+  .outer_container .content {
+    width: 86%;
+  }
+}
+
+.search .card {
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: 100px;
+  box-shadow: 0px 5px 20px 2px #ddd;
+  margin-top: 30px;
+}
+.nav-tabs .nav-link::before {
+  background-color: #9c27b0 !important;
+}
+.search .tab-content {
+  padding: 20px 40px;
+}
+.search .tab-pane .row div,select{
+  margin-right: 30px;
+  padding-left: 0;
+  margin-bottom: 20px;
+}
+.search .btn {
+  height: 34px;
+}
+
+
+/*result*/
+.result {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+}
+.result .sider_search {
+  width: 220px;
+  flex-shrink: 0;
+  margin-right: 20px;
+}
+.result .content {
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+.result .nav-tabs .nav-item {
+  width: 50%;
+}
+.result .tab-content .tab-pane > * {
+  display: block;
+  width: 70%;
+  margin: 15px 0 10px 15%;
+}
+.result .content .info {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+}
+.result .content .info span {
+  margin-right: 10px;
+}
+.result .content .btn-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.result .content .btn-group > * {
+  margin: 0 15px 5px 5px;
+  user-select: none;
+}
+.result .table.table-striped td{
+  text-align: center;
+}
+.result .table.table-striped th{
+  font-size: 12px;
+  color: #000;
+  text-align: center;
+}
