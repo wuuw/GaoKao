@@ -1,6 +1,9 @@
 <section>
-  <form action="/result">
+  <form action="/result" method="get">
     <div class="row">
+      <!-- 隐藏节点，额外传入type参数 -->
+      <input name="type" hidden="hidden" type="text" value="major" />
+
       <select name="pos" class="custom-select col-3">
         <option selected>考生所在地</option>
         <option value="1">四川省</option>
@@ -26,10 +29,10 @@
       </div>
       <select name="range" class="custom-select col-3">
         <option selected>浮动区间</option>
-        <option value="1">± 5</option>
-        <option value="2">± 10</option>
-        <option value="2">± 15</option>
-        <option value="2">± 20</option>
+        <option value="5">± 5</option>
+        <option value="10">± 10</option>
+        <option value="15">± 15</option>
+        <option value="20">± 20</option>
       </select>
       <select name="major" class="custom-select col-3">
         <option selected>专业</option>
@@ -45,11 +48,9 @@
         <option value="10">工商管理</option>
       </select>
     </div>
-    <div class="row">
-      <button class="btn btn-primary" type="submit">
-        搜 索
-      </button>
-    </div>
+    <button class="btn btn-primary" type="submit">
+      搜 索
+    </button>
   </form>
 
 </section>

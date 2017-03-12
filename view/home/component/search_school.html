@@ -1,6 +1,9 @@
 <section>
-  <form action="/result">
+  <form action="/result" method="get">
     <div class="row">
+      <!-- 隐藏节点，额外传入type参数 -->
+      <input name="type" hidden="hidden" type="text" value="school" />
+
       <select name="pos" class="custom-select col-3">
         <option selected>考生所在地</option>
         <option value="1">四川省</option>

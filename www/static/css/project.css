@@ -98,7 +98,7 @@ navbar footer
 .result .nav-tabs .nav-item {
   width: 50%;
 }
-.result .tab-content .tab-pane > * {
+.result .tab-content .tab-pane form > * {
   display: block;
   width: 70%;
   margin: 15px 0 10px 15%;
