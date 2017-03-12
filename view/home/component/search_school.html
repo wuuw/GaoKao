@@ -1,41 +1,40 @@
 <section>
-  <div class="row">
-    <select class="custom-select col-3">
-      <option selected>考生所在地</option>
-      <option value="1">四川省</option>
-      <option value="2">北京市</option>
-      <option value="3">广东省</option>
-    </select>
-    <select class="custom-select col-3">
-      <option selected>年份</option>
-      <option value="1">2013</option>
-      <option value="2">2014</option>
-      <option value="3">2015</option>
-    </select>
-    <select class="custom-select col-3">
-      <option selected>科类</option>
-      <option value="1">理工</option>
-    </select>
-    <select class="custom-select col-3">
-      <option selected>调档线/平均分</option>
-      <option value="1">院校调档线</option>
-      <option value="2">院校平均分</option>
-    </select>
-    <div class="col-3">
-      <input type="number" class="form-control" placeholder="高考分数">
-    </div>
-    <select class="custom-select col-3">
-      <option selected>浮动区间</option>
-      <option value="1">± 5</option>
-      <option value="2">± 10</option>
-      <option value="2">± 15</option>
-      <option value="2">± 20</option>
-    </select>
-    <a href="/search" class="col-3">
+  <form action="/result">
+    <div class="row">
+      <select name="pos" class="custom-select col-3">
+        <option selected>考生所在地</option>
+        <option value="1">四川省</option>
+      </select>
+      <select name="year" class="custom-select col-3">
+        <option selected>年份</option>
+        <option value="2013">2013</option>
+        <option value="2014">2014</option>
+        <option value="2015">2015</option>
+      </select>
+      <select name="subject" class="custom-select col-3">
+        <option selected>科类</option>
+        <option value="1">理工</option>
+      </select>
+      <select name="scoreType" class="custom-select col-3">
+        <option selected>调档线/平均分</option>
+        <option value="1">院校调档线</option>
+        <option value="2">院校平均分</option>
+      </select>
+      <div class="col-3">
+        <input name="score" type="number" class="form-control" placeholder="高考分数">
+      </div>
+      <select name="range" class="custom-select col-3">
+        <option selected>浮动区间</option>
+        <option value="5">± 5</option>
+        <option value="10">± 10</option>
+        <option value="15">± 15</option>
+        <option value="20">± 20</option>
+      </select>
       <button class="btn btn-primary" type="submit">
         搜 索
       </button>
-    </a>
-  </div>
+    </div>
+  </form>
+
 
 </section>

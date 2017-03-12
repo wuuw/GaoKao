@@ -4,6 +4,9 @@
   <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">理工</b></span>
   <span style="color:#ddd">高考分数: <b style="color:#fff;font-size:1.1em">656</b></span>
   <span style="color:#ddd">查找分数: <b style="color:#fff;font-size:1.1em">656 ± 5</b></span>
+  {% if searchType == 'major' %}
+  <span style="color:#ddd">专业: <b style="color:#fff;font-size:1.1em">软件工程</b></span>
+  {% endif %}
 </div>
 
 <div class="btn-group">
@@ -27,7 +30,10 @@
 </div>
 
 <div class="card">
+
+
 <table class="table table-striped">
+  {% if searchType == 'school' %}
   <thead>
     <tr>
       <th>高校名称</th>
@@ -54,6 +60,37 @@
       </td>
     </tr>
   </tbody>
+  {% else %}
+  <thead>
+    <tr>
+      <th>高校名称</th>
+      <th>所在地</th>
+      <th>专业名称</th>
+      <th>录取批次(分数线)</th>
+      <th>专业最低分</th>
+      <th>专业平均分</th>
+      <th>专业最高分</th>
+      <th>专业解读</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th scope="row" class="name">
+        <span>西南交通大学</span>
+      </th>
+      <td>四川</td>
+      <td>软件工程</td>
+      <td>本科一批(521)</td>
+      <td>576</td>
+      <td>588</td>
+      <td>590</td>
+      <td>
+        <a href="https://baidu.com/" target="_blank">进入</a>
+      </td>
+    </tr>
+  </tbody>
+  {% endif %}
+
 </table>
 
 <nav aria-label="Page navigation example">
