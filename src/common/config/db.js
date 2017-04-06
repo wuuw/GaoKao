@@ -9,14 +9,12 @@ export default {
     mysql: {
       host: '127.0.0.1',
       port: '',
-      database: '',
-      user: '',
-      password: '',
-      prefix: 'think_',
-      encoding: 'utf8'
-    },
-    mongo: {
-
+      database: 'referencesystem',
+      user: 'root',
+      password: '123456',
+      prefix: 'ref_',
+      encoding: 'utf8',
+      nums_per_page: 15
     }
   }
 };

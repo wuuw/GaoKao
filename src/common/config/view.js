@@ -9,6 +9,6 @@ export default {
   file_depr: '/',
   root_path: think.ROOT_PATH + '/view',
   adapter: {
-    ejs: {}
+    nunjucks: {}
   }
 };

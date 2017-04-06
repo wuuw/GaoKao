@@ -1,4 +1,4 @@
-{% extends "../component/base.html" %}
+{% extends "../inc/base.html" %}
 
 {% block page %}
 <section class="container search">
@@ -16,10 +16,10 @@
       <!-- Tab panes -->
       <div class="tab-content">
         <div class="tab-pane active fade show" id="school" role="tabpanel">
-          {% include '../component/search_school.html' %}
+          {% include '../component/school_search.html' %}
         </div>
         <div class="tab-pane fade" id="major" role="tabpanel">
-          {% include '../component/search_major.html' %}
+          {% include '../component/major_search.html' %}
         </div>
       </div>
     </div>
@@ -30,4 +30,14 @@
 </section>
 
 
+{% endblock %}
+
+{% block script %}
+<script>
+  window.onload = function() {
+    if(window.location.pathname.search(/(\/index){1,2}/) >= 0 || window.location.pathname == "/") {
+      $('.outer_container').addClass('bk');
+    }
+  }
+</script>
 {% endblock %}

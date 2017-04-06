@@ -5,37 +5,36 @@
       <input name="type" hidden="hidden" type="text" value="major" />
 
       <select name="pos" class="custom-select col-3">
-        <option selected>考生所在地</option>
-        <option value="1">四川省</option>
+        <option disabled="disabled">考生所在地</option>
+        <option value="四川省" selected="selected">四川省</option>
       </select>
       <select name="year" class="custom-select col-3">
-        <option selected>年份</option>
-        <option value="2013">2013</option>
+        <option disabled="disabled" selected="selected">年份</option>
         <option value="2014">2014</option>
         <option value="2015">2015</option>
       </select>
       <select name="subject" class="custom-select col-3">
-        <option selected>科类</option>
-        <option value="1">理工</option>
+        <option disabled="disabled">考生类型</option>
+        <option selected="selected" value="理科">理科</option>
       </select>
       <select name="scoreType" class="custom-select col-3">
-        <option selected>搜索方式</option>
-        <option value="1">最低分</option>
-        <option value="2">平均分</option>
-        <option value="3">最高分</option>
+        <option disabled="disabled" selected="selected">分数类型</option>
+        <option value="min">最低分</option>
+        <option value="avg">平均分</option>
+        <option value="max">最高分</option>
       </select>
       <div class="col-3">
         <input name="score" type="number" class="form-control" placeholder="高考分数">
       </div>
       <select name="range" class="custom-select col-3">
-        <option selected>浮动区间</option>
+        <option disabled="disabled" selected="selected">浮动区间</option>
         <option value="5">± 5</option>
         <option value="10">± 10</option>
         <option value="15">± 15</option>
         <option value="20">± 20</option>
       </select>
-      <select name="major" class="custom-select col-3">
-        <option selected>专业</option>
+      <select name="major" class="custom-select">
+        <option disabled="disabled" selected="selected">专业</option>
         <option value="1">计算机科学与技术</option>
         <option value="2">通信工程</option>
         <option value="3">机械设计制造及其自动化</option>
@@ -48,6 +47,7 @@
         <option value="10">工商管理</option>
       </select>
     </div>
+    <input name="page" hidden="hidden" type="text" value="1" />
     <button class="btn btn-primary" type="submit">
       搜 索
     </button>

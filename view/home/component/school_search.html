@@ -5,34 +5,34 @@
       <input name="type" hidden="hidden" type="text" value="school" />
 
       <select name="pos" class="custom-select col-3">
-        <option selected>考生所在地</option>
-        <option value="1">四川省</option>
+        <option disabled="disabled">考生所在地</option>
+        <option value="四川省" selected="selected">四川省</option>
       </select>
       <select name="year" class="custom-select col-3">
-        <option selected>年份</option>
-        <option value="2013">2013</option>
+        <option selected="selected" disabled="disabled">年份</option>
         <option value="2014">2014</option>
         <option value="2015">2015</option>
       </select>
       <select name="subject" class="custom-select col-3">
-        <option selected>科类</option>
-        <option value="1">理工</option>
+        <option disabled="disabled">考生类型</option>
+        <option value="理科" selected="selected">理科</option>
       </select>
       <select name="scoreType" class="custom-select col-3">
-        <option selected>调档线/平均分</option>
-        <option value="1">院校调档线</option>
-        <option value="2">院校平均分</option>
+        <option selected="selected" disabled="disabled">调档线/平均分</option>
+        <option value="min">院校调档线</option>
+        <option value="avg">院校平均分</option>
       </select>
       <div class="col-3">
         <input name="score" type="number" class="form-control" placeholder="高考分数">
       </div>
       <select name="range" class="custom-select col-3">
-        <option selected>浮动区间</option>
+        <option selected="selected" disabled="disabled">浮动区间</option>
         <option value="5">± 5</option>
         <option value="10">± 10</option>
         <option value="15">± 15</option>
         <option value="20">± 20</option>
       </select>
+      <input name="page" hidden="hidden" type="text" value="1" />
       <button class="btn btn-primary" type="submit">
         搜 索
       </button>

@@ -1,0 +1,133 @@
+<div class="alert alert-primary info" role="alert">
+  <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
+  <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
+  <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
+  <span style="color:#ddd">高考分数: <b style="color:#fff;font-size:1.1em">{{query.score}}</b></span>
+  <span style="color:#ddd">查找分数: <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}} 分</b></span>
+  {% if query.type == 'major' %}
+  <span style="color:#ddd">专业: <b style="color:#fff;font-size:1.1em">{{majors[0].name}}</b></span>
+  {% endif %}
+</div>
+
+<div class="btn-group">
+  <span class="badge badge-primary">院校地区 </span>
+  <select class="custom-select">
+    <option selected>所有地区</option>
+    <option value="1">北京市</option>
+    <option value="2">天津市</option>
+  </select>
+  <span class="badge badge-primary">所属工程 </span>
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input">
+    <span class="custom-control-indicator" style="z-index:10"></span>
+    <span class="custom-control-description">985</span>
+  </label>
+  <label class="custom-control custom-checkbox">
+    <input type="checkbox" class="custom-control-input">
+    <span class="custom-control-indicator" style="z-index:10"></span>
+    <span class="custom-control-description">211</span>
+  </label>
+</div>
+
+<div class="card">
+
+
+<table class="table table-striped">
+  {% if query.type == 'school' %}
+  <thead>
+    <tr>
+      <th>高校名称</th>
+      <th>所在地</th>
+      <th>录取批次(省控线)</th>
+      <th>调档线</th>
+      <th>平均分</th>
+      <th>录取线差</th>
+      <th>平均线差</th>
+      <th>所属工程</th>
+      <th>招生网</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in schools %}
+    <tr>
+      <th scope="row" class="name">
+        <span>{{item.name}}</span>
+      </th>
+      <td>{{item.position}}</td>
+      <td>
+        {{item.batch.slice(2)}} ({{item.line}})
+      </td>
+      <td>{{item.minScore}}</td>
+      <td>{{item.avgScore}}</td>
+      <td>
+        {{item.minScore - item.line}}
+      </td>
+      <td>
+        {{item.avgScore - item.line}}
+      </td>
+      <td>{{item.project}}</td>
+      <td>
+        {% if item.site %}
+        <a href="{{item.site}}" target="_blank">进入</a>
+        {% else %}
+        <a href="javascriot:void(0)"></a>
+        {% endif %}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+  {% else%}
+  <thead>
+    <tr>
+      <th>高校名称</th>
+      <th>所在地</th>
+      <th>专业名称</th>
+      <th>录取批次(分数线)</th>
+      <th>专业最低分</th>
+      <th>专业平均分</th>
+      <th>专业最高分</th>
+      <th>所属工程</th>
+      <th>专业解读</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in majors %}
+    <tr>
+      <th scope="row" class="name">
+        <span>{{item.school_name}}</span>
+      </th>
+      <td>{{item.school_pos}}</td>
+      <td>{{item.name}}</td>
+      <td>{{item.batch.slice(2)}} ({{item.line}})</td>
+      <td>{{item.minScore}}</td>
+      <td>{{item.avgScore}}</td>
+      <td>{{item.maxScore}}</td>
+      <td>{{item.project}}</td>
+      <td>
+        <a href="javascript:void(0)">查看</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+
+  {% endif %}
+
+</table>
+{% if totalPages > 1 %}
+<nav aria-label="Page navigation example">
+  <ul class="pagination justify-content-center">
+    <li class="page-item disabled">
+      <a class="page-link" tabindex="-1"> < </a>
+    </li>
+    {% for i in range(1, totalPages + 1) -%}
+    <li class="page-item {% if i == query.page %}active{%endif%}">
+      <a class="page-link">{{i}}</a>
+    </li>
+    {%- endfor %}
+    <li class="page-item">
+      <a class="page-link"> > </a>
+    </li>
+  </ul>
+</nav>
+{%endif%}
+</div>
