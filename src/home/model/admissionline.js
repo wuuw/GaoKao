@@ -37,14 +37,14 @@ export default class extends think.model.base {
         };
 
     //buildSql，即返回的记过可用作sql语句
-    let sql = await this.model('college').where(sql_1).where(sql_2).order(order + ' ' + sort).buildSql();
+    let sql = await this.model('college').where(sql_1).where(sql_2).buildSql();
 
     return this.join({
       join: 'inner',
       table: sql,
       as: 'c',
       on: on
-    }).field(field).page(page).countSelect();
+    }).order(order + ' ' + sort).field(field).page(page).countSelect();
   }
 
   //与ref_major表联合查询，结果返回包含专业所在学校地址及所属工程信息
@@ -78,7 +78,7 @@ export default class extends think.model.base {
       "a.Cname": 'Cname'
     };
 
-    let sql = await this.model('major').where(sql_1).where(sql_2).order(order + ' ' + sort).buildSql();
+    let sql = await this.model('major').where(sql_1).where(sql_2).buildSql();
 
     return this.join({
         table: sql,
@@ -90,6 +90,6 @@ export default class extends think.model.base {
       join: 'inner',
       on: majorOnCollege,
       as: 'b'
-    }).field(field).page(page).countSelect();
+    }).order(order + ' ' + sort).field(field).page(page).countSelect();
   }
 }
