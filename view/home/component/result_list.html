@@ -3,8 +3,8 @@
   <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
   <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
   <span style="color:#ddd">高考分数: <b style="color:#fff;font-size:1.1em">{{query.score}}</b></span>
-  <span style="color:#ddd">查找分数: <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}} 分</b></span>
-  {% if query.type == 'major' %}
+  <span style="color:#ddd">查找线差: <b style="color:#fff;font-size:1.1em">{{query.score - query.range - line}} 至 {{query.score + query.range - line}} 分</b></span>
+  {% if query.type.indexOf('major') >= 0 %}
   <span style="color:#ddd">专业: <b style="color:#fff;font-size:1.1em">{{majors[0].name}}</b></span>
   {% endif %}
 </div>
@@ -62,7 +62,8 @@
 
 
 <table class="table table-striped">
-  {% if query.type == 'school' %}
+  <!-- 学校查找 -->
+  {% if query.type.indexOf('school') >= 0 %}
   <thead>
     <tr>
       <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
@@ -86,15 +87,15 @@
       </th>
       <td>{{item.position}}</td>
       <td>
-        {{item.batch.slice(2)}} ({{item.line}})
+        {{item.batch}} ({{line}})
       </td>
       <td>{{item.minScore}}</td>
       <td>{{item.avgScore}}</td>
       <td>
-        {{item.minScore - item.line}}
+        {{item.minScore - line}}
       </td>
       <td>
-        {{item.avgScore - item.line}}
+        {{item.avgScore - line}}
       </td>
       <td>
         {% if item.site %}
@@ -106,6 +107,7 @@
     </tr>
     {% endfor %}
   </tbody>
+  <!-- 专业查找 -->
   {% else%}
   <thead>
     <tr>
@@ -132,7 +134,7 @@
       </th>
       <td>{{item.school_pos}}</td>
       <td>{{item.name}}</td>
-      <td>{{item.batch.slice(2)}} ({{item.line}})</td>
+      <td>{{item.batch}} ({{line}})</td>
       <td>{{item.minScore}}</td>
       <td>{{item.avgScore}}</td>
       <td>{{item.maxScore}}</td>

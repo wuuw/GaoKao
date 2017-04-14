@@ -1,32 +1,56 @@
 <section>
+  <div style="margin-bottom: 20px; margin-left: -20px">
+    <span class="badge badge-pill badge-primary" style="margin-right:20px">查询方式:</span>
+    <label class="custom-control custom-radio">
+      <input id="school_dif" name="radio" type="radio" class="custom-control-input">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">使用<span class="text-primary">分差</span>查询</span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input id="school_rank" name="radio" type="radio" class="custom-control-input">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">使用<span class="text-primary">排名</span>查询</span>
+    </label>
+    <label class="custom-control custom-radio">
+      <input id="school_equal" name="radio" type="radio" class="custom-control-input">
+      <span class="custom-control-indicator"></span>
+      <span class="custom-control-description">使用<span class="text-primary">等位分</span>查询</span>
+    </label>
+  </div>
   <form action="/result" method="get">
     <div class="row">
       <!-- 隐藏节点，额外传入type参数 -->
-      <input name="type" hidden="hidden" type="text" value="school" />
+      <input name="type" hidden="hidden" type="text" value="school_dif" />
 
-      <select name="pos" class="custom-select col-3">
+      <select name="pos" class="custom-select col-2">
         <option disabled="disabled">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
       </select>
-      <select name="year" class="custom-select col-3">
-        <option selected="selected" disabled="disabled">年份</option>
-        <option value="2014">2014</option>
+      <select name="year" class="custom-select col-2">
+        <option selected="selected" disabled="disabled">参考年份</option>
+        <option value="2016">2016</option>
         <option value="2015">2015</option>
+        <option value="2014">2014</option>
       </select>
-      <select name="subject" class="custom-select col-3">
+      <select name="subject" class="custom-select col-2">
         <option disabled="disabled">考生类型</option>
         <option value="理科" selected="selected">理科</option>
       </select>
-      <select name="scoreType" class="custom-select col-3">
-        <option selected="selected" disabled="disabled">调档线/平均分</option>
-        <option value="min">院校调档线</option>
-        <option value="avg">院校平均分</option>
+      <select name="batch" class="custom-select col-2">
+        <option disabled="disabled" selected="selected">录取批次</option>
+        <option value="本科第一批">本科第一批</option>
+        <option value="本科第二批">本科第二批</option>
       </select>
-      <div class="col-3">
+      <select name="scoreType" class="custom-select col-2">
+        <option selected="selected" disabled="disabled">分数类型</option>
+        <option value="min">调档线</option>
+        <option value="avg">平均分</option>
+      </select>
+      <div class="col-2">
         <input name="score" type="number" class="form-control" placeholder="高考分数">
       </div>
-      <select name="range" class="custom-select col-3">
-        <option selected="selected" disabled="disabled">浮动区间</option>
+      <select name="range" class="custom-select col-2">
+        <option selected="selected" disabled="disabled">波动区间</option>
         <option value="5">± 5</option>
         <option value="10">± 10</option>
         <option value="15">± 15</option>
@@ -38,6 +62,4 @@
       </button>
     </div>
   </form>
-
-
 </section>
