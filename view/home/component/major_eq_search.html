@@ -16,12 +16,24 @@
         <option disabled="disabled">考生类型</option>
         <option selected="selected" value="理科">理科</option>
       </select>
+      <!-- 等位分查询用 -->
       <div class="col-2">
-        <input name="rank" type="number" class="form-control" placeholder="考生排名">
+        <input name="eq" type="number" class="form-control" placeholder="等位分">
       </div>
-      <div class="col-2">
-        <input name="range" type="number" class="form-control" placeholder="浮动百分比">
-      </div>
+      <!--  -->
+      <select name="scoreType" class="custom-select col-2">
+        <option disabled="disabled" selected="selected">参考分数类型</option>
+        <option value="min">最低分</option>
+        <option value="avg">平均分</option>
+        <option value="max">最高分</option>
+      </select>
+      <select name="range" class="custom-select col-2">
+        <option selected="selected" disabled="disabled">浮动区间</option>
+        <option value="5">± 5</option>
+        <option value="10">± 10</option>
+        <option value="15">± 15</option>
+        <option value="20">± 20</option>
+      </select>
       <select name="major" class="custom-select col-2">
         <option disabled="disabled" selected="selected">专业</option>
         <option value="1">计算机科学与技术</option>

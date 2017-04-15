@@ -57,4 +57,22 @@ export default class extends think.model.base {
         as: 'm'
       }).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
+
+
+    /*
+    *  获取等位分对应的实际分数
+    */
+
+    async eqToScore(year, pos, category, eq) {
+      let sql_1 = {
+        'Cyear': year,
+        'Corigin': pos,
+        'Ccategory': category
+      };
+      let order = `ABS(Cequipotential - ${eq}) ASC`;
+
+      let record = await this.where(sql_1).order(order).limit(1).select();
+
+      return record[0].Ccutoffline;//返回真实分数
+    }
 }

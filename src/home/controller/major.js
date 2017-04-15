@@ -94,13 +94,60 @@ export default class extends Base {
           year: this.get('year'), //年份: 2015 || 2014
           category: this.get('subject'), //科类: 理科 || 文科
           major: this.get('major'), //专业编号: 1-10
-          eq: this.get('eq'), //等位分
+          eq: parseInt(this.get('eq')), //等位分
+          scoreType: this.get('scoreType'), //分数类型: min || avg || max
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1 //页数: 默认 1
       };
       query.type = 'major';
     }
-  }
+
+    let collegeModel = this.model('college'),
+        majorModel = this.model('major'),
+        admissionModel = this.model('admissionline'),
+        scoreType = this.config('majorType.' + query.scoreType);
+
+    let major = this.config('majors.' + (query.major - 1));
+
+    let min = query.eq - query.range, //最大等位分
+        max = query.eq + query.range; //最小等位分
+
+    //获得等位分对应的实际分数
+    min = await collegeModel.eqToScore(query.year, query.pos, query.category, min);
+    max = await collegeModel.eqToScore(query.year, query.pos, query.category, max);
+
+    let sql_1 = {
+      'Morigin': query.pos,
+      'Myear': query.year,
+      'Mcategory': query.category,
+      'Mname': ['like', `%${major}%`],
+      'Mstatus': 1
+    };
+
+    let sql_2 = `${scoreType} <= ${max} and ${scoreType} >= ${min}`;
+
+    //其他设置
+    let order = 'Cequipotential',
+        sort = 'DESC',
+        page = query.page;
+
+    //查询
+    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page),
+        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+
+    let json = {
+      query: query,
+      line: line,
+      count: majors.count, //结果总数
+      totalPages: majors.totalPages, //总页数
+      page: majors.currentPage, //当前页
+      majors: majors.data //学校数组
+    };
+
+    this.assign(json);
+    return this.display();
+
+  }//equipotentialAction
 
   //专业-位次
   /**

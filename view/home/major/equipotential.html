@@ -11,20 +11,21 @@
       <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
       <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
       <span style="color:#ddd">
-        高考分数:
-        <b style="color:#fff;font-size:1.1em">{{query.score}}</b>
+        等位分:
+        <b style="color:#fff;font-size:1.1em">{{query.eq}}</b>
       </span>
 
       <span style="color:#ddd">
-        {% if query.scoreType == 'min' %}
+        <!-- {% if query.scoreType == 'min' %}
         最低线差区间:
         {% elif query.scoreType == 'avg' %}
         平均线差区间:
         {% else %}
         最高线差区间:
-        {% endif %}
+        {% endif %} -->
+        查找区间:
         <b style="color:#fff;font-size:1.1em">
-          {{query.score - query.range}} 至 {{query.score + query.range}} 分
+          {{query.eq - query.range}} 至 {{query.eq + query.range}} 分
         </b>
       </span>
     </div>
@@ -57,7 +58,13 @@
           </th>
           <td>{{item.school_pos}}</td>
           <td>{{item.name}}</td>
-          <td>{{item.batch}} ({{line}})</td>
+          <td>
+            {% if item.batch.slice(3,4) == '一' %}
+              {{item.batch}} ({{line[0].line}})
+            {%else%}
+              {{item.batch}} ({{line[1].line}})
+            {%endif%}
+          </td>
           <td>{{item.minScore}}</td>
           <td>{{item.avgScore}}</td>
           <td>{{item.maxScore}}</td>
