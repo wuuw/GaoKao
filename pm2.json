@@ -2,7 +2,7 @@
   "apps": [{
     "name": "GK",
     "script": "www/production.js",
-    "cwd": "/Users/FiveSheep/Desktop/毕业设计/GK",
+    "cwd": "/home/GaoKao",
     "exec_mode": "cluster",
     "instances": 0,
     "max_memory_restart": "1G",
@@ -10,7 +10,7 @@
     "node_args": [],
     "args": [],
     "env": {
-      
+
     }
   }]
 }
