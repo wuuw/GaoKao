@@ -1,139 +1,53 @@
 
-  <ul class="nav nav-tabs" role="tablist">
-    <li class="nav-item">
-      <a class="nav-link {%if query.type == 'school' %}active{%endif%}" data-toggle="tab" href="#school" role="tab">查 院 校</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link {%if query.type == 'major' %}active{%endif%}" data-toggle="tab" href="#major" role="tab">查 专 业</a>
-    </li>
-  </ul>
+<ul class="nav nav-tabs nav-pills nav-tabs-material" role="tablist">
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {%if query.type=='school'%}active{%endif%}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      院 校
+    </a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item active"  href="#school_eq" role="tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="true">等位分</a>
+
+      <a class="dropdown-item"  href="#school_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+
+      <a class="dropdown-item"  href="#school_dif" role="tab" data-toggle="tab" aria-controls="dropdown3" aria-expanded="true">线差</a>
+
+    </div>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle {%if query.type=='major'%}active{%endif%}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+      专 业
+    </a>
+    <div class="dropdown-menu">
+      <a class="dropdown-item"  href="#major_eq" role="tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="true">等位分</a>
+
+      <a class="dropdown-item"  href="#major_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+
+      <a class="dropdown-item"  href="#major_dif" role="tab" data-toggle="tab" aria-controls="dropdown3">线差</a>
+    </div>
+  </li>
+</ul>
 
 
   <!-- Tab panes -->
   <div class="tab-content">
-    <div class="tab-pane fade {%if query.type.indexOf('school') >= 0 %}active show{%endif%}" id="school" role="tabpanel">
-      <form action="/result" method="get">
-        <!-- 隐藏节点，额外传入type参数 -->
-        <input name="type" hidden="hidden" type="text" value="school_dif" />
-
-        <select name="pos" class="custom-select">
-          <option disabled="disabled">考生所在地</option>
-          <option value="四川省" selected="selected">四川省</option>
-        </select>
-        <select name="year" class="custom-select">
-          <option disabled="disabled" selected="selected">年份</option>
-          <option value="2016">2016</option>
-          <option value="2015">2015</option>
-          <option value="2014">2014</option>
-        </select>
-        <select name="subject" class="custom-select">
-          <option disabled="disabled">科类</option>
-          <option selected="selected" value="理科">理科</option>
-        </select>
-
-        <!-- 等位分查询用 -->
-        <div hidden="hidden">
-          <input name="eq" type="number" class="form-control" placeholder="等位分">
-        </div>
-        <!--  -->
-
-        <select name="batch" class="custom-select">
-          <option disabled="disabled" selected="selected">录取批次</option>
-          <option value="本科第一批">本科第一批</option>
-          <option value="本科第二批">本科第二批</option>
-        </select>
-        <select name="scoreType" class="custom-select">
-          <option selected="selected" disabled="disabled">分数类型</option>
-          <option value="min">调档线</option>
-          <option value="avg">平均分</option>
-        </select>
-        <div class="">
-          <input name="score" type="number" class="form-control" placeholder="高考分数">
-        </div>
-        <select name="range" class="custom-select">
-          <option selected="selected" disabled="disabled">浮动区间</option>
-          <option value="5">± 5</option>
-          <option value="10">± 10</option>
-          <option value="15">± 15</option>
-          <option value="20">± 20</option>
-        </select>
-        <input name="page" hidden="hidden" type="text" value="1" />
-        <button class="btn btn-primary" type="submit">
-          搜 索
-        </button>
-      </form>
+    <div class="tab-pane fade" id="school_dif" role="tabpanel">
+      {% include '../component/school_dif_search.html' %}
     </div>
-
-
-
-    <div class="tab-pane fade {%if query.type.indexOf('major') >= 0 %}active show{%endif%}" id="major" role="tabpanel">
-      <form action="/result" method="get">
-        <input name="type" hidden="hidden" type="text" value="major" />
-        <select name="pos" class="custom-select">
-          <option >考生所在地</option>
-          <option selected="selected" value="四川省">四川省</option>
-        </select>
-        <select name="year" class="custom-select">
-          <option selected="selected">年份</option>
-          <option value="2016">2016</option>
-          <option value="2015">2015</option>
-          <option value="2014">2014</option>
-        </select>
-        <select name="subject" class="custom-select">
-          <option >科类</option>
-          <option selected="selected" value="理科">理科</option>
-        </select>
-        <select name="batch" class="custom-select">
-          <option disabled="disabled" selected="selected">录取批次</option>
-          <option value="本科第一批">本科第一批</option>
-          <option value="本科第二批">本科第二批</option>
-        </select>
-        <select name="scoreType" class="custom-select">
-          <option selected>分数类型</option>
-          <option value="min">最低分</option>
-          <option value="avg">平均分</option>
-          <option value="max">最高分</option>
-        </select>
-        <div class="">
-          <input name="score" type="number" class="form-control" placeholder="高考分数">
-        </div>
-        <select name="range" class="custom-select">
-          <option selected>浮动区间</option>
-          <option value="5">± 5</option>
-          <option value="10">± 10</option>
-          <option value="15">± 15</option>
-          <option value="20">± 20</option>
-        </select>
-        <select name="major" class="custom-select">
-          <option selected>专业</option>
-          <option value="1">计算机科学与技术</option>
-          <option value="2">通信工程</option>
-          <option value="3">机械设计制造及其自动化</option>
-          <option value="4">土木工程</option>
-          <option value="5">电气工程及其自动化</option>
-          <option value="6">会计学</option>
-          <option value="7">中医</option>
-          <option value="8">临床医学</option>
-          <option value="9">自动化</option>
-          <option value="10">工商管理</option>
-        </select>
-        <input name="page" hidden="hidden" type="text" value="1" />
-        <button class="btn btn-primary" type="submit">
-          搜 索
-        </button>
-      </form>
+    <div class="tab-pane fade" id="school_rank" role="tabpanel">
+      {% include '../component/school_rank_search.html' %}
+    </div>
+    <div class="tab-pane fade active show" id="school_eq" role="tabpanel">
+      {% include '../component/school_eq_search.html' %}
+    </div>
+    <div class="tab-pane fade" id="major_dif" role="tabpanel">
+      {% include '../component/major_dif_search.html' %}
+    </div>
+    <div class="tab-pane fade" id="major_rank" role="tabpanel">
+      {% include '../component/major_rank_search.html' %}
+    </div>
+    <div class="tab-pane fade" id="major_eq" role="tabpanel">
+      {% include '../component/major_eq_search.html' %}
     </div>
   </div>
-
-  <!-- 通过radio定位查询方式脚本 -->
-  <script>
-    "use strict";
-    //获取input，往后台传递参数用
-    let input = $("form input[name=type]");
-    //将input的value设置为响应值
-    $('.custom-radio input').each(function(index, ele) {
-      ele.onclick = function() {
-        input.attr("value", $(this).attr("id"));
-      }
-    });
-  </script>

@@ -1,7 +1,5 @@
-<section>
-  <!-- form表单 -->
+<!-- form表单 -->
   <form action="/home/major/equipotential" method="get">
-    <div class="row">
       <select name="pos" class="custom-select col-2">
         <option disabled="disabled">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
@@ -51,6 +49,39 @@
       <button class="btn btn-primary" type="submit">
         搜 索
       </button>
-    </div>
   </form>
-</section>
+
+  <script>
+    "use strict";
+    //获取当前href
+    let href = window.location.href;
+
+    //if 结果页面  else 首页
+    if (href.indexOf('college') >= 0 ||  href.indexOf('major') >= 0) {
+      //获得所有子节点（form item)
+      let children = $('form').children();
+
+      //去掉col-2属性
+      children.each(function(index, ele) {
+        if ($(this).hasClass('col-2')) {
+          $(this).removeClass('col-2');
+        }
+        console.log($(this));
+      });
+
+    }
+    //首页，加上div.row
+    else {
+      //获取所有form
+      let parent = $('form');
+
+      //每个form下加一层div.row
+      parent.each(function(index, ele) {
+        let children = $(this).children();
+
+        let row = $("<div class='row'></div>");
+        row.append(children);
+        $(this).append(row);
+      })
+    }
+  </script>

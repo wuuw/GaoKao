@@ -27,6 +27,7 @@ export default class extends Base {
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1 //页数: 默认 1
       };
+      query.type = 'school';
     }
 
     let collegeModel = this.model('college'), //文件../model/college.js
