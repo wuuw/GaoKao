@@ -29,6 +29,7 @@ export default class extends Base {
           major: this.get('major'), //专业编号: 1-10
           score: parseInt(this.get('score')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          eq: parseInt(this.get('eq')), //等位分
           page: this.get('page') || 1 //页数: 默认 1
       };
     }
@@ -60,7 +61,10 @@ export default class extends Base {
     *  返回对应组件
     *  @return {json}
     */
-
+/******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************/
     /***
     * 1.按照「学校-线差」的方式查询  type = 'school_dif'
     * 2.所选年份为参考年份，通过参考年份数据推荐今年高校
@@ -128,8 +132,55 @@ export default class extends Base {
 
     }
 
+/******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************/
+    /***
+    * 1.按照「学校-等位分」查询
+    * 2.所选年份为参考年份，通过参考年份数据推荐今年高校
+    *
+    *
+    *
+    */
+    else if (query.type === 'school_eq') {
+      let collegeModel = this.model('college'),
+          admissionModel = this.model('admissionline');
+      let min = parseInt(query.eq) - parseInt(query.range),  //最低
+          max = parseInt(query.eq) + parseInt(query.range);  //最高
+
+      let sql_1 = {
+        'Cyear': query.year,
+        'Corigin': query.pos,
+        'Ccategory': query.category,
+        'Cequipotential': ['BETWEEN', min, max]
+      };
+
+      let order = 'Ccutoffline',
+          sort = 'DESC',
+          page = query.page;
+      let schools = await collegeModel.selectAll(sql_1, null, order, sort, page),
+          line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+
+      console.log(schools, line);
+      let json = {
+        query: query, //查询参数
+        line: line, //分数线
+        count: schools.count, //结果总数
+        totalPages: schools.totalPages, //总页数
+        page: schools.currentPage, //当前页
+        schools: schools.data //学校数组
+      };
 
 
+      this.assign(json);
+      return this.display();
+    }//school_rank
+
+/******************************************************************************************
+******************************************************************************************
+******************************************************************************************
+******************************************************************************************/
 
 
     /***
@@ -139,7 +190,7 @@ export default class extends Base {
     *
     *
     */
-    else {
+    else if (query.type === 'major_dif') {
       //按照专业查找
       let majorModel = this.model('major'),
           admissionModel = this.model('admissionline'),
@@ -187,7 +238,9 @@ export default class extends Base {
 
       this.assign(json);
       return this.display();
-    }
+    }//major_dif
+
+
   }
   /**
   *  接受前端筛选条件的Ajax请求

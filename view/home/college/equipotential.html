@@ -1,0 +1,85 @@
+{% extends "../inc/base.html" %}
+
+{% block page %}
+<section class="result">
+  <div class="card sider_search">
+    {% include "../component/side_search.html" %}
+  </div>
+  <div class="content">
+    <div class="alert alert-primary info" role="alert">
+      <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
+      <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
+      <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
+      <span style="color:#ddd">等位分: <b style="color:#fff;font-size:1.1em">{{query.eq}}</b></span>
+      <span style="color:#ddd">查找区间: <b style="color:#fff;font-size:1.1em">{{query.eq - query.range}} 至 {{query.eq + query.range}}</b></span>
+    </div>
+    {% include "../inc/filter.html" %}
+    <div class="card">
+      <table class="table table-striped">
+        <!-- 学校查找 -->
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
+            <th>所在地</th>
+            <th>录取批次(省控线)</th>
+            <th>调档线</th>
+            <th>平均分</th>
+            <th>调档线差</th>
+            <th>平均线差</th>
+            <th>等位分</th>
+            <th>招生网</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in schools %}
+          <tr>
+            <th scope="row" class="name" style="text-align:left;padding-left:20px;padding-right:0;">
+              <span style = "font-size:1.2em;">
+                {{item.name}}
+                <span style="color:#9c27b0;font-size:0.8em;">{{item.project}}</span>
+              </span>
+            </th>
+            <td>{{item.position}}</td>
+            <td>
+              {% if item.batch.substr(3, 1) == '一' %}
+                {{item.batch}} ({{line[0].line}})
+              {% else %}
+                {{item.batch}} ({{line[1].line}})
+              {% endif %}
+            </td>
+            <td>{{item.minScore}}</td>
+            <td>{{item.avgScore}}</td>
+            {% if item.batch.substr(3, 1) == '一' %}
+            <td>
+              {{item.minScore - line[0].line}}
+            </td>
+            <td>
+              {{item.avgScore - line[0].line}}
+            </td>
+            {% else %}
+            <td>
+              {{item.minScore - line[1].line}}
+            </td>
+            <td>
+              {{item.avgScore - line[1].line}}
+            </td>
+            {% endif %}
+            <td>
+              {{item.equipotential}}
+            </td>
+            <td>
+              {% if item.site %}
+              <a href="{{item.site}}" target="_blank">进入</a>
+              {% else %}
+              <a href="javascriot:void(0)"></a>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include '../inc/pagination.html' %}
+    </div>
+  </div>
+</section>
+{% endblock %}

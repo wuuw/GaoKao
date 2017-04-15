@@ -14,7 +14,8 @@ export default class extends think.model.base {
                 "Cbatch as batch, " + //批次
                 "Cwebsite as site, " + //招生网
                 "Corigin as origin, " + //生源地
-                "Cproject as project"; //985 || 211
+                "Cproject as project," + //985 || 211
+                "Cequipotential as equipotential"; //等位分
     let record = await this.where(sql_1).where(sql_2).order(order + ' ' + sort).field(field).page(page).countSelect();
 
     return record;

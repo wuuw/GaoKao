@@ -1,0 +1,113 @@
+'use strict';
+
+import Base from './base.js';
+export default class extends Base {
+  init(http){
+    super.init(http);
+  }
+  async indexAction() {
+
+  }
+  //专业-线差查询
+  /**
+  * @return {Promise}
+  *
+  */
+  async differenceAction() {
+    //获取前端query参数
+    let query = null;
+    if(this.isGet()){
+        query = {
+          pos: this.get('pos'), //生源地: 四川省
+          year: this.get('year'), //年份: 2015 || 2014
+          category: this.get('subject'), //科类: 理科 || 文科
+          batch: this.get('batch'), //批次: one ||two
+          scoreType: this.get('scoreType'), //分数类型: min || avg || max
+          major: this.get('major'), //专业编号: 1-10
+          score: parseInt(this.get('score')), //分数: Number
+          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          page: this.get('page') || 1 //页数: 默认 1
+      };
+      query.type = 'major';
+    }
+
+    //按照专业查找
+    let majorModel = this.model('major'),
+        admissionModel = this.model('admissionline'),
+        collegeModel = this.model('college');
+
+    let major = this.config('majors.' + (query.major - 1));
+    //sql_1语句
+    let sql_1 = {
+      'Morigin': query.pos,
+      'Myear': query.year,
+      'Mcategory': query.category,
+      'Mbatch': query.batch,
+      'Mname': ['like', `%${major}%`],
+      'Mstatus': 1
+    };
+
+    //查询省控线 line
+    let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
+    let line = adRecord[0].line;
+
+    //sql_2语句
+    let rangeMin = parseInt(query.score) - parseInt(query.range) - parseInt(line), //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range) - parseInt(line), //最高分
+        //从../config/config.js 里读取查询的分数类型
+        scoreType = this.config('majorType.' + query.scoreType);
+
+    let sql_2 = `${scoreType} - ${line} >= ${rangeMin} and ${scoreType} - ${line} <= ${rangeMax}`;
+
+    //其他配置项
+    let order = `${scoreType}`,
+        sort = 'DESC',
+        page = query.page;
+
+    //查询
+    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page);
+
+    let json = {
+      query: query,
+      count: majors.count, //结果总数
+      totalPages: majors.totalPages, //总页数
+      page: majors.currentPage, //当前页
+      line: line, //省控线
+      majors: majors.data //学校数组
+    };
+
+    this.assign(json);
+    return this.display();
+  }
+
+  //专业-等位分
+  /**
+  * @return {Promise}
+  *
+  */
+  async equipotentialAction() {
+    //获取前端query参数
+    let query = null;
+    if(this.isGet()){
+        query = {
+          pos: this.get('pos'), //生源地: 四川省
+          year: this.get('year'), //年份: 2015 || 2014
+          category: this.get('subject'), //科类: 理科 || 文科
+          major: this.get('major'), //专业编号: 1-10
+          eq: this.get('eq'), //等位分
+          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          page: this.get('page') || 1 //页数: 默认 1
+      };
+      query.type = 'major';
+    }
+  }
+
+  //专业-位次
+  /**
+  * @return {Promise}
+  *
+  */
+  async rankAction() {
+    return this.fail();
+  }
+}

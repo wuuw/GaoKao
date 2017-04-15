@@ -3,22 +3,50 @@
 {% block page %}
 <section class="container search">
   <div class="card row">
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="nav-item">
-        <a class="nav-link active" data-toggle="tab" href="#school" role="tab">按 院 校</a>
+    <ul class="nav nav-tabs nav-pills nav-tabs-material" role="tablist">
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          查 院 校
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item active" id="dropdown1-tab" href="#school_dif" role="tab" data-toggle="tab" aria-controls="dropdown1">线差</a>
+
+          <a class="dropdown-item" id="dropdown2-tab" href="#school_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+
+          <a class="dropdown-item" id="dropdown2-tab" href="#school_eq" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">等位分</a>
+        </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#major" role="tab">按 专 业</a>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          查 专 业
+        </a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" id="dropdown1-tab" href="#major_dif" role="tab" data-toggle="tab" aria-controls="dropdown1">线差</a>
+          <a class="dropdown-item" id="dropdown2-tab" href="#major_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+        </div>
       </li>
+
+      <div class="nav-tabs-indicator" style="left: 190.281px; right: 257.203px;"></div>
     </ul>
 
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div class="tab-pane active fade show" id="school" role="tabpanel">
-        {% include '../component/school_search.html' %}
+
+    <div class="tab-content" id="myTabContent">
+      <div class="tab-pane active fade show" id="school_dif" role="tabpanel">
+        {% include '../component/school_dif_search.html' %}
       </div>
-      <div class="tab-pane fade" id="major" role="tabpanel">
-        {% include '../component/major_search.html' %}
+      <div class="tab-pane fade" id="school_rank" role="tabpanel">
+        {% include '../component/school_rank_search.html' %}
+      </div>
+      <div class="tab-pane fade" id="school_eq" role="tabpanel">
+        {% include '../component/school_eq_search.html' %}
+      </div>
+      <div class="tab-pane fade" id="major_dif" role="tabpanel">
+        {% include '../component/major_dif_search.html' %}
+      </div>
+      <div class="tab-pane fade" id="major_rank" role="tabpanel">
+        {% include '../component/major_rank_search.html' %}
       </div>
     </div>
   </div>
