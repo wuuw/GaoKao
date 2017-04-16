@@ -1,5 +1,5 @@
 
-    <form class="tab-pane active" role="tabpanel" action="/home/college/rank" method="get" id="dif">
+    <form action="/home/college/rank" class="row" method="get">
       <select name="pos" class="custom-select col-2">
         <option disabled="disabled">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
@@ -21,15 +21,9 @@
       </div>
       <!--  -->
 
-      <select name="range" class="custom-select col-2">
-        <option selected="selected" disabled="disabled">浮动百分比</option>
-        <option value="5">± 5</option>
-        <option value="10">± 10</option>
-        <option value="15">± 15</option>
-        <option value="20">± 20</option>
-      </select>
+      <div class="col-2">
+        <input name="range" type="number" class="form-control" placeholder="浮动百分比(%)">
+      </div>
       <input name="page" hidden="hidden" type="text" value="1" />
-      <button class="btn btn-primary" type="submit">
-        搜 索
-      </button>
+      <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
     </form>

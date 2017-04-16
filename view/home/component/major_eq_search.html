@@ -1,5 +1,5 @@
 <!-- form表单 -->
-  <form action="/home/major/equipotential" method="get">
+  <form action="/home/major/equipotential" class="row" method="get">
       <select name="pos" class="custom-select col-2">
         <option disabled="disabled">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
@@ -16,7 +16,7 @@
       </select>
       <!-- 等位分查询用 -->
       <div class="col-2">
-        <input name="eq" type="number" class="form-control" placeholder="等位分">
+        <input name="eq" type="number" class="form-control" placeholder="等位分(100-900)">
       </div>
       <!--  -->
       <select name="scoreType" class="custom-select col-2">
@@ -46,11 +46,8 @@
         <option value="10">工商管理</option>
       </select>
       <input name="page" hidden="hidden" type="text" value="1" />
-      <button class="btn btn-primary" type="submit">
-        搜 索
-      </button>
+      <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
   </form>
-
   <script>
     "use strict";
     //获取当前href
@@ -66,22 +63,49 @@
         if ($(this).hasClass('col-2')) {
           $(this).removeClass('col-2');
         }
-        console.log($(this));
       });
 
     }
-    //首页，加上div.row
-    else {
-      //获取所有form
-      let parent = $('form');
 
-      //每个form下加一层div.row
-      parent.each(function(index, ele) {
-        let children = $(this).children();
+    //每次提交 验证当前活跃form表单是否完整
+    function validate() {
+      //初始提交
+      let flag = true;
+      //当前活跃form  可能在首页为.search，也可能在结果页为side
+      let curForm = $(".search .tab-pane.active form").length ?
+                    $(".search .tab-pane.active form") :
+                    $(".sider_search .tab-pane.active form");
+      console.log(curForm);
+      //所有select 及 除最后一个input
+      let select = curForm.find('select'),
+          input = curForm.find('input').slice(0, -2);
 
-        let row = $("<div class='row'></div>");
-        row.append(children);
-        $(this).append(row);
-      })
+      //select不能选第一个（即未选）
+      select.each(function(index, ele) {
+        if ($(this)[0].selectedIndex == 0 ) {
+          flag = false;
+        };
+      });
+
+      input.each(function(index, ele) {
+        if (!$(this).val()) {
+          flag = false;
+        }
+      });
+      let score = curForm.find('input[name=score]').val();
+      let eq = curForm.find('input[name=eq]').val();
+      if (score && (score < 0 || score > 750)) {
+        flag = false;
+      }
+      if (eq && (eq < 100 || eq > 900)) {
+        flag = false;
+      }
+
+      if (!flag) {
+        $('#modal').modal('show');
+      } else {
+        curForm.submit();
+      }
     }
+
   </script>

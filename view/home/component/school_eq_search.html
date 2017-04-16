@@ -1,5 +1,5 @@
 
-    <form class="tab-pane active" role="tabpanel" action="/home/college/equipotential" method="get" id="dif">
+    <form action="/home/college/equipotential" class="row" method="get">
       <select name="pos" class="custom-select col-2">
         <option disabled="disabled">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
@@ -17,7 +17,7 @@
 
       <!-- 等位分查询用 -->
       <div class="col-2">
-        <input name="eq" type="number" class="form-control" placeholder="等位分">
+        <input name="eq" type="number" class="form-control" placeholder="等位分(100-900)">
       </div>
       <select name="range" class="custom-select col-2">
         <option selected="selected" disabled="disabled">浮动区间</option>
@@ -27,7 +27,5 @@
         <option value="20">± 20</option>
       </select>
       <input name="page" hidden="hidden" type="text" value="1" />
-      <button class="btn btn-primary" type="submit">
-        搜 索
-      </button>
+      <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
     </form>

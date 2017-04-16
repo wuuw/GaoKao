@@ -100,7 +100,6 @@ export default class extends Base {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
           category: this.get('subject'), //科类: 理科 || 文科
-          scoreType: this.get('scoreType'), //分数类型: min || avg || max
           eq: parseInt(this.get('eq')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1 //页数: 默认 1

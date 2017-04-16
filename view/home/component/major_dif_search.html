@@ -1,5 +1,5 @@
 <!-- form表单 -->
-<form action="/home/major/difference" method="get">
+<form action="/home/major/difference" class="row" method="get">
     <select name="pos" class="custom-select col-2">
       <option disabled="disabled">考生所在地</option>
       <option value="四川省" selected="selected">四川省</option>
@@ -26,7 +26,7 @@
       <option value="max">最高分</option>
     </select>
     <div class="col-2">
-      <input name="score" type="number" class="form-control" placeholder="高考分数">
+      <input name="score" type="number" class="form-control" placeholder="高考分数(0-750)">
     </div>
     <select name="range" class="custom-select col-2">
       <option disabled="disabled" selected="selected">浮动区间</option>
@@ -49,7 +49,5 @@
       <option value="10">工商管理</option>
     </select>
     <input name="page" hidden="hidden" type="text" value="1" />
-    <button class="btn btn-primary" type="submit">
-      搜 索
-    </button>
+    <input class="btn btn-primary" type='button' value="搜索" onclick="validate()"/>
 </form>

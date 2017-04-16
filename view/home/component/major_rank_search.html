@@ -1,6 +1,6 @@
 
   <!-- form表单 -->
-  <form action="/home/major/rank" method="get">
+  <form action="/home/major/rank" class="row" method="get">
     <select name="pos" class="custom-select col-2">
       <option disabled="disabled">考生所在地</option>
       <option value="四川省" selected="selected">四川省</option>
@@ -19,7 +19,7 @@
       <input name="rank" type="number" class="form-control" placeholder="考生排名">
     </div>
     <div class="col-2">
-      <input name="range" type="number" class="form-control" placeholder="浮动百分比">
+      <input name="range" type="number" class="form-control" placeholder="浮动百分比(%)">
     </div>
     <select name="major" class="custom-select col-2">
       <option disabled="disabled" selected="selected">专业</option>
@@ -35,7 +35,5 @@
       <option value="10">工商管理</option>
     </select>
     <input name="page" hidden="hidden" type="text" value="1" />
-    <button class="btn btn-primary" type="submit">
-      搜 索
-    </button>
+    <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
   </form>

@@ -1,5 +1,5 @@
 
-    <form class="tab-pane active" role="tabpanel" action="/home/college/difference" method="get" id="dif">
+    <form action="/home/college/difference" class="row" method="get">
       <!-- <div class="row"> -->
         <select name="pos" class="custom-select col-2">
           <option disabled="disabled">考生所在地</option>
@@ -29,7 +29,7 @@
           <option value="avg">平均分</option>
         </select>
         <div class="col-2">
-          <input name="score" type="number" class="form-control" placeholder="高考分数">
+          <input name="score" type="number" class="form-control" placeholder="高考分数(0-750)">
         </div>
         <!--  -->
 
@@ -41,8 +41,5 @@
           <option value="20">± 20</option>
         </select>
         <input name="page" hidden="hidden" type="text" value="1" />
-        <button class="btn btn-primary" type="submit">
-          搜 索
-        </button>
-      <!-- </div> -->
+        <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
     </form>
