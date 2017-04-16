@@ -82,8 +82,9 @@ export default class extends Base {
       schools: schools.data //学校数组
     };
 
+    this.display();
     this.assign(json);
-    return this.display();
+    return;
   }//diffrenceAction
 
 
