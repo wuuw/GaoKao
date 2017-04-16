@@ -127,7 +127,7 @@ export default class extends Base {
     let sql_2 = `${scoreType} <= ${max} and ${scoreType} >= ${min}`;
 
     //其他设置
-    let order = 'Cequipotential',
+    let order = `${scoreType}`,
         sort = 'DESC',
         page = query.page;
 

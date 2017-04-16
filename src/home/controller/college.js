@@ -112,26 +112,21 @@ export default class extends Base {
         admissionModel = this.model('admissionline');
 
     let min = parseInt(query.eq) - parseInt(query.range),  //最低
-        max = parseInt(query.eq) + parseInt(query.range),  //最高
-        scoreType = this.config('schoolType.' + query.scoreType); //参考分数
-
-    // 获取最高、最低等位分对应的实际分
-    min = await collegeModel.eqToScore(query.year, query.pos, query.category, min); //最高分
-    max = await collegeModel.eqToScore(query.year, query.pos, query.category, max); //最低分
+        max = parseInt(query.eq) + parseInt(query.range);  //最高
 
 
     let sql_1 = {
       'Cyear': query.year,
       'Corigin': query.pos,
       'Ccategory': query.category,
+      'Cequipotential': ['BETWEEN', min, max],
       'Cstatus': 1
-    },
-        sql_2 = `${scoreType} >= ${min} and ${scoreType} <= ${max}`;
+    };
 
     let order = 'Cequipotential',
         sort = 'DESC',
         page = query.page;
-    let schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page),
+    let schools = await collegeModel.selectAll(sql_1, null, order, sort, page),
         line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
 
     let json = {

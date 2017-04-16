@@ -67,12 +67,13 @@ export default class extends think.model.base {
       let sql_1 = {
         'Cyear': year,
         'Corigin': pos,
-        'Ccategory': category
+        'Ccategory': category,
+        'Cequipotential': ['BETWEEN', eq - 5, eq + 5]
       };
       let order = `ABS(Cequipotential - ${eq}) ASC`;
 
       let record = await this.where(sql_1).order(order).limit(1).select();
 
-      return record[0].Ccutoffline;//返回真实分数
+      return record[0] ? record[0].Ccutoffline : 0;//返回真实分数
     }
 }

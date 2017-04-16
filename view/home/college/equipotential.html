@@ -11,7 +11,7 @@
       <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
       <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
       <span style="color:#ddd">等位分: <b style="color:#fff;font-size:1.1em">{{query.eq}}</b></span>
-      <span style="color:#ddd">查找区间: <b style="color:#fff;font-size:1.1em">{{query.eq - query.range}} 至 {{query.eq + query.range}}</b></span>
+      <span style="color:#ddd">等位分区间: <b style="color:#fff;font-size:1.1em">{{query.eq - query.range}} 至 {{query.eq + query.range}}</b></span>
     </div>
     <!-- {% include "../inc/filter.html" %} -->
     <div class="card">
@@ -24,8 +24,6 @@
             <th>录取批次(省控线)</th>
             <th>调档线</th>
             <th>平均分</th>
-            <th>调档线差</th>
-            <th>平均线差</th>
             <th>等位分</th>
             <th>招生网</th>
           </tr>
@@ -49,7 +47,7 @@
             </td>
             <td>{{item.minScore}}</td>
             <td>{{item.avgScore}}</td>
-            {% if item.batch.substr(3, 1) == '一' %}
+            <!-- {% if item.batch.substr(3, 1) == '一' %}
             <td>
               {{item.minScore - line[0].line}}
             </td>
@@ -63,7 +61,7 @@
             <td>
               {{item.avgScore - line[1].line}}
             </td>
-            {% endif %}
+            {% endif %} -->
             <td>
               {{item.equipotential}}
             </td>
