@@ -84,6 +84,7 @@ export default class extends Base {
 
     this.display();
     this.assign(json);
+    console.log(1);
     return;
   }//diffrenceAction
 
