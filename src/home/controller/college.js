@@ -152,18 +152,54 @@ export default class extends Base {
     let query = null;
     if(this.isGet()){
         query = {
-          type: this.get('type'), //查询类型: school || major
           pos: this.get('pos'), //生源地: 四川省
-          year: this.get('year'), //年份: 2015 || 2014
+          year: this.get('year'), //年份: 2015 || 2014 || 2016
           category: this.get('subject'), //科类: 理科 || 文科
-          batch: this.get('batch'), //批次: one ||two
-          scoreType: this.get('scoreType'), //分数类型: min || avg || max
-          score: parseInt(this.get('score')), //分数: Number
-          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          rank: parseInt(this.get('rank')), //分数: Number
+          range: parseFloat(this.get('range')), //波动区间: %5 || %10 || %15 || %20
           page: this.get('page') || 1 //页数: 默认 1
       };
     }
-    return this.fail()
+
+    //model
+    let rankingModel = this.model('ranking'),
+        collegeModel = this.model('college'),
+        admissionModel = this.model('admissionline');
+    //计算最大、最小排名
+    let rankMax = query.rank * (1 + query.range),
+        rankMin = query.rank * (1 - query.range);
+
+    //通过排名，在ranking表中得到最低、最高分
+    let max = await rankingModel.rankToScore(query.year, rankMin),
+        min = await rankingModel.rankToScore(query.year, rankMax);
+        console.log(max, min);
+    //在college表中查找调档线分数在[min, max]间的学校
+    let sql_1 = {
+      'Ccutoffline': ['BETWEEN', min, max],
+      'Cyear': query.year,
+      'Corigin': query.pos,
+      'Ccategory': query.category,
+      'Cstatus': 1
+    };
+    let order = 'Rbegin',
+        sort = 'ASC',
+        page = query.page;
+
+    let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
+        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+        
+    let json = {
+      query: query, //查询参数
+      line: line, //省控线
+      count: schools.count, //结果总数
+      totalPages: schools.totalPages, //总页数
+      page: schools.currentPage, //当前页
+      schools: schools.data //学校数组
+    };
+
+
+    this.assign(json);
+    return this.display();
   }
 
 

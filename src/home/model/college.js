@@ -60,7 +60,7 @@ export default class extends think.model.base {
 
 
     /*
-    *  获取等位分对应的实际分数
+    *  根据等位分获取等位分对应的实际分数
     */
 
     async eqToScore(year, pos, category, eq) {
