@@ -155,6 +155,70 @@ export default class extends Base {
   *
   */
   async rankAction() {
-    return this.fail();
+    //queryf
+    let query = null;
+    if (this.isGet()) {
+      query = {
+        pos: this.get('pos'),
+        year: this.get('year'),
+        category: this.get('subject'),
+
+        rank: parseInt(this.get('rank')),
+        range: parseFloat(this.get('range')),
+
+        scoreType: this.get('scoreType'),
+        major: this.get('major'),
+        page: this.get('page') || 1
+      };
+      query.type = 'major';
+    }
+
+    //model
+    let admissionModel = this.model('admissionline'),
+        collegeModel = this.model('college'),
+        majorModel = this.model('major'),
+        rankingModel = this.model('ranking');
+
+    let major = this.config('majors.' + (query.major - 1)), //专业名
+        scoreType = this.config('majorType.' + query.scoreType); //分数类型
+
+    //省控线
+    let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+    console.log(line);
+
+    //获得排名对应的分数
+    let rankMin = query.rank * (1 - query.range),
+        rankMax = query.rank * (1 + query.range);
+    let min = await rankingModel.rankToScore(query.year, rankMax), //最低分
+        max = await rankingModel.rankToScore(query.year, rankMin); //最高分
+        console.log(min, max);
+
+    //通过最低分、最高分查专业，专业分数类型用户传入
+    let sql_1 = {
+      'Morigin': query.pos,
+      'Myear': query.year,
+      'Mcategory': query.category,
+      'Mname': ['like', `%${major}%`],
+      'Mstatus': 1
+    };
+    let sql_2 = `${scoreType} BETWEEN ${min} and ${max}`;
+
+    let order = "Rscore",
+        sort = 'DESC',
+        page = query.page;
+
+    let majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page);
+
+    let json = {
+      query: query,
+      line: line,
+      count: majors.count, //结果总数
+      totalPages: majors.totalPages, //总页数
+      page: majors.currentPage, //当前页
+      majors: majors.data //学校数组
+    };
+
+    this.assign(json);
+    return this.display();
   }
 }

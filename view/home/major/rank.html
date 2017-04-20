@@ -1,0 +1,80 @@
+{% extends "../inc/base.html" %}
+
+{% block page %}
+<section class="result">
+  <div class="card sider_search">
+    {% include "../component/side_search.html" %}
+  </div>
+  <div class="content">
+    <div class="alert alert-primary info" role="alert">
+      <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
+      <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
+      <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
+      <span style="color:#ddd">高考排名: <b style="color:#fff;font-size:1.1em">{{query.rank}}</b></span>
+      <!-- <span style="color:#ddd">
+        排名区间:
+        <b style="color:#fff;font-size:1.1em">
+          {{query.rank * (1 - query.range)}} 至 {{query.rank * (1 + query.range)}} 名
+        </b>
+      </span> -->
+    </div>
+    <!-- {% include "../inc/filter.html" %} -->
+    <div class="card">
+      <table class="table table-striped">
+        <!-- 学校查找 -->
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
+            <th>所在地</th>
+            <th>专业</th>
+            <th>录取批次(省控线)</th>
+            <th>
+              {%if query.scoreType == 'min'%}
+              专业最低分
+              {%elif query.scoreType == 'avg'%}
+              专业平均分
+              {%else%}
+              专业最高分
+              {%endif%}
+            </th>
+            <th>初位排名</th>
+            <th>末位排名</th>
+            <th>专业解读</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in majors %}
+          <tr>
+            <th scope="row" class="name" style="text-align:left;padding-left:20px;padding-right:0;">
+              <span style = "font-size:1.2em;">
+                {{item.school_name}}
+                <span style="color:#9c27b0;font-size:0.8em;">{{item.project}}</span>
+              </span>
+            </th>
+            <td>{{item.school_pos}}</td>
+            <td>{{item.name}}</td>
+
+
+            <td>
+              {% if item.batch.slice(3, 4) == '一' %}
+              {{item.batch}}({{line[0].line}})
+              {%else%}
+              {{item.batch}}({{line[1].line}})
+              {% endif %}
+            </td>
+
+            <td>{{item.score}}</td>
+            <td>{{item.rank}}</td>
+            <td>{{item.over}}</td>
+            <td>
+              <a href="">查看</a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% include '../inc/pagination.html' %}
+    </div>
+  </div>
+</section>
+{% endblock %}

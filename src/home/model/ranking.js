@@ -29,7 +29,7 @@ export default class extends think.model.base {
                   "Cbatch as batch, " + //批次
                   "Cwebsite as site, " + //官网
                   "Rbegin as rank, " + //位次
-                  "Rcount as count"; //人数
+                  "Rover as over"; //人数
       //联合查询 on 条件
       let on = {
         "Ryear": "Cyear",
@@ -44,4 +44,9 @@ export default class extends think.model.base {
         as: 'c'
       }).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
+
+    /*
+    *
+    */
+
 }

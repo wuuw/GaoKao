@@ -31,7 +31,6 @@
             <th>平均分</th>
             <th>初位排名</th>
             <th>末位排名</th>
-            <th>人数</th>
             <th>招生网</th>
           </tr>
         </thead>
@@ -61,10 +60,7 @@
               {{item.rank}}
             </td>
             <td>
-              {{item.rank + item.count}}
-            </td>
-            <td>
-              {{item.count}}
+              {{item.over}}
             </td>
             <td>
               {% if item.site %}

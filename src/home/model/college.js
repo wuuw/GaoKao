@@ -48,6 +48,7 @@ export default class extends think.model.base {
         "Cname": 'm.Cname'
       };
 
+
       let sql = await this.model('major').where(sql_1).where(sql_2).buildSql();
 
       return this.join({
@@ -57,6 +58,48 @@ export default class extends think.model.base {
         as: 'm'
       }).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
+
+    //与ref_major/ref_ranking表联合查询，结果返回包含专业所在学校地址及所属工程信息
+    //以及相应分数对应的一分一段排名
+    /*
+    *
+    */
+    async joinMajorAndRanking(sql_1, sql_2, order, sort, page) {
+      let scoreType = sql_2.split(' ')[0];
+      console.log(scoreType);
+      ///field
+      let field = "Myear as year, " + //年份
+                  "m.Cname as school_name, " + //学校名
+                  "Caddress as school_pos, " + //学校地址
+                  "Cproject as project, " + //学校地址
+                  "Mname as name, " + //专业名
+                  `${scoreType} as score, ` + //分数
+                  "Mcategory as category, " + //科目
+                  "Mbatch as batch, " + //批次
+                  "Morigin as origin, " + //生源地
+                  "Rbegin as rank, " + //初位排名
+                  "Rover as over" //末尾排名
+      //联合查询 on 条件
+      let onMajor = {
+        "Cyear": 'Myear',
+        "Ccategory": 'Mcategory',
+        "Corigin": 'Morigin',
+        "Cbatch": 'Mbatch',
+        "Cname": 'm.Cname'
+      };
+      // console.log("*****************" + this.controller);
+
+      let sql = await this.model('major').where(sql_1).where(sql_2).buildSql();
+
+      return this.alias('c').join({
+        table: sql,
+        join: 'inner',
+        on: onMajor,
+        as: 'm'
+      }).join(`INNER JOIN ref_ranking ON Myear = Ryear AND ${scoreType} = Rscore`).order(order + ' ' + sort).field(field).page(page).countSelect();
+    }
+
+
 
 
     /*

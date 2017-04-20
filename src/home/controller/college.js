@@ -159,6 +159,7 @@ export default class extends Base {
           range: parseFloat(this.get('range')), //波动区间: %5 || %10 || %15 || %20
           page: this.get('page') || 1 //页数: 默认 1
       };
+      query.type = 'school';
     }
 
     //model
@@ -187,7 +188,7 @@ export default class extends Base {
 
     let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
         line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-        
+
     let json = {
       query: query, //查询参数
       line: line, //省控线
