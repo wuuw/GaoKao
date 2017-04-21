@@ -76,6 +76,9 @@ export default class extends Base {
       majors: majors.data //学校数组
     };
 
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+
     this.assign(json);
     return this.display();
   }
@@ -143,6 +146,9 @@ export default class extends Base {
       page: majors.currentPage, //当前页
       majors: majors.data //学校数组
     };
+
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
     this.assign(json);
     return this.display();
@@ -217,6 +223,9 @@ export default class extends Base {
       page: majors.currentPage, //当前页
       majors: majors.data //学校数组
     };
+
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
     this.assign(json);
     return this.display();

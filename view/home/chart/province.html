@@ -1,0 +1,66 @@
+<div class="alert" style="background-color:#e1e1e1" role="alert">
+  <strong>{{query.pos}}</strong> 历年省控线
+</div>
+<div id="adline"></div>
+<script>
+  "use strict";
+  let sider = $('.sider');
+  $('#adline').attr('style', `width:${sider.width()}px;height:${sider.width()}px;`);
+
+  let adline = echarts.init(document.getElementById('adline'));
+  //初始化年份数组
+  let yearArr = [];
+  // 初始化数据数组
+  let scoreArr = [];
+
+  {% for item in lineForChart %}
+    if (yearArr.indexOf(parseInt('{{item.year}}')) < 0) {
+      yearArr.push(parseInt('{{item.year}}'));
+    }
+    scoreArr.push(parseInt('{{item.line}}'))
+  {%endfor%}
+  let adlineOption = {
+      tooltip : {
+          trigger: 'axis',
+          axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+              type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+          }
+      },
+      legend: {
+          data:['本科第一批','本科第二批']
+      },
+      grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+      },
+      xAxis : [
+          {
+              type : 'category',
+              data : yearArr
+          }
+      ],
+      yAxis : [
+          {
+              type : 'value',
+              min: 400,
+              max: 600
+          }
+      ],
+      color: ['#9c27b0','#e4552c'],
+      series : [
+          {
+              name:'本科第一批',
+              type:'bar',
+              data:[scoreArr[0], scoreArr[2], scoreArr[4]]
+          },
+          {
+              name:'本科第二批',
+              type:'bar',
+              data:[scoreArr[1], scoreArr[3], scoreArr[5]]
+          }
+      ]
+  };
+  adline.setOption(adlineOption);
+</script>

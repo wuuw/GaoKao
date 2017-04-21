@@ -2,8 +2,13 @@
 
 {% block page %}
 <section class="result">
-  <div class="card sider_search">
-    {% include "../component/side_search.html" %}
+  <div class="sider">
+    <div class="card">
+      {% include "../component/side_search.html" %}
+    </div>
+    <div class="card" style="padding:0 0 20px 0">
+      {% include "../chart/province.html" %}
+    </div>
   </div>
   <div class="content">
     <div class="alert alert-primary info" role="alert">

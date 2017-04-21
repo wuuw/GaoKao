@@ -14,7 +14,7 @@ export default {
       password: '123456',
       prefix: 'ref_',
       encoding: 'utf8',
-      nums_per_page: 15
+      nums_per_page: 20
     }
   }
 };

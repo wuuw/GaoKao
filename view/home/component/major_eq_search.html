@@ -1,5 +1,5 @@
 <!-- form表单 -->
-  <form action="/home/major/equipotential" class="row" method="get">
+  <form action="/major/equipotential" class="row" method="get">
       <select name="pos" class="custom-select col-2">
         <option disabled="disabled" value="0">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
@@ -74,7 +74,7 @@
       //当前活跃form  可能在首页为.search，也可能在结果页为side
       let curForm = $(".search .tab-pane.active form").length ?
                     $(".search .tab-pane.active form") :
-                    $(".sider_search .tab-pane.active form");
+                    $(".sider .tab-pane.active form");
       console.log(curForm);
       //所有select 及 除最后一个input
       let select = curForm.find('select'),
@@ -126,8 +126,11 @@
     })
 
     //参考分数类型
-    $('select[name=scoreType]').find($(`option[value={{query.scoreType}}]`)).each(function(index, ele) {
-      $(this).attr('selected', '');
-    })
+    if (`{{query.scoreType}}`) {
+      $('select[name=scoreType]').find($(`option[value={{query.scoreType}}]`)).each(function(index, ele) {
+        $(this).attr('selected', '');
+      })
+    }
+
   }
   </script>

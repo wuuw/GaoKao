@@ -14,10 +14,10 @@ export default class extends think.model.base {
       sql_2 = {
         'batch': batch
       }
-    };
+    }
 
     let field = "Aminimunline as line";
-    let record = await this.where(sql_1).where(sql_2).order('Aminimunline  DESC').field(field).select();
+    let record = await this.where(sql_1).where(sql_2).order('Ayear ASC, Aminimunline  DESC').field(field).select();
     return record;
   }
 }

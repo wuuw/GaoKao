@@ -5,10 +5,7 @@ export default class extends Base {
   init(http){
     super.init(http);
   }
-  async indexAction() {
-
-  }
-  //学校-线差查询
+  //学校-线差查询   Action
   /**
   * @return {Promise}
   *
@@ -49,6 +46,7 @@ export default class extends Base {
 
     //查询省控线 line
     let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
+
     let line = adRecord[0].line;
 
     let rangeMin = parseInt(query.score) - parseInt(query.range) - parseInt(line), //最低分
@@ -81,13 +79,15 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
     this.assign(json);
     return this.display();
   }//diffrenceAction
 
 
-  //学校-等位分查询
+  //学校-等位分查询  Action
   /**
   * @return {Promise}
   *
@@ -137,6 +137,8 @@ export default class extends Base {
       schools: schools.data //学校数组
     };
 
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
     this.assign(json);
     return this.display();
@@ -202,6 +204,8 @@ export default class extends Base {
       schools: schools.data //学校数组
     };
 
+    //传递图表所用省控线
+    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
     this.assign(json);
     return this.display();
