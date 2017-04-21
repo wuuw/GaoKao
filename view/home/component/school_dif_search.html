@@ -2,29 +2,29 @@
     <form action="/home/college/difference" class="row" method="get">
       <!-- <div class="row"> -->
         <select name="pos" class="custom-select col-2">
-          <option disabled="disabled">考生所在地</option>
+          <option disabled="disabled" value="0">考生所在地</option>
           <option value="四川省" selected="selected">四川省</option>
         </select>
         <select name="year" class="custom-select col-2">
-          <option selected="selected" disabled="disabled">参考年份</option>
+          <option selected="selected" disabled="disabled" value="0">参考年份</option>
           <option value="2016">2016</option>
           <option value="2015">2015</option>
           <option value="2014">2014</option>
         </select>
         <select name="subject" class="custom-select col-2">
-          <option disabled="disabled">考生类型</option>
+          <option disabled="disabled" value="0">考生类型</option>
           <option value="理科" selected="selected">理科</option>
         </select>
 
 
         <!-- 线差查询用 -->
         <select name="batch" class="custom-select col-2">
-          <option disabled="disabled" selected="selected">录取批次</option>
+          <option disabled="disabled" selected="selected" value="0">录取批次</option>
           <option value="本科第一批">本科第一批</option>
           <option value="本科第二批">本科第二批</option>
         </select>
         <select name="scoreType" class="custom-select col-2">
-          <option selected="selected" disabled="disabled">参考分数类型</option>
+          <option selected="selected" disabled="disabled" value="0">参考分数类型</option>
           <option value="min">调档线</option>
           <option value="avg">平均分</option>
         </select>
@@ -34,7 +34,7 @@
         <!--  -->
 
         <select name="range" class="custom-select col-2">
-          <option selected="selected" disabled="disabled">浮动区间</option>
+          <option selected="selected" disabled="disabled" value="0">浮动区间</option>
           <option value="5">± 5</option>
           <option value="10">± 10</option>
           <option value="15">± 15</option>

@@ -1,17 +1,17 @@
 <!-- form表单 -->
   <form action="/home/major/equipotential" class="row" method="get">
       <select name="pos" class="custom-select col-2">
-        <option disabled="disabled">考生所在地</option>
+        <option disabled="disabled" value="0">考生所在地</option>
         <option value="四川省" selected="selected">四川省</option>
       </select>
       <select name="year" class="custom-select col-2">
-        <option disabled="disabled" selected="selected">参考年份</option>
+        <option disabled="disabled" selected="selected" value="0">参考年份</option>
         <option value="2016">2016</option>
         <option value="2015">2015</option>
         <option value="2014">2014</option>
       </select>
       <select name="subject" class="custom-select col-2">
-        <option disabled="disabled">考生类型</option>
+        <option disabled="disabled" value="0">考生类型</option>
         <option selected="selected" value="理科">理科</option>
       </select>
       <!-- 等位分查询用 -->
@@ -20,20 +20,20 @@
       </div>
       <!--  -->
       <select name="scoreType" class="custom-select col-2">
-        <option disabled="disabled" selected="selected">参考分数类型</option>
+        <option disabled="disabled" selected="selected" value="0">参考分数类型</option>
         <option value="min">最低分</option>
         <option value="avg">平均分</option>
         <option value="max">最高分</option>
       </select>
       <select name="range" class="custom-select col-2">
-        <option selected="selected" disabled="disabled">浮动区间</option>
+        <option selected="selected" disabled="disabled" value="0">浮动区间</option>
         <option value="5">± 5</option>
         <option value="10">± 10</option>
         <option value="15">± 15</option>
         <option value="20">± 20</option>
       </select>
       <select name="major" class="custom-select col-2">
-        <option disabled="disabled" selected="selected">专业</option>
+        <option disabled="disabled" selected="selected" value="0">专业</option>
         <option value="1">计算机科学与技术</option>
         <option value="2">通信工程</option>
         <option value="3">机械设计制造及其自动化</option>
@@ -108,4 +108,26 @@
       }
     }
 
+
+  //设置选中项目
+  if (`{{query}}`) {
+    $('select[name=pos]').val(`{{query.pos}}` || 0); //生源地
+    $('select[name=subject]').val(`{{query.category}}` || 0); //科目
+    $('input[name=eq]').val(`{{query.eq}}`); //等位分
+    $('select[name=range]').val(`{{query.range}}` || 0); //浮动区间
+    $('select[name=batch]').val(`{{query.batch}}` || 0); //批次
+    $('input[name=rank]').val(`{{query.rank}}`); //排名
+    $('input[name=score]').val(`{{query.score}}`); //高考分数
+    $('select[name=major]').val(`{{query.major}}` || 0); //专业
+
+    //year
+    $('select[name=year]').find($(`option[value={{query.year}}]`)).each(function(index, ele) {
+      $(this).attr('selected', '');
+    })
+
+    //参考分数类型
+    $('select[name=scoreType]').find($(`option[value={{query.scoreType}}]`)).each(function(index, ele) {
+      $(this).attr('selected', '');
+    })
+  }
   </script>

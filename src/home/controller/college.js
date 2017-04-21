@@ -160,8 +160,9 @@ export default class extends Base {
           page: this.get('page') || 1 //页数: 默认 1
       };
       query.type = 'school';
+      //range百分比转换为数值
+      query.range /= 100;
     }
-
     //model
     let rankingModel = this.model('ranking'),
         collegeModel = this.model('college'),
@@ -188,6 +189,9 @@ export default class extends Base {
 
     let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
         line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+
+    //range数值转为百分比
+    query.range *= 100;
 
     let json = {
       query: query, //查询参数

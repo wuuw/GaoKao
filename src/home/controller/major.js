@@ -164,7 +164,7 @@ export default class extends Base {
         category: this.get('subject'),
 
         rank: parseInt(this.get('rank')),
-        range: parseFloat(this.get('range')),
+        range: parseFloat(this.get('range')) / 100,
 
         scoreType: this.get('scoreType'),
         major: this.get('major'),
