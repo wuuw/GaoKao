@@ -46,7 +46,7 @@ export default class extends Base {
 
     //查询省控线 line
     let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
-
+    //所选批次的省控线
     let line = adRecord[0].line;
 
     let rangeMin = parseInt(query.score) - parseInt(query.range) - parseInt(line), //最低分
