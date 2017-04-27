@@ -162,7 +162,6 @@ export default class extends Base {
       let schools = await collegeModel.selectAll(sql_1, null, order, sort, page),
           line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
 
-      console.log(schools, line);
       let json = {
         query: query, //查询参数
         line: line, //分数线

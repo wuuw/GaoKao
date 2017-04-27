@@ -66,7 +66,6 @@ export default class extends think.model.base {
     */
     async joinMajorAndRanking(sql_1, sql_2, order, sort, page) {
       let scoreType = sql_2.split(' ')[0];
-      console.log(scoreType);
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名

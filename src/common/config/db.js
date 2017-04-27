@@ -9,7 +9,7 @@ export default {
     mysql: {
       host: '127.0.0.1',
       port: '',
-      database: 'referencesystem',
+      database: 'referencesystem_new',
       user: 'root',
       password: '123456',
       prefix: 'ref_',

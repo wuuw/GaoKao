@@ -18,13 +18,6 @@
       <div class="col-2">
         <input name="eq" type="number" class="form-control" placeholder="等位分(100-900)">
       </div>
-      <!--  -->
-      <select name="scoreType" class="custom-select col-2">
-        <option disabled="disabled" selected="selected" value="0">参考分数类型</option>
-        <option value="min">最低分</option>
-        <option value="avg">平均分</option>
-        <option value="max">最高分</option>
-      </select>
       <select name="range" class="custom-select col-2">
         <option selected="selected" disabled="disabled" value="0">浮动区间</option>
         <option value="5">± 5</option>
@@ -75,7 +68,6 @@
       let curForm = $(".search .tab-pane.active form").length ?
                     $(".search .tab-pane.active form") :
                     $(".sider .tab-pane.active form");
-      console.log(curForm);
       //所有select 及 除最后一个input
       let select = curForm.find('select'),
           input = curForm.find('input').slice(0, -2);

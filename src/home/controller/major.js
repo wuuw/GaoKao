@@ -98,7 +98,7 @@ export default class extends Base {
           category: this.get('subject'), //科类: 理科 || 文科
           major: this.get('major'), //专业编号: 1-10
           eq: parseInt(this.get('eq')), //等位分
-          scoreType: this.get('scoreType'), //分数类型: min || avg || max
+          // scoreType: this.get('scoreType'), //分数类型: min || avg || max
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1 //页数: 默认 1
       };
@@ -107,8 +107,7 @@ export default class extends Base {
 
     let collegeModel = this.model('college'),
         majorModel = this.model('major'),
-        admissionModel = this.model('admissionline'),
-        scoreType = this.config('majorType.' + query.scoreType);
+        admissionModel = this.model('admissionline');
 
     let major = this.config('majors.' + (query.major - 1));
 
@@ -127,10 +126,10 @@ export default class extends Base {
       'Mstatus': 1
     };
 
-    let sql_2 = `${scoreType} <= ${max} and ${scoreType} >= ${min}`;
+    let sql_2 = `Maverage <= ${max} and Maverage >= ${min}`;
 
     //其他设置
-    let order = `${scoreType}`,
+    let order = `Maverage`,
         sort = 'DESC',
         page = query.page;
 
@@ -190,14 +189,12 @@ export default class extends Base {
 
     //省控线
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-    console.log(line);
 
     //获得排名对应的分数
     let rankMin = query.rank * (1 - query.range),
         rankMax = query.rank * (1 + query.range);
     let min = await rankingModel.rankToScore(query.year, rankMax), //最低分
         max = await rankingModel.rankToScore(query.year, rankMin); //最高分
-        console.log(min, max);
 
     //通过最低分、最高分查专业，专业分数类型用户传入
     let sql_1 = {

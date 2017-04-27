@@ -44,13 +44,14 @@ export default class extends Base {
     * sql_2语句, 总体SQL语句中的第二部分: Ccutoffline | Caverage
     */
 
-    //查询省控线 line
+    // 查询省控线 line
     let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
+
     //所选批次的省控线
     let line = adRecord[0].line;
-
-    let rangeMin = parseInt(query.score) - parseInt(query.range) - parseInt(line), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range) - parseInt(line), //最高分
+    //分差区间
+    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
         //从 ../config/config.js 里读取查询的分数类型
         scoreType = this.config('schoolType.' + query.scoreType);
 
@@ -69,7 +70,6 @@ export default class extends Base {
 
     //查询
     let schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
-
     query.type = 'school';
     let json = {
       query: query, //查询参数
@@ -176,7 +176,6 @@ export default class extends Base {
     //通过排名，在ranking表中得到最低、最高分
     let max = await rankingModel.rankToScore(query.year, rankMin),
         min = await rankingModel.rankToScore(query.year, rankMax);
-        console.log(max, min);
     //在college表中查找调档线分数在[min, max]间的学校
     let sql_1 = {
       'Ccutoffline': ['BETWEEN', min, max],

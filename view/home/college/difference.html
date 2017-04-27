@@ -7,7 +7,7 @@
       {% include "../component/side_search.html" %}
     </div>
     <div class="card" style="padding:0 0 20px 0">
-      {% include "../chart/province.html" %}
+      {% include "../chart/admission.html" %}
     </div>
   </div>
   <div class="content">
@@ -23,7 +23,7 @@
         平均线差区间:
         {% endif %}
         <b style="color:#fff;font-size:1.1em">
-          {{query.score - query.range - line}} 至 {{query.score + query.range - line}} 分
+          {{query.score - query.range}} 至 {{query.score + query.range}} 分
         </b>
       </span>
     </div>

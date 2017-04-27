@@ -17,7 +17,6 @@ export default class extends think.logic.base {
   }
 
   equipotentialAction() {
-    console.log(this.get('origin'));
     let rule = {
       pos: 'required',
       year: 'required',
