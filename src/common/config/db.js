@@ -1,6 +1,6 @@
 'use strict';
 /**
- * db config
+ * mysql config
  * @type {Object}
  */
 export default {
