@@ -202,7 +202,7 @@ export default class extends Base {
         'Myear': query.year,
         'Mcategory': query.category,
         'Mbatch': query.batch,
-        'Mname': ['like', `%${major}%`],
+        'Mname': ['like', `${major}%`],
         'Mstatus': 1
       };
 

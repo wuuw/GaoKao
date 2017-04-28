@@ -10,6 +10,8 @@ export default class extends Base {
   async testAction() {
     let collegeModel = this.model('college');
 
+    // let record = await collegeModel.where("Cyear = 2014 and Cbatch = '本科第一批'").field('Ccutoffline as min, Cequipotential as eq').select();
+    // let record = await collegeModel.where("Cyear = 2014 and Cbatch = '本科第二批'").field('Ccutoffline as min, Cequipotential as eq').select();
     let record = await collegeModel.where("Cyear = 2014").field('Ccutoffline as min, Cequipotential as eq').select();
 
     let data = [];
@@ -23,7 +25,7 @@ export default class extends Base {
     };
 
     this.assign(json);
-    
+
     return this.display();
   }
 

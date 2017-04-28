@@ -43,7 +43,7 @@ export default class extends Base {
       'Myear': query.year,
       'Mcategory': query.category,
       'Mbatch': query.batch,
-      'Mname': ['like', `%${major}%`],
+      'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
 
@@ -52,8 +52,8 @@ export default class extends Base {
     let line = adRecord[0].line;
 
     //sql_2语句
-    let rangeMin = parseInt(query.score) - parseInt(query.range) - parseInt(line), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range) - parseInt(line), //最高分
+    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
         //从../config/config.js 里读取查询的分数类型
         scoreType = this.config('majorType.' + query.scoreType);
 
@@ -122,7 +122,7 @@ export default class extends Base {
       'Morigin': query.pos,
       'Myear': query.year,
       'Mcategory': query.category,
-      'Mname': ['like', `%${major}%`],
+      'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
 
@@ -201,7 +201,7 @@ export default class extends Base {
       'Morigin': query.pos,
       'Myear': query.year,
       'Mcategory': query.category,
-      'Mname': ['like', `%${major}%`],
+      'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
     let sql_2 = `${scoreType} BETWEEN ${min} and ${max}`;
