@@ -1,8 +1,10 @@
 'use strict';
+
 /**
  * mysql config
  * @type {Object}
  */
+
 export default {
   type: 'mysql',
   adapter: {
