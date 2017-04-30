@@ -46,7 +46,7 @@
           <th>专业最低分</th>
           <th>专业平均分</th>
           <th>专业最高分</th>
-          <th>专业解读</th>
+          <th>院校招生网</th>
         </tr>
       </thead>
       <tbody>
@@ -67,7 +67,11 @@
           <td>{{item.avgScore}}</td>
           <td>{{item.maxScore}}</td>
           <td>
-            <a href="javascript:void(0)">查看</a>
+            {% if item.site %}
+            <a href="{{item.site}}">查看</a>
+            {% else %}
+            <a href="javascript:void(0)"></a>
+            {% endif %}
           </td>
         </tr>
         {% endfor %}

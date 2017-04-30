@@ -35,8 +35,9 @@ export default class extends Base {
     let majorModel = this.model('major'),
         admissionModel = this.model('admissionline'),
         collegeModel = this.model('college');
-
+    //获取专业名称
     let major = this.config('majors.' + (query.major - 1));
+
     //sql_1语句
     let sql_1 = {
       'Morigin': query.pos,
@@ -48,12 +49,11 @@ export default class extends Base {
     };
 
     //查询省控线 line
-    let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
-    let line = adRecord[0].line;
+    let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
     //sql_2语句
-    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
+    let rangeMin = parseInt(query.score) - parseInt(query.range) - line, //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range) - line, //最高分
         //从../config/config.js 里读取查询的分数类型
         scoreType = this.config('majorType.' + query.scoreType);
 
@@ -78,7 +78,6 @@ export default class extends Base {
 
     //传递图表所用省控线
     this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
-
     this.assign(json);
     return this.display();
   }
@@ -167,11 +166,8 @@ export default class extends Base {
         pos: this.get('pos'),
         year: this.get('year'),
         category: this.get('subject'),
-
         rank: parseInt(this.get('rank')),
-        range: parseFloat(this.get('range')) / 100,
-
-        scoreType: this.get('scoreType'),
+        range: parseFloat(this.get('range')) / 100, // 100,
         major: this.get('major'),
         page: this.get('page') || 1
       };
@@ -184,8 +180,7 @@ export default class extends Base {
         majorModel = this.model('major'),
         rankingModel = this.model('ranking');
 
-    let major = this.config('majors.' + (query.major - 1)), //专业名
-        scoreType = this.config('majorType.' + query.scoreType); //分数类型
+    let major = this.config('majors.' + (query.major - 1)); //专业名
 
     //省控线
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
@@ -193,8 +188,8 @@ export default class extends Base {
     //获得排名对应的分数
     let rankMin = query.rank * (1 - query.range),
         rankMax = query.rank * (1 + query.range);
-    let min = await rankingModel.rankToScore(query.year, rankMax), //最低分
-        max = await rankingModel.rankToScore(query.year, rankMin); //最高分
+    let min = await rankingModel.rankToScore(query.year, query.pos, query.category, rankMax), //最低分
+        max = await rankingModel.rankToScore(query.year, query.pos, query.category, rankMin); //最高分
 
     //通过最低分、最高分查专业，专业分数类型用户传入
     let sql_1 = {
@@ -204,14 +199,14 @@ export default class extends Base {
       'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
-    let sql_2 = `${scoreType} BETWEEN ${min} and ${max}`;
+    let sql_2 = `Mcutoffline BETWEEN ${min} and ${max}`;
 
     let order = "Rscore",
         sort = 'DESC',
         page = query.page;
 
     let majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page);
-
+    query.range *= 100;
     let json = {
       query: query,
       line: line,
@@ -223,7 +218,6 @@ export default class extends Base {
 
     //传递图表所用省控线
     this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
-
     this.assign(json);
     return this.display();
   }

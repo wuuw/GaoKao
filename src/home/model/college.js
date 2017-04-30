@@ -32,6 +32,7 @@ export default class extends think.model.base {
                   "m.Cname as school_name, " + //学校名
                   "Caddress as school_pos, " + //学校地址
                   "Cproject as project, " + //学校地址
+                  "Cwebsite as site, " + //学校地址
                   "Mname as name, " + //专业名
                   "Mcutoffline as minScore, " + //最低分
                   "Maverage as avgScore, " + //平均分
@@ -65,19 +66,20 @@ export default class extends think.model.base {
     *
     */
     async joinMajorAndRanking(sql_1, sql_2, order, sort, page) {
-      let scoreType = sql_2.split(' ')[0];
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名
                   "Caddress as school_pos, " + //学校地址
                   "Cproject as project, " + //学校地址
                   "Mname as name, " + //专业名
-                  `${scoreType} as score, ` + //分数
+                  "Mcutoffline as minScore, " + //分数
+                  "Maverage as avgScore, " + //分数
+                  "Mhighest as maxScore, " + //分数
                   "Mcategory as category, " + //科目
                   "Mbatch as batch, " + //批次
                   "Morigin as origin, " + //生源地
                   "Rbegin as rank, " + //初位排名
-                  "Rover as over" //末尾排名
+                  "Cwebsite as site" //末尾排名
       //联合查询 on 条件
       let onMajor = {
         "Cyear": 'Myear',
@@ -95,7 +97,7 @@ export default class extends think.model.base {
         join: 'inner',
         on: onMajor,
         as: 'm'
-      }).join(`INNER JOIN ref_ranking ON Myear = Ryear AND ${scoreType} = Rscore`).order(order + ' ' + sort).field(field).page(page).countSelect();
+      }).join(`INNER JOIN ref_ranking ON Myear = Ryear AND Mcutoffline = Rscore`).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
 
 

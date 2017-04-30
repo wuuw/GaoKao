@@ -45,13 +45,11 @@ export default class extends Base {
     */
 
     // 查询省控线 line
-    let adRecord = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
-
-    //所选批次的省控线
-    let line = adRecord[0].line;
+    let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
+    console.log(line);
     //分差区间
-    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
+    let rangeMin = parseInt(query.score) - parseInt(query.range) - line, //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range) - line, //最高分
         //从 ../config/config.js 里读取查询的分数类型
         scoreType = this.config('schoolType.' + query.scoreType);
 
@@ -100,6 +98,7 @@ export default class extends Base {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
           category: this.get('subject'), //科类: 理科 || 文科
+          batch: this.get('batch'), //批次: 本科第一批 || 本科第二批
           eq: parseInt(this.get('eq')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1 //页数: 默认 1
@@ -118,6 +117,7 @@ export default class extends Base {
       'Cyear': query.year,
       'Corigin': query.pos,
       'Ccategory': query.category,
+      'Cbatch': query.batch,
       'Cequipotential': ['BETWEEN', min, max],
       'Cstatus': 1
     };
@@ -126,7 +126,7 @@ export default class extends Base {
         sort = 'DESC',
         page = query.page;
     let schools = await collegeModel.selectAll(sql_1, null, order, sort, page),
-        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
     let json = {
       query: query, //查询参数
@@ -174,8 +174,9 @@ export default class extends Base {
         rankMin = query.rank * (1 - query.range);
 
     //通过排名，在ranking表中得到最低、最高分
-    let max = await rankingModel.rankToScore(query.year, rankMin),
-        min = await rankingModel.rankToScore(query.year, rankMax);
+    let max = await rankingModel.rankToScore(query.year, query.pos,  query.category, rankMin),
+        min = await rankingModel.rankToScore(query.year, query.pos,  query.category, rankMax);
+
     //在college表中查找调档线分数在[min, max]间的学校
     let sql_1 = {
       'Ccutoffline': ['BETWEEN', min, max],
@@ -190,7 +191,7 @@ export default class extends Base {
 
     let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
         line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-
+        console.log(line);
     //range数值转为百分比
     query.range *= 100;
 

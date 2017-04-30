@@ -33,18 +33,11 @@
             <th>所在地</th>
             <th>专业</th>
             <th>录取批次(省控线)</th>
-            <th>
-              {%if query.scoreType == 'min'%}
-              专业最低分
-              {%elif query.scoreType == 'avg'%}
-              专业平均分
-              {%else%}
-              专业最高分
-              {%endif%}
-            </th>
-            <th>初位排名</th>
-            <th>末位排名</th>
-            <th>专业解读</th>
+            <th>专业最低分</th>
+            <th>专业平均分</th>
+            <th>专业最高分</th>
+            <th>最低分位次</th>
+            <th>院校招生网</th>
           </tr>
         </thead>
         <tbody>
@@ -68,11 +61,16 @@
               {% endif %}
             </td>
 
-            <td>{{item.score}}</td>
+            <td>{{item.minScore}}</td>
+            <td>{{item.avgScore}}</td>
+            <td>{{item.maxScore}}</td>
             <td>{{item.rank}}</td>
-            <td>{{item.over}}</td>
             <td>
-              <a href="">查看</a>
+              {% if item.site %}
+              <a href="{{item.site}}">查看</a>
+              {% else %}
+              <a href="javascript:void(0)"></a>
+              {% endif %}
             </td>
           </tr>
           {% endfor %}

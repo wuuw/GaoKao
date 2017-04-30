@@ -6,14 +6,13 @@ export default class extends think.model.base {
     /*
     *  根据排名获取等位分对应的实际分数
     */
-    async rankToScore(year, rank) {
-      let sql = `Ryear = ${year} and Rbegin < ${rank}`;
+    async rankToScore(year, pos, category, rank) {
+      let sql = `Ryear = ${year} and Rorigin = '${pos}' and Rcategory = '${category}'  and Rbegin < ${rank}`;
       let order = `${rank} - Rbegin ASC`;
 
       let record = await this.where(sql).order(order).limit(1).select();
       return record[0].Rscore;
     }
-
 
     /*
     *  联合查询ranking表
@@ -28,8 +27,7 @@ export default class extends think.model.base {
                   "Caverage as avgScore, " + //平均分
                   "Cbatch as batch, " + //批次
                   "Cwebsite as site, " + //官网
-                  "Rbegin as rank, " + //位次
-                  "Rover as over"; //人数
+                  "Rbegin as rank"; //位次
       //联合查询 on 条件
       let on = {
         "Ryear": "Cyear",

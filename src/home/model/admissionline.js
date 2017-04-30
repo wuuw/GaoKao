@@ -10,14 +10,10 @@ export default class extends think.model.base {
       'category': category
     };
 
-    if (batch) {
-      sql_2 = {
-        'batch': batch
-      }
-    }
+    if (batch) sql_2 = {'batch': batch}
 
     let field = "Aminimunline as line";
     let record = await this.where(sql_1).where(sql_2).order('Ayear ASC, Aminimunline  DESC').field(field).select();
-    return record;
+    return batch ? record[0].line : record;
   }
 }

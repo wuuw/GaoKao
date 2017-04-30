@@ -7,6 +7,7 @@
     </select>
     <select name="year" class="custom-select col-2">
       <option disabled="disabled" selected="selected" value="0">参考年份</option>
+      <option value="2016">2016</option>
       <option value="2015">2015</option>
       <option value="2014">2014</option>
     </select>
@@ -24,12 +25,6 @@
       <option value="15">± %15</option>
       <option value="20">± %20</option>
     </select>
-    <select name="scoreType" class="custom-select col-2">
-      <option disabled="disabled" selected="selected" value="0">参考分数类型</option>
-      <option value="min">最低分</option>
-      <option value="avg">平均分</option>
-      <option value="max">最高分</option>
-    </select>
     <select name="major" class="custom-select col-2">
       <option disabled="disabled" selected="selected" value="0">专业</option>
       <option value="1">计算机科学与技术</option>
@@ -46,3 +41,89 @@
     <input name="page" hidden="hidden" type="text" value="1" />
     <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
   </form>
+
+  <script>
+    "use strict";
+    //获取当前href
+    let href = window.location.href;
+
+    //if 结果页面  else 首页
+    if (href.indexOf('college') >= 0 ||  href.indexOf('major') >= 0) {
+      //获得所有子节点（form item)
+      let children = $('form').children();
+
+      //去掉col-2属性
+      children.each(function(index, ele) {
+        if ($(this).hasClass('col-2')) {
+          $(this).removeClass('col-2');
+        }
+      });
+
+    }
+
+    //每次提交 验证当前活跃form表单是否完整
+    function validate() {
+      //初始提交
+      let flag = true;
+      //当前活跃form  可能在首页为.search，也可能在结果页为side
+      let curForm = $(".search .tab-pane.active form").length ?
+                    $(".search .tab-pane.active form") :
+                    $(".sider .tab-pane.active form");
+      //所有select 及 除最后一个input
+      let select = curForm.find('select'),
+          input = curForm.find('input').slice(0, -2);
+
+      //select不能选第一个（即未选）
+      select.each(function(index, ele) {
+        if ($(this)[0].selectedIndex == 0 ) {
+          flag = false;
+        };
+      });
+
+      input.each(function(index, ele) {
+        if (!$(this).val()) {
+          flag = false;
+        }
+      });
+      let score = curForm.find('input[name=score]').val();
+      let eq = curForm.find('input[name=eq]').val();
+      if (score && (score < 0 || score > 750)) {
+        flag = false;
+      }
+      if (eq && (eq < 100 || eq > 900)) {
+        flag = false;
+      }
+
+      if (!flag) {
+        $('#modal').modal('show');
+      } else {
+        curForm.submit();
+      }
+    }
+
+
+  //设置选中项目
+  if (`{{query}}`) {
+    $('select[name=pos]').val(`{{query.pos}}` || 0); //生源地
+    $('select[name=subject]').val(`{{query.category}}` || 0); //科目
+    $('input[name=eq]').val(`{{query.eq}}`); //等位分
+    $('select[name=range]').val(`{{query.range}}` || 0); //浮动区间
+    $('select[name=batch]').val(`{{query.batch}}` || 0); //批次
+    $('input[name=rank]').val(`{{query.rank}}`); //排名
+    $('input[name=score]').val(`{{query.score}}`); //高考分数
+    $('select[name=major]').val(`{{query.major}}` || 0); //专业
+
+    //year
+    $('select[name=year]').find($(`option[value={{query.year}}]`)).each(function(index, ele) {
+      $(this).attr('selected', '');
+    })
+
+    //参考分数类型
+    if (`{{query.scoreType}}`) {
+      $('select[name=scoreType]').find($(`option[value={{query.scoreType}}]`)).each(function(index, ele) {
+        $(this).attr('selected', '');
+      })
+    }
+
+  }
+  </script>
