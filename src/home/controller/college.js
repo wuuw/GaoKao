@@ -17,12 +17,16 @@ export default class extends Base {
         query = {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: one ||two
           scoreType: this.get('scoreType'), //分数类型: min || avg || max
           score: parseInt(this.get('score')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
-          page: this.get('page') || 1 //页数: 默认 1
+          page: this.get('page') || 1, //页数: 默认 1
+
+          city: this.get('city'),
+          is985: this.get('is985'),
+          is211: this.get('is211')
       };
       query.type = 'school';
     }
@@ -30,16 +34,18 @@ export default class extends Base {
     let collegeModel = this.model('college'), //文件../model/college.js
         admissionModel = this.model('admissionline'); //文件../model/admissionline.js
 
-    //sql_1语句, 总体SQL语句中的第一部分
-      let sql_1 = {
-        'Corigin': query.pos, //生源
-        'Cyear': query.year, //年份
-        'Ccategory': query.category, //文理
-        'Cbatch': query.batch, //批次
-        'Cstatus': 1 //有效标志位
-      };
+  //sql_1语句, 总体SQL语句中的第一部分
+    let sql_1 = {
+      'Corigin': query.pos, //生源
+      'Cyear': query.year, //年份
+      'Ccategory': query.category, //文理
+      'Cbatch': query.batch, //批次
+      'Cstatus': 1 //有效标志位
+    };
 
-
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
+    console.log(sql_1);
     /*
     * sql_2语句, 总体SQL语句中的第二部分: Ccutoffline | Caverage
     */
@@ -78,9 +84,13 @@ export default class extends Base {
       schools: schools.data //学校数组
     };
     //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
-    this.assign(json);
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
+
     return this.display();
   }//diffrenceAction
 
@@ -97,11 +107,15 @@ export default class extends Base {
         query = {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: 本科第一批 || 本科第二批
           eq: parseInt(this.get('eq')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
-          page: this.get('page') || 1 //页数: 默认 1
+          page: this.get('page') || 1, //页数: 默认 1
+
+          city: this.get('city'),
+          is985: this.get('is985'),
+          is211: this.get('is211')
       };
       query.type = 'school';
     }
@@ -121,6 +135,9 @@ export default class extends Base {
       'Cequipotential': ['BETWEEN', min, max],
       'Cstatus': 1
     };
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
+
 
     let order = 'Cequipotential',
         sort = 'DESC',
@@ -136,11 +153,14 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
-
     //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
 
-    this.assign(json);
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
+
     return this.display();
   }//equipotentialAction
 
@@ -156,11 +176,17 @@ export default class extends Base {
         query = {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014 || 2016
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           rank: parseInt(this.get('rank')), //分数: Number
           range: parseFloat(this.get('range')), //波动区间: %5 || %10 || %15 || %20
-          page: this.get('page') || 1 //页数: 默认 1
+          page: this.get('page') || 1, //页数: 默认 1
+
+          //filter
+          city: this.get('city'),
+          is985: this.get('is985'),
+          is211: this.get('is211')
       };
+      console.log(query);
       query.type = 'school';
       //range百分比转换为数值
       query.range /= 100;
@@ -185,13 +211,19 @@ export default class extends Base {
       'Ccategory': query.category,
       'Cstatus': 1
     };
+
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
+
+
+
+
     let order = 'Rbegin',
         sort = 'ASC',
         page = query.page;
 
     let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
         line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-        console.log(line);
     //range数值转为百分比
     query.range *= 100;
 
@@ -203,11 +235,14 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
-
     //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
 
-    this.assign(json);
+    
     return this.display();
   }
 

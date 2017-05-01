@@ -14,7 +14,7 @@ export default class extends Base {
     let type=this.get('type');
     let pos=this.get('pos');
     let year=this.get('year');
-    let subject=this.get('subject');
+    let subject=this.get('category');
     let scoreType=this.get('scoreType');
     let score=this.get('score');
     let range=this.get('range');

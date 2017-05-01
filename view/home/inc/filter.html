@@ -53,26 +53,74 @@
   $('#too').change(filter);
 
   function filter() {
-    console.log([$('#nef').is(':checked'), $('#too').is(':checked')]);
     $.ajax({
-      type: 'POST',
-      url: "/result/index",
+      type: 'GET',
+      url: window.location.pathname,
+      dataType: 'json',
       data: {
         city: $('#city option:selected').text(),
         is985: $('#nef').is(':checked'),
         is211: $('#too').is(':checked'),
-        type: '{{query.type}}',
-        pos: '{{query.pos}}',
+
         year: '{{query.year}}',
-        scoreType: '{{query.scoreType}}',
+        pos: '{{query.pos}}',
         category: '{{query.category}}',
-        major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
-        score: parseInt({{query.score}}),
-        range: parseInt({{query.range}})
-      },
-      dataType: 'json'
+        batch: '{{query.batch}}',
+        score: parseInt('{{query.score}}'),
+        eq: '{{query.eq}}',
+        rank: '{{query.rank}}',
+        range: parseInt('{{query.range}}'),
+        scoreType: '{{query.scoreType}}',
+        major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%}
+      }
     }).done(function(data) {
       console.log(data);
+      filterRender(data);
+      handlePage(data.data.page, data.data.totalPages);
     });
+  }
+
+
+  function filterRender(data) {
+    //header
+    $('.table thead').html(`<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`);
+
+    //tbody
+    let tbody = '',
+        schools = data.data.schools,
+        line = data.data.line;
+    schools.forEach((school, index)=> {
+      let site = ``;
+      if (school.site) {
+        site += `<a href="${school.site}" target="_blank">进入</a>`
+      }
+      tbody = tbody +
+              `<tr>
+                <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+                  <span style='font-size:1.2em;'>
+                    ${school.name}
+                    <span style="color:#9c27b0;font-size:0.8em;">
+                      ${school.project}
+                    </span>
+                  </span>
+                </th>
+                <td>${school.position}</td>
+                <td>
+                  ${school.batch} (${line})
+                </td>
+                <td>${school.minScore}</td>
+                <td>${school.avgScore}</td>
+                <td>
+                  ${school.minScore - line}
+                </td>
+                <td>
+                  ${school.avgScore - line}
+                </td>
+                <td>
+                  ${site}
+                </td>
+              </tr>`
+    });
+    $('.table tbody').html(tbody);
   }
 </script>

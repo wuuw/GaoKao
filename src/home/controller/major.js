@@ -20,13 +20,17 @@ export default class extends Base {
         query = {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: one ||two
           scoreType: this.get('scoreType'), //分数类型: min || avg || max
           major: this.get('major'), //专业编号: 1-10
           score: parseInt(this.get('score')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
-          page: this.get('page') || 1 //页数: 默认 1
+          page: this.get('page') || 1, //页数: 默认 1
+
+          city: this.get('city'),
+          is985: this.get('is985'),
+          is211: this.get('is211')
       };
       query.type = 'major';
     }
@@ -47,6 +51,9 @@ export default class extends Base {
       'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
+
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
 
     //查询省控线 line
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
@@ -76,9 +83,13 @@ export default class extends Base {
       majors: majors.data //学校数组
     };
 
-    //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
-    this.assign(json);
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
+
+
     return this.display();
   }
 
@@ -94,12 +105,16 @@ export default class extends Base {
         query = {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           major: this.get('major'), //专业编号: 1-10
           eq: parseInt(this.get('eq')), //等位分
           // scoreType: this.get('scoreType'), //分数类型: min || avg || max
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
-          page: this.get('page') || 1 //页数: 默认 1
+          page: this.get('page') || 1, //页数: 默认 1
+
+          city: this.get('city'),
+          is985: this.get('is985'),
+          is211: this.get('is211')
       };
       query.type = 'major';
     }
@@ -125,6 +140,9 @@ export default class extends Base {
       'Mstatus': 1
     };
 
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
+
     let sql_2 = `Maverage <= ${max} and Maverage >= ${min}`;
 
     //其他设置
@@ -145,10 +163,12 @@ export default class extends Base {
       majors: majors.data //学校数组
     };
 
-    //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
 
-    this.assign(json);
     return this.display();
 
   }//equipotentialAction
@@ -165,11 +185,15 @@ export default class extends Base {
       query = {
         pos: this.get('pos'),
         year: this.get('year'),
-        category: this.get('subject'),
+        category: this.get('category'),
         rank: parseInt(this.get('rank')),
         range: parseFloat(this.get('range')) / 100, // 100,
         major: this.get('major'),
-        page: this.get('page') || 1
+        page: this.get('page') || 1,
+
+        city: this.get('city'),
+        is985: this.get('is985'),
+        is211: this.get('is211')
       };
       query.type = 'major';
     }
@@ -199,6 +223,11 @@ export default class extends Base {
       'Mname': ['like', `${major}%`],
       'Mstatus': 1
     };
+
+    //为Ajax处理筛选请求时添加地址、工程等字段
+    sql_1 = this.filter(query, sql_1);
+
+
     let sql_2 = `Mcutoffline BETWEEN ${min} and ${max}`;
 
     let order = "Rscore",
@@ -216,9 +245,11 @@ export default class extends Base {
       majors: majors.data //学校数组
     };
 
-    //传递图表所用省控线
-    this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
-    this.assign(json);
+    if (this.isAjax('get')) this.success(json);
+    if (this.isGet()) {
+      this.assign(json);
+      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+    }
     return this.display();
   }
 }

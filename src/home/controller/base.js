@@ -19,5 +19,20 @@ export default class extends think.controller.base {
 
      return lineForChart;
    }
-   
+
+   filter(query, sql) {
+     if (query.is985 === 'true') {
+       sql['Cproject'] = '985、211';
+     } else if(query.is211 === 'true') {
+       sql['Cproject'] = '211';
+     }
+
+     if (query.city) {
+       if (query.city !== '所有地区') {
+         sql['Caddress'] = query.city;
+       }
+     }
+     return sql;
+   }
+
 }

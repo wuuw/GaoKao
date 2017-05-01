@@ -23,7 +23,7 @@ export default class extends Base {
           type: this.get('type'), //查询类型: school || major
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('subject'), //科类: 理科 || 文科
+          category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: one ||two
           scoreType: this.get('scoreType'), //分数类型: min || avg || max
           major: this.get('major'), //专业编号: 1-10

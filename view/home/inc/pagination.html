@@ -1,6 +1,6 @@
 <!-- 总页数大于1则显示页码 -->
 {% if totalPages > 1 %}
-<nav aria-label="Page navigation example">
+<nav id='pagination' aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <li class="page-item {%if page == 1%}disabled{%endif%}">
       <a class="page-link" tabindex="-1"> < </a>
@@ -19,32 +19,84 @@
 
 <script type="text/javascript">
   "use strict";
-  //找到page 部分并删除
-  let urlArray = window.location.href.split('&');
-  urlArray.forEach((str, index) => {
-    if(str.indexOf('page') >= 0) {
-      urlArray.splice(index, 1);
-    }
-  });
-  //删除page后的链接
-  let urlWithoutPage = urlArray.join('&');
-
   //绑定click事件
-  let lists = $(".pagination li");
+  let lists = $(".pagination li"),
+      page = null;
   lists.each(function(index) {
-    //上一页
-    if (index === 0) {
-      $(this).one('click', function() {
-        window.location.href = urlWithoutPage + "&page=" + {{page - 1}};
+    $(this).on('click', function(){
+      //上一页
+      if (index === 0) {
+        page = parseInt({{page}}) - 1;
+      } else if (index === lists.length - 1) {
+        page = parseInt({{page}}) + 1;
+      } else {
+        page = index
+      }
+
+      $.ajax({
+        type: 'GET',
+        url: window.location.pathname,
+        dataType: 'json',
+        data: {
+          city: $('#city option:selected').text(),
+          is985: $('#nef').is(':checked'),
+          is211: $('#too').is(':checked'),
+
+          year: '{{query.year}}',
+          pos: '{{query.pos}}',
+          category: '{{query.category}}',
+          batch: '{{query.batch}}',
+          score: parseInt('{{query.score}}'),
+          eq: '{{query.eq}}',
+          rank: '{{query.rank}}',
+          range: parseInt('{{query.range}}'),
+          scoreType: '{{query.scoreType}}',
+          major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
+          page: page
+        }
+      }).done(function(data){
+        console.log(data);
+        filterRender(data);
+        handlePage(data.data.page, data.data.totalPages);
       });
-    } else if (index === lists.length - 1) {
-      $(this).one('click', function() {
-        window.location.href = urlWithoutPage + "&page=" + {{page + 1}};
-      });
-    } else {
-      $(this).one('click', function() {
-        window.location.href = urlWithoutPage + "&page=" + index;
-      })
-    }
+
+      // //进度条
+      // $('.table tbody').html(
+      //   `<div class="progress">
+      //     <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
+      //     </div>
+      //   </div>`);
+    })
   });
+
+  function handlePage(page, totalPages) {
+    let str = ``;
+    if (totalPages > 1) {
+      str =`
+        <ul class="pagination justify-content-center">
+      `;
+
+      str += `
+        <li class="page-item ${page==1 ? 'disabled': ''}">
+          <a class="page-link" tabindex="-1"> < </a>
+        </li>
+      `;
+
+      for (let i = 1; i < totalPages; i++) {
+        str += `
+        <li class="page-item ${i == page ? 'active':''}">
+          <a class="page-link">${i}</a>
+        </li>
+        `;
+      };
+      str += `
+      <li class="page-item ${page == totalPages ? 'disabled':''}">
+        <a class="page-link"> > </a>
+      </li>
+      `;
+
+      str += `</ul>`
+    }
+    $('#pagination').html(str);
+  }
 </script>
