@@ -46,7 +46,7 @@
     //获取当前href
     let href = window.location.href;
 
-    //if 结果页面  else 首页
+    //if 结果页面  else 首页, 判断以对side_search 进行不同布局
     if (href.indexOf('college') >= 0 ||  href.indexOf('major') >= 0) {
       //获得所有子节点（form item)
       let children = $('form').children();

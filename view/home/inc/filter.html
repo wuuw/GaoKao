@@ -51,7 +51,6 @@
   $('#city').change(filter);
   $('#nef').change(filter);
   $('#too').change(filter);
-
   function filter() {
     $.ajax({
       type: 'GET',
@@ -74,14 +73,32 @@
         major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%}
       }
     }).done(function(data) {
-      console.log(data);
-      filterRender(data);
-      handlePage(data.data.page, data.data.totalPages);
+      //分页选中第一页
+      $('.pagination li').removeClass('active');
+      $('.pagination li:first').addClass('active');
+
+      //更新结果总数提示
+      $('.resultCount').html(`共匹配到 ${data.data.count} 条结果:`);
+
+      //刷新表格
+      freshTable(data);
+
+
+      //处理页码。有更多的页数，则添加页码;页码多余则去掉
+      let lists = $('.pagination li');
+      let pageCount = data.data.totalPages;
+      lists.each(function() {
+        $(this).css('display', 'block');
+      })
+      lists.slice(pageCount).each(function() {
+        $(this).css('display', 'none');
+      })
+
     });
   }
 
-
-  function filterRender(data) {
+  //刷新表格
+  function freshTable(data) {
     //header
     $('.table thead').html(`<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`);
 
