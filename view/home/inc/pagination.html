@@ -2,17 +2,17 @@
 {% if totalPages > 1 %}
 <nav id='pagination' aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
-    <li class="page-item {%if page == 1%}disabled{%endif%}">
+    <!-- <li class="page-item {%if page == 1%}disabled{%endif%}">
       <a class="page-link" tabindex="-1"> < </a>
-    </li>
+    </li> -->
     {% for i in range(1, totalPages + 1) -%}
     <li class="page-item {% if i == query.page %}active{%endif%}">
       <a class="page-link">{{i}}</a>
     </li>
     {%- endfor %}
-    <li class="page-item {%if page == totalPages%}disabled{%endif%}">
+    <!-- <li class="page-item {%if page == totalPages%}disabled{%endif%}">
       <a class="page-link"> > </a>
-    </li>
+    </li> -->
   </ul>
 </nav>
 {%endif%}
@@ -24,15 +24,9 @@
       page = null;
   lists.each(function(index) {
     $(this).on('click', function(){
-      //上一页
-      if (index === 0) {
-        page = parseInt({{page}}) - 1;
-      } else if (index === lists.length - 1) {
-        page = parseInt({{page}}) + 1;
-      } else {
-        page = index
-      }
-
+      lists.removeClass('active');
+      $(this).addClass('active');
+      //ajax请求数据
       $.ajax({
         type: 'GET',
         url: window.location.pathname,
@@ -52,51 +46,11 @@
           range: parseInt('{{query.range}}'),
           scoreType: '{{query.scoreType}}',
           major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
-          page: page
+          page: index + 1
         }
       }).done(function(data){
-        console.log(data);
-        filterRender(data);
-        handlePage(data.data.page, data.data.totalPages);
+        freshTable(data);
       });
-
-      // //进度条
-      // $('.table tbody').html(
-      //   `<div class="progress">
-      //     <div class="progress-bar progress-bar-striped bg-danger" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100">
-      //     </div>
-      //   </div>`);
     })
   });
-
-  function handlePage(page, totalPages) {
-    let str = ``;
-    if (totalPages > 1) {
-      str =`
-        <ul class="pagination justify-content-center">
-      `;
-
-      str += `
-        <li class="page-item ${page==1 ? 'disabled': ''}">
-          <a class="page-link" tabindex="-1"> < </a>
-        </li>
-      `;
-
-      for (let i = 1; i < totalPages; i++) {
-        str += `
-        <li class="page-item ${i == page ? 'active':''}">
-          <a class="page-link">${i}</a>
-        </li>
-        `;
-      };
-      str += `
-      <li class="page-item ${page == totalPages ? 'disabled':''}">
-        <a class="page-link"> > </a>
-      </li>
-      `;
-
-      str += `</ul>`
-    }
-    $('#pagination').html(str);
-  }
 </script>

@@ -242,7 +242,7 @@ export default class extends Base {
       this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
     }
 
-    
+
     return this.display();
   }
 
