@@ -9,13 +9,13 @@ export default {
   type: 'mysql',
   adapter: {
     mysql: {
-      // host: '192.168.2.222',
-      host: '127.0.0.1',
+      host: '192.168.2.222',
+      // host: '127.0.0.1',
 
       port: '3306',
-      
-      // database: 'referencesystem_new',
-      database: 'referencesystem',
+
+      database: 'referencesystem_new',
+      // database: 'referencesystem',
 
       user: 'root',
       password: '123456',
