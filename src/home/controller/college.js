@@ -247,4 +247,15 @@ export default class extends Base {
   }
 
 
+  /**
+  * 高校详情页面
+  * @return {Promise}
+  */
+  async detailAction() {
+    let id = this.get('id');
+
+    //查询学校基本信息
+
+    return this.display();
+  }
 }

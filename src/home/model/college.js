@@ -6,6 +6,7 @@ export default class extends think.model.base {
   //查询所有
   async selectAll(sql_1, sql_2, order, sort, page) {
     let field = "Cyear as year, " + //年份
+                "Cflowline as id, " + //id
                 "Cname as name, " + //学校名称
                 "Caddress as position, " + //地址
                 "Ccutoffline as minScore, " + //最低分
