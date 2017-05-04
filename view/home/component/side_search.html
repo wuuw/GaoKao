@@ -1,4 +1,3 @@
-
 <ul class="nav nav-tabs nav-pills nav-tabs-material" role="tablist">
   <li class="nav-item dropdown">
     <a class="nav-link dropdown-toggle {%if query.type=='school'%}active{%endif%}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -46,3 +45,48 @@
       {% include '../component/major_rank_search.html' %}
     </div>
   </div>
+
+  <script>
+    "use strict";
+    //获取当前href
+    let href = window.location.href;
+
+    //if 结果页面  else 首页, 判断以对side_search 进行不同布局
+    if (href.indexOf('college') >= 0 ||  href.indexOf('major') >= 0) {
+      //获得所有子节点（form item)
+      let children = $('form').children();
+
+      //去掉col-2属性
+      children.each(function(index, ele) {
+        if ($(this).hasClass('col-2')) {
+          $(this).removeClass('col-2');
+        }
+      });
+
+    }
+
+  //设置选中项目
+  if (`{{query}}`) {
+    $('select[name=pos]').val(`{{query.pos}}` || 0); //生源地
+    $('select[name=subject]').val(`{{query.category}}` || 0); //科目
+    $('input[name=eq]').val(`{{query.eq}}`); //等位分
+    $('select[name=range]').val(`{{query.range}}` || 0); //浮动区间
+    $('select[name=batch]').val(`{{query.batch}}` || 0); //批次
+    $('input[name=rank]').val(`{{query.rank}}`); //排名
+    $('input[name=score]').val(`{{query.score}}`); //高考分数
+    $('select[name=major]').val(`{{query.major}}` || 0); //专业
+
+    //year
+    $('select[name=year]').find($(`option[value={{query.year}}]`)).each(function(index, ele) {
+      $(this).attr('selected', '');
+    })
+
+    //参考分数类型
+    if (`{{query.scoreType}}`) {
+      $('select[name=scoreType]').find($(`option[value={{query.scoreType}}]`)).each(function(index, ele) {
+        $(this).attr('selected', '');
+      })
+    }
+
+  }
+  </script>

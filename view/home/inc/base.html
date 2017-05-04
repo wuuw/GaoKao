@@ -14,23 +14,11 @@
   <script src="https://cdn.bootcss.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
   <script src="https://cdn.bootcss.com/echarts/3.5.3/echarts.min.js"></script>
 </head>
-<body style="position:relative;" data-spy="scroll" data-target="#navbar-example2">
+<body style="position:relative;" data-spy="scroll" data-target="#detailNav">
+  {% include "./top.html" %}
   <section class="outer_container">
-    <!-- topbar -->
-    {% include "./top.html" %}
-    <!-- Modal -->
-    <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="modal" style="display: none;">
-    <div class="modal-dialog modal-sm">
-      <div class="modal-content">
-        <div class="modal-header text-primary">
-          <p>提示:</p>
-        </div>
-        <h5 class="modal-body">
-          请 按 规 范 填 写 选 项
-        </h5>
-      </div>
-    </div>
-  </div>
+    <!-- modal -->
+    {% include "./alertModal.html" %}
     <!-- content -->
     <section class="content">
       {% block page %}
@@ -38,8 +26,8 @@
     </section>
 
     <!-- footer -->
-    {% include "./footer.html" %}
   </section>
+  {% include "./footer.html" %}
 {% block script %}
 {% endblock %}
 </body>

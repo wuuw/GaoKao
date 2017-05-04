@@ -1,0 +1,54 @@
+<!-- Modal -->
+<div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="alertModal" style="display: none;">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header text-primary">
+        <p>提示:</p>
+      </div>
+      <h5 class="modal-body">
+        请 按 规 范 填 写 选 项 !
+      </h5>
+    </div>
+  </div>
+</div>
+<script>
+//每次提交 验证当前活跃form表单是否完整
+function validate() {
+  //初始提交
+  let flag = true;
+  //当前活跃form  可能在首页为.search，也可能在结果页为side
+  let curForm = $(".search .tab-pane.active form").length ?
+                $(".search .tab-pane.active form") :
+                $(".sider .tab-pane.active form");
+  //所有select 及 除最后一个input
+  let select = curForm.find('select'),
+      input = curForm.find('input').slice(0, -2);
+
+  //select不能选第一个（即未选）
+  select.each(function(index, ele) {
+    if ($(this)[0].selectedIndex == 0 ) {
+      flag = false;
+    };
+  });
+
+  input.each(function(index, ele) {
+    if (!$(this).val()) {
+      flag = false;
+    }
+  });
+  let score = curForm.find('input[name=score]').val();
+  let eq = curForm.find('input[name=eq]').val();
+  if (score && (score < 0 || score > 750)) {
+    flag = false;
+  }
+  if (eq && (eq < 100 || eq > 900)) {
+    flag = false;
+  }
+
+  if (!flag) {
+    $('#alertModal').modal('show');
+  } else {
+    curForm.submit();
+  }
+}
+</script>

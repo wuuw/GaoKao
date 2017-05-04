@@ -1,20 +1,97 @@
 {% extends "../inc/base.html" %}
+{%block style%}
+<style>
+#detailNav {
+  padding: 0;
+  margin-right: 40px;
+}
+.schoolLogo {
+  height: 175px;
+  border: 1px solid #000;
+  width: 100%;
+  margin-bottom: 20px;
+}
+.nav-pills {
+  width: 100%;
+  text-align: center;
+}
+.detail > * {
+  box-sizing: border-box;
+}
+.detail .content {
+  border: 1px solid #eee;
+  flex: 1;
+  padding: 0 20px;
+}
+
+/*#intro*/
+#intro .name {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+#intro > div p {
+  width: 30%;
+  box-sizing: border-box;
+  margin-top: 10px;
+  margin-bottom: 0;
+}
+#intro > span {
+  margin-right: 10px;
+  border: 1px solid #9c27b0;
+  color: #9c27b0;
+  padding: 0px 8px;
+  border-radius: 2px;
+}
+</style>
+{%endblock%}
 {%block page%}
 
-<section class="row align-items-start">
-  <nav id="navbar-example2" class="navbar navbar-light bg-faded col-2">
+<section class="detail row align-items-start flex-row">
+  <nav id="detailNav" class="navbar navbar-light bg-faded col-2 flex-column">
+    <img class="schoolLogo" src="" alt=""/>
+
     <ul class="nav nav-pills flex-column">
       <li class="nav-item"><a class="nav-link active" href="#intro">院校简介</a></li>
       <li class="nav-item"><a class="nav-link" href="#line">历年分数线</a></li>
       <li class="nav-item"><a class="nav-link" href="#major">开设专业</a></li>
     </ul>
-  </nav>
-  <div  data-offset="0" class="scrollspy-example col-10">
-    <div id="intro">
-      <p>
 
-      </p>
-    </div>
+  </nav>
+
+  <div  data-offset="0" class="content">
+
+    <section class="row1 d-flex flex-row align-items-start justify-content-between">
+      <div id="intro" style="padding-top:5px;">
+        <p class="name d-flex align-items-center">
+          <span>西南交通大学阿萨德法师</span>
+          <button class="btn btn-primary" style="margin-left:20px;" onclick="toggleMap()">查看地图</button>
+        </p>
+        <span>985</span>
+        <span>211</span>
+        <div class="flex-row d-flex flex-wrap justify-content-start">
+          <p>
+            所在地:四川
+          </p>
+          <p>
+            隶属于:教育部
+          </p>
+          <p>
+            院士:37个
+          </p>
+          <p>
+            硕士点:43个
+          </p>
+          <p>
+            博士点:15个
+          </p>
+          <p>
+            国家重点学科:6个
+          </p>
+        </div>
+      </div>
+    </section>
+    {% include "../inc/mapModal.html" %}
   </div>
 </section>
 {%endblock%}

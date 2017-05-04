@@ -1,0 +1,42 @@
+<div id="location"></div>
+<script type="text/javascript" src="/static/js/china.js"></script>
+<script>
+  "use strict";
+  let row1 = $('.row1'),
+      intro = $('#intro');
+  $('#location').attr('style', `width:${row1.width()}px;height:${row1.width()}px;`)
+
+  let city = echarts.init(document.getElementById('location'));
+  let option = {
+    tooltip: {
+        trigger: 'item',
+        formatter: '{b}'
+    },
+    series: [
+        {
+            name: '中国',
+            type: 'map',
+            map: 'china',
+            mapType: 'china',
+            selectedMode : 'multiple',
+            label: {
+                normal: {
+                    show: true
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            silent: true,
+            selectedMode: false,
+            data:[
+                {
+                  name:'四川',
+                  selected: true
+                },
+            ]
+        }
+    ]
+};
+  city.setOption(option);
+</script>

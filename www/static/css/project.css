@@ -20,8 +20,10 @@ navbar footer
 .table tbody th {
   font-weight: bolder;
 }
-.navbar {
+.top {
   background-color: transparent !important;
+  width: 1280px;
+  /*margin: auto auto;*/
 }
 .footer {
   display: flex;
@@ -49,18 +51,18 @@ navbar footer
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  margin: auto auto;
 }
 .bk {
   background: url(../img/bk.jpg) no-repeat;
   background-size: 100% 250px;
 }
-.outer_container .content {
+.outer_container section.content {
   flex-grow: 1;
   flex-shrink: 0;
-  width: 92%;
-  margin: 0px auto;
-  margin-top: 30px;
-  margin-bottom: 
+  width: 82%;
+  margin: auto auto;
+  margin-top: 60px;
 }
 
 @media (min-width: 700px) {
