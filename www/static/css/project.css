@@ -5,6 +5,10 @@ navbar footer
 *
 *
 */
+::webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
 .table td, .table th {
   padding-left: 0;
   padding-right: 0;
@@ -55,7 +59,8 @@ navbar footer
   flex-shrink: 0;
   width: 92%;
   margin: 0px auto;
-  margin-top: 3s0px;
+  margin-top: 30px;
+  margin-bottom: 
 }
 
 @media (min-width: 700px) {
@@ -145,4 +150,12 @@ navbar footer
   font-size: 12px;
   color: #000;
   text-align: center;
+}
+.result a.key {
+  color: #000;
+  transition: color 100ms;
+}
+.result a.key:hover {
+  color: #9c27b0;
+  text-decoration: underline;
 }
