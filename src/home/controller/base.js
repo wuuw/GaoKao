@@ -15,7 +15,7 @@ export default class extends think.controller.base {
    */
    async getLineForTable(pos, category) {
      let admissionModel = this.model('admissionline');
-     let lineForChart = await admissionModel.where({'origin':pos, 'category': category}).order('Ayear ASC, Aminimunline DESC').field('Ayear as year, Aminimunline as line').select();
+     let lineForChart = await admissionModel.where({'Aorigin':pos, 'Acategory': category}).order('Ayear ASC, Aminimunline DESC').field('Ayear as year, Aminimunline as line').select();
 
      return lineForChart;
    }
