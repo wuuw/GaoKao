@@ -27,7 +27,7 @@ export default class extends think.model.base {
     /*
     *
     */
-    async joinMajor(sql_1, sql_2, order, sort, page) {
+    async joinMajor(sql_1, sql_2, order, sort, page, filter) {
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名
@@ -41,6 +41,7 @@ export default class extends think.model.base {
                   "Mcategory as category, " + //科目
                   "Mbatch as batch, " + //批次
                   "Morigin as origin"; //生源地
+
       //联合查询 on 条件
       let on = {
         "Cyear": 'Myear',
@@ -50,6 +51,20 @@ export default class extends think.model.base {
         "Cname": 'm.Cname'
       };
 
+      let filterCond = {
+      };
+      //城市
+      if (!(filter.city === '' || filter.city === '所有地区')) {
+        filterCond['Caddress'] = filter.city;
+      }
+      //工程
+      if(filter.is985 || filter.is211) {
+        if (filter.is985 === 'true')
+          filterCond['Cproject'] = '985、211';
+        else if (filter.is211 === 'true')
+          filterCond['Cproject'] = '211'
+      }
+
 
       let sql = await this.model('major').where(sql_1).where(sql_2).buildSql();
 
@@ -58,7 +73,7 @@ export default class extends think.model.base {
         join: 'inner',
         on: on,
         as: 'm'
-      }).order(order + ' ' + sort).field(field).page(page).countSelect();
+      }).where(filterCond).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
 
     //与ref_major/ref_ranking表联合查询，结果返回包含专业所在学校地址及所属工程信息
@@ -66,7 +81,7 @@ export default class extends think.model.base {
     /*
     *
     */
-    async joinMajorAndRanking(sql_1, sql_2, order, sort, page) {
+    async joinMajorAndRanking(sql_1, sql_2, order, sort, page, filter) {
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名
@@ -89,8 +104,23 @@ export default class extends think.model.base {
         "Cbatch": 'Mbatch',
         "Cname": 'm.Cname'
       };
-      // console.log("*****************" + this.controller);
 
+      // 处理筛选条件
+      let filterCond = {
+      };
+      //城市
+      if (!(filter.city === '' || filter.city === '所有地区')) {
+        filterCond['Caddress'] = filter.city;
+      }
+      //工程
+      if(filter.is985 || filter.is211) {
+        if (filter.is985 === 'true')
+          filterCond['Cproject'] = '985、211';
+        else if (filter.is211 === 'true')
+          filterCond['Cproject'] = '211'
+      }
+
+      // console.log("*****************" + this.controller);
       let sql = await this.model('major').where(sql_1).where(sql_2).buildSql();
 
       return this.alias('c').join({
@@ -98,7 +128,7 @@ export default class extends think.model.base {
         join: 'inner',
         on: onMajor,
         as: 'm'
-      }).join(`INNER JOIN ref_ranking ON Myear = Ryear AND Mcutoffline = Rscore`).order(order + ' ' + sort).field(field).page(page).countSelect();
+      }).join(`INNER JOIN ref_ranking ON Myear = Ryear AND Mcategory = Rcategory AND Morigin = Rorigin and Mcutoffline = Rscore`).where(filterCond).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
 
 

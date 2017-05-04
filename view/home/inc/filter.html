@@ -76,7 +76,7 @@
       //分页选中第一页
       $('.pagination li').removeClass('active');
       $('.pagination li:first').addClass('active');
-
+      console.log(data);
       //更新结果总数提示
       $('.resultCount').html(`共匹配到 ${data.data.count} 条结果:`);
 
@@ -99,45 +99,159 @@
 
   //刷新表格
   function freshTable(data) {
+    let thead = '',
+        tbody = '';
     //header
-    $('.table thead').html(`<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`);
-
-    //tbody
-    let tbody = '',
-        schools = data.data.schools,
-        line = data.data.line;
-    schools.forEach((school, index)=> {
+    let items= data.data.schools || data.data.majors;
+    items.forEach((school, index)=> {
       let site = ``;
+      //处理省控线是数组(位次查询)时的line值
+      let line = data.data.line;
+      if (line instanceof Array) {
+        if (school.batch === '本科第一批') line = line[0].line;
+        else line = line[1].line;
+      }
+
       if (school.site) {
         site += `<a href="${school.site}" target="_blank">进入</a>`
       }
-      tbody = tbody +
-              `<tr>
-                <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
-                  <span style='font-size:1.2em;'>
-                    ${school.name}
-                    <span style="color:#9c27b0;font-size:0.8em;">
-                      ${school.project}
-                    </span>
-                  </span>
-                </th>
-                <td>${school.position}</td>
-                <td>
-                  ${school.batch} (${line})
-                </td>
-                <td>${school.minScore}</td>
-                <td>${school.avgScore}</td>
-                <td>
-                  ${school.minScore - line}
-                </td>
-                <td>
-                  ${school.avgScore - line}
-                </td>
-                <td>
-                  ${site}
-                </td>
-              </tr>`
-    });
-    $('.table tbody').html(tbody);
-  }
+
+      switch (window.location.pathname) {
+        case '/college/difference':
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`;
+          tbody += `<tr>
+            <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+              <span style='font-size:1.2em;'>
+                ${school.name}
+                <span style="color:#9c27b0;font-size:0.8em;">
+                  ${school.project}
+                </span>
+              </span>
+            </th>
+            <td>${school.position}</td>
+            <td>
+              ${school.batch} (${line})
+            </td>
+            <td>${school.minScore}</td>
+            <td>${school.avgScore}</td>
+            <td>
+              ${school.minScore - line}
+            </td>
+            <td>
+              ${school.avgScore - line}
+            </td>
+            <td>
+              ${site}
+            </td>
+          </tr>`;
+          break;
+        case '/college/equipotential':
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>等位分</th><th>院校招生网</th></tr>`;
+          tbody += `<tr>
+            <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+              <span style='font-size:1.2em;'>
+                ${school.name}
+                <span style="color:#9c27b0;font-size:0.8em;">
+                  ${school.project}
+                </span>
+              </span>
+            </th>
+            <td>${school.position}</td>
+            <td>
+              ${school.batch} (${line})
+            </td>
+            <td>${school.minScore}</td>
+            <td>${school.avgScore}</td>
+            <td>
+              ${school.equipotential}
+            </td>
+            <td>
+              ${site}
+            </td>
+          </tr>`;
+          break;
+        case '/college/rank':
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档位次</th><th>院校招生网</th></tr>`;
+          tbody += `<tr>
+            <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+              <span style='font-size:1.2em;'>
+                ${school.name}
+                <span style="color:#9c27b0;font-size:0.8em;">
+                  ${school.project}
+                </span>
+              </span>
+            </th>
+            <td>${school.position}</td>
+            <td>
+              ${school.batch} (${line})
+            </td>
+            <td>${school.minScore}</td>
+            <td>${school.avgScore}</td>
+            <td>
+              ${school.rank}
+            </td>
+            <td>
+              ${site}
+            </td>
+          </tr>`;
+          break;
+        case '/major/difference':
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>院校招生网</th></tr>`;
+          tbody += `<tr>
+            <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+              <span style='font-size:1.2em;'>
+                ${school.school_name}
+                <span style="color:#9c27b0;font-size:0.8em;">
+                  ${school.project}
+                </span>
+              </span>
+            </th>
+            <td>${school.school_pos}</td>
+            <td>
+              ${school.name} (${line})
+            </td>
+            <td>
+              ${school.batch} (${line})
+            </td>
+            <td>${school.minScore}</td>
+            <td>${school.avgScore}</td>
+            <td>${school.maxScore}</td>
+            <td>
+              ${site}
+            </td>
+          </tr>`;
+          break;
+        case '/major/rank':
+          thead = `<tr><th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>最低分位次</th><th>院校招生网</th></tr>`;
+          tbody += `<tr>
+            <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
+              <span style='font-size:1.2em;'>
+                ${school.school_name}
+                <span style="color:#9c27b0;font-size:0.8em;">
+                  ${school.project}
+                </span>
+              </span>
+            </th>
+            <td>${school.school_pos}</td>
+            <td>
+              ${school.name} (${line})
+            </td>
+            <td>
+              ${school.batch} (${line})
+            </td>
+            <td>${school.minScore}</td>
+            <td>${school.avgScore}</td>
+            <td>${school.maxScore}</td>
+            <td>${school.rank}</td>
+            <td>
+              ${site}
+            </td>
+          </tr>`;
+          break;
+        default: break;
+      }
+    $('.table thead').html(thead);
+  });
+  $('.table tbody').html(tbody);
+}
 </script>

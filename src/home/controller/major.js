@@ -52,8 +52,6 @@ export default class extends Base {
       'Mstatus': 1
     };
 
-    //为Ajax处理筛选请求时添加地址、工程等字段
-    sql_1 = this.filter(query, sql_1);
 
     //查询省控线 line
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
@@ -71,8 +69,14 @@ export default class extends Base {
         sort = 'DESC',
         page = query.page;
 
+    let filter = {
+      city: query.city,
+      is985: query.is985,
+      is211: query.is211
+    };
+
     //查询
-    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page);
+    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page, filter);
 
     let json = {
       query: query,
@@ -98,80 +102,80 @@ export default class extends Base {
   * @return {Promise}
   *
   */
-  async equipotentialAction() {
-    //获取前端query参数
-    let query = null;
-    if(this.isGet()){
-        query = {
-          pos: this.get('pos'), //生源地: 四川省
-          year: this.get('year'), //年份: 2015 || 2014
-          category: this.get('category'), //科类: 理科 || 文科
-          major: this.get('major'), //专业编号: 1-10
-          eq: parseInt(this.get('eq')), //等位分
-          // scoreType: this.get('scoreType'), //分数类型: min || avg || max
-          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
-          page: this.get('page') || 1, //页数: 默认 1
-
-          city: this.get('city'),
-          is985: this.get('is985'),
-          is211: this.get('is211')
-      };
-      query.type = 'major';
-    }
-
-    let collegeModel = this.model('college'),
-        majorModel = this.model('major'),
-        admissionModel = this.model('admissionline');
-
-    let major = this.config('majors.' + (query.major - 1));
-
-    let min = query.eq - query.range, //最大等位分
-        max = query.eq + query.range; //最小等位分
-
-    //获得等位分对应的实际分数
-    min = await collegeModel.eqToScore(query.year, query.pos, query.category, min);
-    max = await collegeModel.eqToScore(query.year, query.pos, query.category, max);
-
-    let sql_1 = {
-      'Morigin': query.pos,
-      'Myear': query.year,
-      'Mcategory': query.category,
-      'Mname': ['like', `${major}%`],
-      'Mstatus': 1
-    };
-
-    //为Ajax处理筛选请求时添加地址、工程等字段
-    sql_1 = this.filter(query, sql_1);
-
-    let sql_2 = `Maverage <= ${max} and Maverage >= ${min}`;
-
-    //其他设置
-    let order = `Maverage`,
-        sort = 'DESC',
-        page = query.page;
-
-    //查询
-    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page),
-        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-
-    let json = {
-      query: query,
-      line: line,
-      count: majors.count, //结果总数
-      totalPages: majors.totalPages, //总页数
-      page: majors.currentPage, //当前页
-      majors: majors.data //学校数组
-    };
-
-    if (this.isAjax('get')) this.success(json);
-    if (this.isGet()) {
-      this.assign(json);
-      this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
-    }
-
-    return this.display();
-
-  }//equipotentialAction
+  // async equipotentialAction() {
+  //   //获取前端query参数
+  //   let query = null;
+  //   if(this.isGet()){
+  //       query = {
+  //         pos: this.get('pos'), //生源地: 四川省
+  //         year: this.get('year'), //年份: 2015 || 2014
+  //         category: this.get('category'), //科类: 理科 || 文科
+  //         major: this.get('major'), //专业编号: 1-10
+  //         eq: parseInt(this.get('eq')), //等位分
+  //         // scoreType: this.get('scoreType'), //分数类型: min || avg || max
+  //         range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+  //         page: this.get('page') || 1, //页数: 默认 1
+  //
+  //         city: this.get('city'),
+  //         is985: this.get('is985'),
+  //         is211: this.get('is211')
+  //     };
+  //     query.type = 'major';
+  //   }
+  //
+  //   let collegeModel = this.model('college'),
+  //       majorModel = this.model('major'),
+  //       admissionModel = this.model('admissionline');
+  //
+  //   let major = this.config('majors.' + (query.major - 1));
+  //
+  //   let min = query.eq - query.range, //最大等位分
+  //       max = query.eq + query.range; //最小等位分
+  //
+  //   //获得等位分对应的实际分数
+  //   min = await collegeModel.eqToScore(query.year, query.pos, query.category, min);
+  //   max = await collegeModel.eqToScore(query.year, query.pos, query.category, max);
+  //
+  //   let sql_1 = {
+  //     'Morigin': query.pos,
+  //     'Myear': query.year,
+  //     'Mcategory': query.category,
+  //     'Mname': ['like', `${major}%`],
+  //     'Mstatus': 1
+  //   };
+  //
+  //   //为Ajax处理筛选请求时添加地址、工程等字段
+  //   sql_1 = this.filter(query, sql_1);
+  //
+  //   let sql_2 = `Maverage <= ${max} and Maverage >= ${min}`;
+  //
+  //   //其他设置
+  //   let order = `Maverage`,
+  //       sort = 'DESC',
+  //       page = query.page;
+  //
+  //   //查询
+  //   let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page),
+  //       line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
+  //
+  //   let json = {
+  //     query: query,
+  //     line: line,
+  //     count: majors.count, //结果总数
+  //     totalPages: majors.totalPages, //总页数
+  //     page: majors.currentPage, //当前页
+  //     majors: majors.data //学校数组
+  //   };
+  //
+  //   if (this.isAjax('get')) this.success(json);
+  //   if (this.isGet()) {
+  //     this.assign(json);
+  //     this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
+  //   }
+  //
+  //   return this.display();
+  //
+  // }//equipotentialAction
 
   //专业-位次
   /**
@@ -224,8 +228,11 @@ export default class extends Base {
       'Mstatus': 1
     };
 
-    //为Ajax处理筛选请求时添加地址、工程等字段
-    sql_1 = this.filter(query, sql_1);
+    let filter = {
+      city: query.city,
+      is985: query.is985,
+      is211: query.is211
+    };
 
 
     let sql_2 = `Mcutoffline BETWEEN ${min} and ${max}`;
@@ -234,7 +241,7 @@ export default class extends Base {
         sort = 'DESC',
         page = query.page;
 
-    let majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page);
+    let majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page, filter);
     query.range *= 100;
     let json = {
       query: query,
@@ -244,7 +251,6 @@ export default class extends Base {
       page: majors.currentPage, //当前页
       majors: majors.data //学校数组
     };
-
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);
