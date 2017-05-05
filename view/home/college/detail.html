@@ -43,6 +43,27 @@
   padding: 0px 8px;
   border-radius: 2px;
 }
+
+.title {
+  font-size: 18px;
+  border-left: 5px solid #9c27b0;
+  padding-left: 10px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+.row2 p {
+  text-indent: 2em;
+}
+.row3 #majorLine {
+  width: 100%;
+  height: 500px;
+}
+.row3 #schoolLine {
+  width: 100%;
+  height: 600px;
+  margin-top: 50px;
+}
 </style>
 {%endblock%}
 {%block page%}
@@ -52,9 +73,9 @@
     <img class="schoolLogo" src="" alt=""/>
 
     <ul class="nav nav-pills flex-column">
-      <li class="nav-item"><a class="nav-link active" href="#intro">院校简介</a></li>
+      <li class="nav-item"><a class="nav-link active" href="#brief">院校简介</a></li>
       <li class="nav-item"><a class="nav-link" href="#line">历年分数线</a></li>
-      <li class="nav-item"><a class="nav-link" href="#major">开设专业</a></li>
+      <li class="nav-item"><a class="nav-link" href="#major">专业设置</a></li>
     </ul>
 
   </nav>
@@ -63,7 +84,7 @@
     <section class="row1 d-flex flex-row align-items-start justify-content-between">
       <div id="intro" style="padding-top:5px;">
         <p class="name d-flex align-items-center">
-          <span>西南交通大学阿萨德法师</span>
+          <span>西南交通大学</span>
           <button class="btn btn-primary" style="margin-left:20px;" onclick="toggleMap()">查看地图</button>
         </p>
         <span>985</span>
@@ -90,38 +111,20 @@
         </div>
       </div>
     </section>
+    <p class="title" id="#brief">院校简介</p>
 
-    <section class="row1 d-flex flex-row align-items-start justify-content-between">
-      <div id="intro" style="padding-top:5px;">
-        <p class="name d-flex align-items-center">
-          <span>西南交通大学阿萨德法师</span>
-          <button class="btn btn-primary" style="margin-left:20px;" onclick="toggleMap()">查看地图</button>
-        </p>
-        <span>985</span>
-        <span>211</span>
-        <div class="flex-row d-flex flex-wrap justify-content-start">
-          <p>
-            所在地:四川
-          </p>
-          <p>
-            隶属于:教育部
-          </p>
-          <p>
-            院士:37个
-          </p>
-          <p>
-            硕士点:43个
-          </p>
-          <p>
-            博士点:15个
-          </p>
-          <p>
-            国家重点学科:6个
-          </p>
-        </div>
-      </div>
+    <section class="row2">
+      <p>
+        学校始终拥有一支品学优长、敬业爱校、佑启后学的师资队伍。现有专任教师2500余名，其中教授、副教授1500余名。他们中有中国科学院院士4人，中国工程院院士7人，国家“千人计划”6人，“973”项目首席科学家3人，“长江学者”特聘教授和讲座教授13人，长江学者成就奖一等奖1人，国家杰出青年基金获得者13人，国家级有突出贡献专家8人，国家级教学名师6人，入选国家“百千万人才工程”8人，“青年千人计划”入选者2人,列入教育部“新世纪优秀人才支持计划”61人，拥有国家级和教育部创新团队6个，四川省青年科技创新团队3个。学校还聘请了40余位中国科学院院士、中国工程院院士为兼职教授；聘请了诺贝尔经济学奖获得者蒙代尔（Robert A.Mundell）、泽尔腾(Reinhard Selten)，诺贝尔物理学奖获得者道格拉斯（Douglas Osheroff）等为学校名誉教授。尤为值得一提的是，我国轨道交通领域近两届当选的4位院士全部我校校友。
+      </p>
     </section>
 
+    <p class="title" id="#line">历年分数线</p>
+
+    <section class="row3 d-flex flex-column justify-content-between">
+      {% include '../chart/majorLine.html' %}
+      {% include '../chart/schoolLine.html' %}
+    </section>
   </div>
 </section>
 {% include "../inc/mapModal.html" %}

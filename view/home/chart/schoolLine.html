@@ -1,0 +1,121 @@
+<div id="schoolLine"></div>
+<script>
+let schoolLine = echarts.init(document.getElementById('schoolLine'));
+let schoolLineOption = {
+    title: {
+        text: '本校历年调档线&平均分（四川省）',
+        left: 'center'
+    },
+    tooltip : {
+        trigger: 'axis',
+        axisPointer: {
+            type: 'cross',
+            label: {
+                backgroundColor: '#6a7985'
+            }
+        }
+    },
+    legend: {
+        data:['第二批省控线', '第一批省控线', '调档线', '平均分'],
+        x: 'left',
+        top: 28
+    },
+    grid: {
+        left: '0%',
+        right: '4%',
+        show: true,
+        bottom: '3%',
+        containLabel: true,
+        backgroundColor: '#efefef'
+    },
+    xAxis : [
+        {
+            type : 'category',
+            boundaryGap : false,
+            data : ['2014', '2015', '2016']
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value',
+            min: 400,
+            max: 700
+        }
+    ],
+    series : [
+        {
+            name:'平均分',
+            type:'line',
+            areaStyle: {
+              normal: {
+                opacity: 1
+              }
+            },
+            data:[589, 580, 613],
+            label:{
+              normal:{
+                show:true,
+                position:'top',
+                offset: [20, -5],
+                textStyle:{
+                  fontSize:14,
+                  color: ''
+                  }
+                }
+              }
+        },
+        {
+            name:'调档线',
+            type:'line',
+            areaStyle: {normal: {opacity: 1}},
+            data:[570, 561, 589],
+            label:{
+              normal:{
+                show:true,
+                position:'top',
+                offset: [20, -5],
+                textStyle:{
+                  fontSize:14,
+                  color: ''
+                  }
+                }
+              }
+        },
+        {
+            name:'第一批省控线',
+            type:'line',
+            areaStyle: {normal: {opacity: 1}},
+            data:[528, 522, 532],
+            label:{
+              normal:{
+                show:true,
+                position:'top',
+                offset: [20, -5],
+                textStyle:{
+                  fontSize:14,
+                  color: ''
+                  }
+                }
+              }
+        },
+        {
+            name:'第二批省控线',
+            type:'line',
+            areaStyle: {normal: {opacity: 1}},
+            data:[445, 428, 455],
+            label:{
+              normal:{
+                show:true,
+                position:'top',
+                offset: [20, -5],
+                textStyle:{
+                  fontSize:14,
+                  color: ''
+                  }
+                }
+              }
+        }
+    ]
+};
+schoolLine.setOption(schoolLineOption);
+</script>

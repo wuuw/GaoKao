@@ -1,0 +1,181 @@
+<div id="majorLine"></div>
+<script>
+let majorLine = echarts.init(document.getElementById('majorLine'));
+var dataMap = {};
+function dataFormatter(obj) {
+  var pList = ['计算机科学与技术','通信工程','机械设计制造及其自动化','土木工程','电气工程及其自动化','会计学','中医','临床医学','自动化','工商管理'];
+  var temp;
+  for (var year = 2014; year <= 2016; year++) {
+      var max = 0;
+      var sum = 0;
+      temp = obj[year];
+      for (var i = 0, l = temp.length; i < l; i++) {
+          max = Math.max(max, temp[i]);
+          sum += temp[i];
+          obj[year][i] = {
+              name : pList[i],
+              value : temp[i]
+          }
+      }
+  }
+  return obj;
+}
+
+dataMap.min = dataFormatter({
+  2014:[555, 578, 459, 501, 425, 490, 549, 501, 578, 499],
+  2015:[578, 459, 501, 425, 490, 490, 549, 501, 578, 499],
+  2016:[578, 555, 578, 555, 578, 459, 459, 459, 459, 501]
+});
+
+dataMap.avg = dataFormatter({
+  2014:[490, 549, 501, 555, 578, 459, 425, 459, 501, 578,],
+  2015:[578, 459, 578, 459, 501, 501, 578, 459, 501, 459,],
+  2016:[490, 555, 578, 459, 501, 459, 425, 549, 501, 578]
+});
+
+dataMap.max = dataFormatter({
+  2014:[490, 549, 555, 578, 459, 501, 459, 501, 425, 578,],
+  2015:[490, 501, 425, 555, 578, 459, 459, 549, 501, 578,],
+  2016:[490, 549, 459, 501, 459, 555, 578, 459, 459, 578]
+});
+
+
+let majorLineOption = {
+  baseOption: {
+      timeline: {
+          // y: 0,
+          axisType: 'category',
+          // realtime: false,
+          // loop: false,
+          autoPlay: true,
+          // currentIndex: 2,
+          playInterval: 2000,
+          // controlStyle: {
+          //     position: 'left'
+          // },
+          data: [
+              '2014','2015','2016'
+          ],
+          label: {
+              formatter : function(s) {
+                  return (new Date(s)).getFullYear();
+              }
+          }
+      },
+      legend: {
+          x: 'left',
+          data: ['最低分', '最高分', '平均分'],
+
+      },
+      calculable : true,
+      grid: {
+          top: 80,
+          bottom: 100,
+          left: '4%',
+          right: '4%',
+          show: true,
+          backgroundColor: '#efefef',
+          tooltip: {
+              trigger: 'axis',
+              axisPointer: {
+                  type: 'shadow',
+                  label: {
+                      show: true,
+                      formatter: function (params) {
+                          return params.value.replace('\n', '');
+                      }
+                  }
+              }
+          }
+      },
+      xAxis: [
+          {
+              'type':'category',
+              'axisLabel':{'interval':0},
+              'data':[
+                  '计算机科\n学与技术','通信工程','机械设计\n制造及其\n自动化','土木工程','电气工程\n及其自动化','会计学','中医','临床医学','自动化','工商管理'
+              ],
+              splitLine: {show: false}
+          }
+      ],
+      yAxis: [
+          {
+              type: 'value',
+              name: '分',
+              min:400,
+              max:600
+          }
+      ],
+      series: [
+            {
+              name: '最低分',
+              type: 'bar',
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  textStyle:{
+                    fontSize:10
+                    }
+                  }
+                }
+            },
+
+            {
+              name: '平均分',
+              type: 'bar',
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  textStyle:{
+                    fontSize:10
+                    }
+                  }
+                }
+            },
+
+            {
+              name: '最高分',
+              type: 'bar',
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  textStyle:{
+                    fontSize:10
+                    }
+                  }
+                }
+            }
+        ]
+  },
+  options: [
+      {
+          title: {text: '2014年十大热门专业分数线（四川省）',left:'center'},
+          series: [
+              {data: dataMap.min['2014']},
+              {data: dataMap.avg['2014']},
+              {data: dataMap.max['2014']},
+          ]
+      },
+      {
+          title: {text: '2015年本校各热门专业分数线（四川省）'},
+          series: [
+              {data: dataMap.min['2015']},
+              {data: dataMap.avg['2015']},
+              {data: dataMap.max['2015']}
+          ]
+      },
+      {
+          title: {text: '2016年本校各热门专业分数线（四川省）'},
+          series: [
+              {data: dataMap.min['2016']},
+              {data: dataMap.avg['2016']},
+              {data: dataMap.max['2016']}
+          ]
+      },
+  ]
+};
+majorLine.setOption(majorLineOption)
+</script>
