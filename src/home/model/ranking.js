@@ -21,6 +21,7 @@ export default class extends think.model.base {
       ///field
       let field = "Cyear as year, " + //年份
                   "Cname as name, " + //学校名
+                  "Cid as id, " + //代码
                   "Caddress as position, " + //学校地址
                   "Cproject as project, " + //工程
                   "Ccutoffline as minScore, " + //最低分

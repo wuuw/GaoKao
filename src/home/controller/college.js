@@ -153,8 +153,6 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
-    //传递图表所用省控线
-
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);
@@ -254,6 +252,7 @@ export default class extends Base {
   async detailAction() {
     let id = this.get('id');
 
+    this.assign({id: id})
     //查询学校基本信息
 
     return this.display();

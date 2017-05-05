@@ -6,7 +6,7 @@ export default class extends think.model.base {
   //查询所有
   async selectAll(sql_1, sql_2, order, sort, page) {
     let field = "Cyear as year, " + //年份
-                "Cflowline as id, " + //id
+                "Cid as id, " + //id
                 "Cname as name, " + //学校名称
                 "Caddress as position, " + //地址
                 "Ccutoffline as minScore, " + //最低分
@@ -34,6 +34,7 @@ export default class extends think.model.base {
                   "Caddress as school_pos, " + //学校地址
                   "Cproject as project, " + //学校地址
                   "Cwebsite as site, " + //学校地址
+                  "Cid as id, " + //代码
                   "Mname as name, " + //专业名
                   "Mcutoffline as minScore, " + //最低分
                   "Maverage as avgScore, " + //平均分
@@ -87,6 +88,7 @@ export default class extends think.model.base {
                   "m.Cname as school_name, " + //学校名
                   "Caddress as school_pos, " + //学校地址
                   "Cproject as project, " + //学校地址
+                  "Cid as id, " + //代码
                   "Mname as name, " + //专业名
                   "Mcutoffline as minScore, " + //分数
                   "Maverage as avgScore, " + //分数
