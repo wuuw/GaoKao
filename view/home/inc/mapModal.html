@@ -1,5 +1,5 @@
 <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" id="mapModal" style="display: none;">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       {% include "../chart/chinaMap.html" %}
     </div>
@@ -9,5 +9,9 @@
 <script type="text/javascript">
 function toggleMap() {
   $('#mapModal').modal('toggle');
+  // $(window).one('click', function() {
+  //   $('#mapModal').modal('toggle');
+  // })
 }
+
 </script>

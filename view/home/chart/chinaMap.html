@@ -2,9 +2,7 @@
 <script type="text/javascript" src="/static/js/china.js"></script>
 <script>
   "use strict";
-  let row1 = $('.row1'),
-      intro = $('#intro');
-  $('#location').attr('style', `width:${row1.width()}px;height:${row1.width()}px;`)
+  $('#location').attr('style', `width:${window.outerWidth/1.4}px;height:${window.outerHeight/1.4}px;`)
 
   let city = echarts.init(document.getElementById('location'));
   let option = {
