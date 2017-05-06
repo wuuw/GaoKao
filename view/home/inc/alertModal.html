@@ -22,7 +22,7 @@ function validate() {
                 $(".sider .tab-pane.active form");
   //所有select 及 除最后一个input
   let select = curForm.find('select'),
-      input = curForm.find('input').slice(0, -2);
+      input = curForm.find('input').slice(0, -1);
 
   //select不能选第一个（即未选）
   select.each(function(index, ele) {
@@ -30,21 +30,24 @@ function validate() {
       flag = false;
     };
   });
-
+  // input不能为空
   input.each(function(index, ele) {
     if (!$(this).val()) {
       flag = false;
     }
   });
+
   let score = curForm.find('input[name=score]').val();
   let eq = curForm.find('input[name=eq]').val();
+  // 分数区间
   if (score && (score < 0 || score > 750)) {
     flag = false;
   }
+  // 等位分区间
   if (eq && (eq < 100 || eq > 900)) {
     flag = false;
   }
-
+  //不满足表单条件
   if (!flag) {
     $('#alertModal').modal('show');
   } else {

@@ -1,6 +1,10 @@
 {% extends "../inc/base.html" %}
 
 {% block page %}
+<nav class="breadcrumb">
+  <a class="breadcrumb-item" href="/">首页</a>
+  <span class="breadcrumb-item active">专业-线差 查询</span>
+</nav>
 <section class="result">
   <div class="sider">
     <div class="card">
@@ -12,7 +16,6 @@
   </div>
   <div class="content">
     <div class="alert alert-primary info" role="alert">
-      <span style="color:#ddd">查询方式: <b style="color:#fff;font-size:1.1em">专业-线差</b></span>
       <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
       <span style="color:#ddd">考生来源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
       <span style="color:#ddd">考生科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
@@ -22,20 +25,14 @@
       </span>
 
       <span style="color:#ddd">
-        {% if query.scoreType == 'min' %}
-        最低线差区间:
-        {% elif query.scoreType == 'avg' %}
-        平均线差区间:
-        {% else %}
-        最高线差区间:
-        {% endif %}
+        查询专业:
         <b style="color:#fff;font-size:1.1em">
-          {{query.score - query.range}} 至 {{query.score + query.range}} 分
+          {{majors[0].name}}
         </b>
       </span>
     </div>
     {% include "../inc/filter.html" %}
-    <span class="badge badge-default resultCount" style="margin-bottom:10px;font-size:1em">共匹配到 <b>{{count}}</b> 条结果:</span>
+    <span class="badge badge-default resultCount" style="margin-bottom:10px;font-size:1em;background-color:#eee">使用 <b style="color:#9c27b0">专业-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">{{count}}</b> 条结果</span>
     <div class="card">
     <table class="table table-striped">
       <!-- 学校查找 -->

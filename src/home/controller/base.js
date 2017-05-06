@@ -1,4 +1,5 @@
 'use strict';
+import axios from 'axios';
 
 export default class extends think.controller.base {
   /**
@@ -35,4 +36,13 @@ export default class extends think.controller.base {
      return sql;
    }
 
+   schoolTips(id) {
+     //axios请求
+     return axios.get(`http://kaoshi.edu.sina.com.cn/college/c/${id}.shtml`)
+   }
+
+   schoolIntor(id) {
+     //axios请求
+     return axios.get(`http://kaoshi.edu.sina.com.cn/college/c/overview/${id}.shtml`)
+   }
 }

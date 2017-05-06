@@ -1,6 +1,19 @@
 <div id="schoolLine"></div>
 <script>
 let schoolLine = echarts.init(document.getElementById('schoolLine'));
+let avg_batch_1 = [], //学校录取一批调档线
+    min_batch_1 = [], //....最低分
+    avg_batch_2 = [], //学校录取二批调档线
+    min_batch_2 = []; //。。。。最低分
+
+// batch_1.forEach(item => {
+//   console.log(item.min);
+// });
+// batch_2.forEach(item => {
+//   console.log(item.min);
+// });
+
+
 let schoolLineOption = {
     title: {
         text: '本校历年调档线&平均分（四川省）',
@@ -18,11 +31,12 @@ let schoolLineOption = {
     legend: {
         data:['第二批省控线', '第一批省控线', '调档线', '平均分'],
         x: 'left',
-        top: 28
+        top: 28,
+        left: '4%'
     },
     grid: {
         left: '0%',
-        right: '4%',
+        right: '5%',
         show: true,
         bottom: '3%',
         containLabel: true,
@@ -85,7 +99,7 @@ let schoolLineOption = {
             name:'第一批省控线',
             type:'line',
             areaStyle: {normal: {opacity: 1}},
-            data:[528, 522, 532],
+            data:[540, 528, 532],
             label:{
               normal:{
                 show:true,
@@ -102,7 +116,7 @@ let schoolLineOption = {
             name:'第二批省控线',
             type:'line',
             areaStyle: {normal: {opacity: 1}},
-            data:[445, 428, 455],
+            data:[475, 445, 453],
             label:{
               normal:{
                 show:true,

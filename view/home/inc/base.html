@@ -20,8 +20,8 @@
   <script src="/static/js/echarts.min.js"></script> -->
 </head>
 <body style="position:relative;" data-spy="scroll" data-target="#detailNav">
-  {% include "./top.html" %}
   <section class="outer_container">
+    {% include "./top.html" %}
     <!-- modal -->
     {% include "./alertModal.html" %}
     <!-- content -->
@@ -31,8 +31,8 @@
     </section>
 
     <!-- footer -->
+    {% include "./footer.html" %}
   </section>
-  {% include "./footer.html" %}
 {% block script %}
 {% endblock %}
 </body>

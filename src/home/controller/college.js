@@ -1,6 +1,8 @@
 'use strict';
 
 import Base from './base.js';
+import cheerio from 'cheerio';
+
 export default class extends Base {
   init(http){
     super.init(http);
@@ -239,8 +241,6 @@ export default class extends Base {
       this.assign(json);
       this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
     }
-
-
     return this.display();
   }
 
@@ -251,10 +251,56 @@ export default class extends Base {
   */
   async detailAction() {
     let id = this.get('id');
+    let schoolData = {
+      id: id
+    };
+    //查询院校历史分数线
+    let school_line_record = await this.model('college').where({'Cid':id,'Cstatus': 1}).order('Cbatch ASC, Cyear ASC').field('Cname as name, Caddress as pos, Ccutoffline as min, Caverage as avg, Cbatch as batch, Cyear as year').select();
+    //查询四川省调档线
 
-    this.assign({id: id})
-    //查询学校基本信息
+    //从新浪教育爬取
+    let brief = this.schoolTips(id),
+        intro = this.schoolIntor(id)
 
-    return this.display();
+    brief.then(res=>{
+      let $ = cheerio.load(res.data);
+      //name & tips
+      schoolData.name = $('.collegeName').text();
+      schoolData.tips = [$('.collegeNameTips:nth-child(1)').text(), $('.collegeNameTips:nth-child(2)').text(), $('.collegeNameTips:nth-child(3)').text(), $('.collegeNameTips:nth-child(4)').text()];
+      //info
+      schoolData.pos = $('.middleContent.clearfix div.black14:nth-child(1)').text();
+      schoolData.belong = $('.middleContent.clearfix div.black14:nth-child(2)').text();
+      schoolData.acs = $('.middleContent.clearfix div.black14:nth-child(3)').text();
+      schoolData.master = $('.middleContent.clearfix div.black14:nth-child(4)').text();
+      schoolData.doctor = $('.middleContent.clearfix div.black14:nth-child(7)').text();
+      schoolData.ess = $('.middleContent.clearfix div.black14:nth-child(6)').text();
+      schoolData.type = $('.middleContent.clearfix div.black14:nth-child(5)').text();
+      //将数据库中查询的院校结果中，与新浪网上同名的记录筛选出来
+
+      //intro
+      intro.then(res => {
+        //学校简介
+        let $ = cheerio.load(res.data);
+        schoolData.intro = $('.contentMain p').map(function() {
+          return $(this).text() || '暂无资料。';
+        });
+        //本一线
+        let schoolLine_1 = school_line_record.filter(item => {
+          return item.name === schoolData.name && item.batch === '本科第一批';
+        });
+        //本二线
+        let schoolLine_2 = school_line_record.filter(item => {
+          return item.name === schoolData.name && item.batch === '本科第二批';
+        });
+        //学校本一线 && 本二线
+
+        schoolData.schoolLine_1 = schoolLine_1;
+        schoolData.schoolLine_2 = schoolLine_2;
+        this.assign({'school': schoolData})
+        console.log(schoolData);
+        return this.display();
+      });
+    })
+
   }
 }

@@ -65,7 +65,8 @@ let majorLineOption = {
       legend: {
           x: 'left',
           data: ['最低分', '最高分', '平均分'],
-
+          top: 28,
+          left: '4%'
       },
       calculable : true,
       grid: {
@@ -101,7 +102,7 @@ let majorLineOption = {
       yAxis: [
           {
               type: 'value',
-              name: '分',
+              name: '',
               min:400,
               max:600
           }
@@ -160,7 +161,7 @@ let majorLineOption = {
           ]
       },
       {
-          title: {text: '2015年本校各热门专业分数线（四川省）'},
+          title: {text: '2015年十大热门专业分数线（四川省）'},
           series: [
               {data: dataMap.min['2015']},
               {data: dataMap.avg['2015']},
@@ -168,7 +169,7 @@ let majorLineOption = {
           ]
       },
       {
-          title: {text: '2016年本校各热门专业分数线（四川省）'},
+          title: {text: '2016年十大热门专业分数线（四川省）'},
           series: [
               {data: dataMap.min['2016']},
               {data: dataMap.avg['2016']},

@@ -5,17 +5,14 @@ navbar footer
 *
 *
 */
-::webkit-scrollbar {
-  width: 0;
-  background: transparent;
-}
+
 .table td, .table th {
   padding-left: 0;
   padding-right: 0;
   text-align: center;
 }
 .table thead th {
-  font-size: 1.1em !important;
+  font-size: 1em !important;
 }
 .table tbody th {
   font-weight: bolder;
@@ -25,6 +22,13 @@ navbar footer
   width: 1280px;
   /*margin: auto auto;*/
 }
+nav.breadcrumb {
+  padding-top: 0;
+  padding-bottom: 0;
+  min-height: 3em;
+  border-radius: 3px;
+}
+
 .footer {
   display: flex;
   flex-direction: column;
@@ -62,7 +66,7 @@ navbar footer
   flex-shrink: 0;
   width: 82%;
   margin: auto auto;
-  margin-top: 60px;
+  margin-top: 20px;
 }
 
 @media (min-width: 700px) {
@@ -125,6 +129,7 @@ navbar footer
   flex-grow: 0;
   flex-shrink: 1;
 }
+
 .result .nav-tabs .nav-item {
   width: 50%;
 }

@@ -76,9 +76,7 @@
       //分页选中第一页
       $('.pagination li').removeClass('active');
       $('.pagination li:first').addClass('active');
-      console.log(data);
       //更新结果总数提示
-      $('.resultCount').html(`共匹配到 ${data.data.count} 条结果:`);
 
       //刷新表格
       freshTable(data);
@@ -118,11 +116,12 @@
 
       switch (window.location.pathname) {
         case '/college/difference':
+          $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
           thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                ${school.name}
+                <a class="key" href="/college/${school.id}">${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -146,11 +145,12 @@
           </tr>`;
           break;
         case '/college/equipotential':
+          $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-等位分</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
           thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>等位分</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                ${school.name}
+                <a class="key" href="/college/${school.id}">${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -171,11 +171,12 @@
           </tr>`;
           break;
         case '/college/rank':
+          $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-位次</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
           thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档位次</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                ${school.name}
+                <a class="key" href="/college/${school.id}">${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -196,11 +197,12 @@
           </tr>`;
           break;
         case '/major/difference':
+          $('.resultCount').html(`使用 <b style="color:#9c27b0">专业-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
           thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                ${school.school_name}
+                <a class="key" href="/college/${school.id}">${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -208,7 +210,7 @@
             </th>
             <td>${school.school_pos}</td>
             <td>
-              ${school.name} (${line})
+              ${school.name}
             </td>
             <td>
               ${school.batch} (${line})
@@ -222,11 +224,12 @@
           </tr>`;
           break;
         case '/major/rank':
+          $('.resultCount').html(`使用 <b style="color:#9c27b0">专业-位次</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
           thead = `<tr><th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>最低分位次</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                ${school.school_name}
+                <a class="key" href="/college/${school.id}">${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -234,7 +237,7 @@
             </th>
             <td>${school.school_pos}</td>
             <td>
-              ${school.name} (${line})
+              ${school.name}
             </td>
             <td>
               ${school.batch} (${line})
