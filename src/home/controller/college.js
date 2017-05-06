@@ -302,9 +302,8 @@ export default class extends Base {
         } else if (fullProv == '黑龙江省') {
           fullProv = '黑龙江';
         } else {
-          fullProv.splice(0, 2);
+          fullProv = fullProv.slice(0, 2);
         }
-        console.log(fullProv);
         schoolData.prov = fullProv;
         this.assign({'school': schoolData});
         return this.display();
