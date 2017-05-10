@@ -296,8 +296,16 @@ export default class extends Base {
 
         schoolData.schoolLine_1 = schoolLine_1;
         schoolData.schoolLine_2 = schoolLine_2;
-        this.assign({'school': schoolData})
-        console.log(schoolData);
+        let fullProv = schoolLine_1[0].pos || schoolLine_2[0].pos;
+        if (fullProv == '内蒙古自治区') {
+          fullProv = '内蒙古';
+        } else if (fullProv == '黑龙江省') {
+          fullProv = '黑龙江';
+        } else {
+          fullProv = fullProv.slice(0, 2);
+        }
+        schoolData.prov = fullProv;
+        this.assign({'school': schoolData});
         return this.display();
       });
     })
