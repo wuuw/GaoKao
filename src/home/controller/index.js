@@ -6,11 +6,16 @@ export default class extends Base {
    * index action
    * @return {Promise} []
    */
-
+  indexAction() {
+    return this.display();
+  }
   aboutAction() {
     return this.display();
   }
   teamAction() {
+    return this.display();
+  }
+  searchAction() {
     return this.display();
   }
   saveAction() {
