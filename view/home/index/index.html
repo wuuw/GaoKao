@@ -1,66 +1,125 @@
-{% extends "../inc/base.html" %}
+<!DOCTYPE html>
+<html class="L macintel">
 
-{% block page %}
-<section class="container search">
-  <div class="card row">
-    <ul class="nav nav-tabs nav-pills nav-tabs-material" role="tablist">
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          查 院 校
-        </a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item active"  href="#school_eq" role="tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="true">等位分</a>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>高校侦探</title>
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="http://opa29efz0.bkt.clouddn.com/intro.css">
+</head>
 
-          <a class="dropdown-item"  href="#school_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
-
-          <a class="dropdown-item"  href="#school_dif" role="tab" data-toggle="tab" aria-controls="dropdown3" aria-expanded="true">线差</a>
+<body>
+    <div id="ywBarX" class="yw-bar" style="opacity: 1;">
+        <div class="yw-constr">
+            <div id="ywHdBar" class="yw-hd-bar">
+                <div id="ywMnav" class="yw-nav">
+                  <a href="/home/index/search" class="yw-nav-a">开始探索</a>
+                  <a href="/home/index/search" class="yw-nav-a">预测推荐</a>
+                  <a href="/home/index/about" class="yw-nav-a">关于我们</a>
+                  <a href="/home/index/team" class="yw-nav-a">团队介绍</a>
+                </div>
+                <!-- <a href="/home/index/search" class="yw-nav-a yw-nav-btn">登录</a> -->
+            </div>
         </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-          查 专 业
-        </a>
-        <div class="dropdown-menu">
-          <a class="dropdown-item"  href="#major_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
-
-          <a class="dropdown-item"  href="#major_dif" role="tab" data-toggle="tab" aria-controls="dropdown3">线差</a>
-        </div>
-      </li>
-    </ul>
-
-
-    <div class="tab-content" id="myTabContent">
-      <div class="tab-pane fade" id="school_dif" role="tabpanel">
-        {% include '../component/school_dif_search.html' %}
-      </div>
-      <div class="tab-pane fade" id="school_rank" role="tabpanel">
-        {% include '../component/school_rank_search.html' %}
-      </div>
-      <div class="tab-pane fade active show" id="school_eq" role="tabpanel">
-        {% include '../component/school_eq_search.html' %}
-      </div>
-      <div class="tab-pane fade" id="major_dif" role="tabpanel">
-        {% include '../component/major_dif_search.html' %}
-      </div>
-      <div class="tab-pane fade" id="major_rank" role="tabpanel">
-        {% include '../component/major_rank_search.html' %}
-      </div>
     </div>
-  </div>
-  <!-- //FAQ -->
-</section>
-{% include "../component/FAQ.html" %}
+    <div class="yw-page">
+        <div id="ywHeader" class="yw-header">
+            <div class="yw-constr">
+                <div class="yw-hd-slide-x">
+                    <div id="hdSlide1" class="yw-hd-slide-li yw-hd-slide-1 active">
+                        <s class="yw-hd-slide-bg" style="background-image:url('http://opa29efz0.bkt.clouddn.com/slide.jpg')"></s>
+                        <div class="yw-hd-slide-con">
+                            <h2 class="yw-hd-slide-h">搜学校，查专业</h2>
+                            <p class="yw-hd-slide-p">5种查询方式，全面探索最适合的<span class="hidden"><br></span>院校 和 专业</p>
+                            <a href="/home/index/search" class="yw-hd-slide-btn mNoBlank" title="搜索">开始探索<i class="icon icon-cor-wh"> <svg width="9" height="14" viewBox="0 0 9 14"><path d="M1 1l6.238 5.346c.42.361.424.943 0 1.308L1 13"></path></svg></i></a>
+                        </div>
+                    </div>
+                    <div id="hdSlide2" class="yw-hd-slide-li yw-hd-slide-2">
+                        <s class="yw-hd-slide-bg" style="background-image:url('http://opa29efz0.bkt.clouddn.com/slide.jpg')"></s>
+                        <div class="yw-hd-slide-con">
+                            <h2 class="yw-hd-slide-h">等位分 | 位次 | 线差三大法宝</h2>
+                            <p class="yw-hd-slide-p">更聪明地使用数据</p>
+                            <p class="yw-hd-slide-p">为你推荐个性化、准确的结果</p><a href="/home/index/search" class="yw-hd-slide-btn mNoBlank" title="搜索">开始探索<i class="icon icon-cor-wh"> <svg width="9" height="14" viewBox="0 0 9 14"><path d="M1 1l6.238 5.346c.42.361.424.943 0 1.308L1 13"></path></svg></i></a></div>
+                    </div>
+                    <div id="hdSlide3" class="yw-hd-slide-li yw-hd-slide-3">
+                        <s class="yw-hd-slide-bg" style="background-image:url('http://opa29efz0.bkt.clouddn.com/slide.jpg')"></s>
+                        <div class="yw-hd-slide-con">
+                            <h2 class="yw-hd-slide-h yw-font-helv">基于历史数据进行预测</h2>
+                            <p class="yw-hd-slide-p">推荐三年命中的院校</p>
+                            <p class="yw-hd-slide-p">为你提供更可靠的报考指南</p>
+                            <a href="/home/index/search" class="yw-hd-slide-btn" title="加入我们">开始探索 <i class="icon icon-cor-wh"><svg width="9" height="14" viewBox="0 0 9 14"><path d="M1 1l6.238 5.346c.42.361.424.943 0 1.308L1 13"></path></svg></i></a></div>
+                    </div>
+                </div>
+                <div id="hdDotX" class="yw-hd-dot-x"><a href="javascript:" class="yw-hd-dot-a active" data-rel="hdSlide1" data-index="0">1</a> <a href="javascript:" class="yw-hd-dot-a" data-rel="hdSlide2" data-index="1">2</a> <a href="javascript:" class="yw-hd-dot-a" data-rel="hdSlide3"
+                        data-index="2">3</a></div>
+            </div>
+        </div>
+        <div class="yw-data">
+            <div class="yw-constr">
+                <div class="yw-data-view">
+                    <dl class="yw-data-dl yw-data-dl-1"><dt class="yw-data-dt"><i class="icons-pbm-p"></i><span class="yw-data-num">1000+</span>本科院校</dt>
+                        <dd class="yw-data-dd">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</dd>
+                    </dl>
+                    <dl class="yw-data-dl yw-data-dl-2"><dt class="yw-data-dt"><i class="icons-pbm-b"></i><span class="yw-data-num">3年</span>历史数据</dt>
+                        <dd class="yw-data-dd">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</dd>
+                    </dl>
+                    <dl class="yw-data-dl yw-data-dl-3"><dt class="yw-data-dt"><i class="icons-pbm-m"></i><span class="yw-data-num">服务</span>30万考生</dt>
+                        <dd class="yw-data-dd">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</dd>
+                    </dl>
+                </div>
+                <p class="yw-data-desc">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</p>
+            </div>
+        </div>
+        <div class="yw-home-app">
+            <div class="yw-constr">
+                <h3 class="yw-home-h3">平台特色</h3>
+                <div id="tabApp" class="yw-tab-tab"><a href="javascript:" class="yw-tab-a active" data-rel="tabPanel1" data-index="0">多方式查询</a> <a href="javascript:" class="yw-tab-a" data-rel="tabPanel2" data-index="1">聪明的预测</a> <a href="javascript:" class="yw-tab-a" data-rel="tabPanel3"
+                        data-index="2">丰富的信息</a> <i class="yw-tab-bot-line"></i> <i id="tabLine" class="yw-tab-hline" style="width: 57px; transform: translateX(0px);"></i></div>
+                <ul class="yw-tab-panel">
+                    <li id="tabPanel1" class="yw-tab-panel-li active">
+                        <div class="yw-app-desc">
+                            <h3 class="yw-app-slogon">最可靠的高考成绩数据</h3>
+                            <p class="yw-app-desc-detail">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</p>
+                            <p><a href="/home/index/search" class="yw-btn-blue" title="查看QQ阅读详情">开始探索 &gt;</a></p>
+                        </div>
+                        <div class="yw-app-img-x"><img src="http://opa29efz0.bkt.clouddn.com/equ.png" class="yw-app-img" alt="等位分查询" style="margin-top:30px;box-shadow:0px 0px 10px 5px #eee"></div>
+                    </li>
+                    <li id="tabPanel2" class="yw-tab-panel-li">
+                        <div class="yw-app-desc">
+                            <h3 class="yw-app-slogon">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</h3>
+                            <p class="yw-app-desc-detail">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</p>
+                            <p><a href="/home/index/search" class="yw-btn-blue" title="查看起点读书详情">开始探索 &gt;</a></p>
+                        </div>
+                        <div class="yw-app-img-x"><img src="http://opa29efz0.bkt.clouddn.com/equ.png" class="yw-app-img" alt="位次查询" style="margin-top:30px;box-shadow:0px 0px 10px 5px #eee"></div>
+                    </li>
+                    <li id="tabPanel3" class="yw-tab-panel-li">
+                        <div class="yw-app-desc">
+                            <h3 class="yw-app-slogon">阿萨德法师打发斯蒂芬</h3>
+                            <p class="yw-app-desc-detail">阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬阿萨德法师打发斯蒂芬</p>
+                            <p><a href="/college/10613" class="yw-btn-blue" title="查看作家助手详情">开始探索 &gt;</a></p>
+                        </div>
+                        <div class="yw-app-img-x"><img src="http://opa29efz0.bkt.clouddn.com/equ.png" class="yw-app-img" alt="线差查询" style="margin-top:30px;box-shadow:0px 0px 10px 5px #eee"></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="http://opa29efz0.bkt.clouddn.com/intro.js"></script>
 
+    <script>
+        var URLLIB = "http://opa29efz0.bkt.clouddn.com/zepto.min.js";
+        history.pushState || (URLLIB = "http://opa29efz0.bkt.clouddn.com/js/jquery.min.js"),
+            function(t) {
+                "addEventListener" in t && t.addEventListener("DOMContentLoaded", function() {
+                    FastClick.attach(t.body)
+                }, !1), YUEWEN.urlNewsList = "", YUEWEN.load(URLLIB, function() {
+                    this.init(), this.slide("#hdDotX a")
+                })
+            }(document)
+    </script>
+</body>
 
-
-{% endblock %}
-
-{% block script %}
-<script>
-  window.onload = function() {
-    if(window.location.pathname.search(/(\/index){1,2}/) >= 0 || window.location.pathname == "/") {
-      $('.outer_container').addClass('bk');
-    }
-  }
-</script>
-{% endblock %}
+</html>

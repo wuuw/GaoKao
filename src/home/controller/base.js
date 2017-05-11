@@ -5,9 +5,6 @@ export default class extends think.controller.base {
   /**
    * some base method in here
    */
-   indexAction(){
-     return this.display();
-   }
 
    //查询图表所用的省控线
    /**

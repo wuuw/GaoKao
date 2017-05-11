@@ -305,6 +305,7 @@ export default class extends Base {
           fullProv = fullProv.slice(0, 2);
         }
         schoolData.prov = fullProv;
+        // this.success(schoolData);
         this.assign({'school': schoolData});
         return this.display();
       });
