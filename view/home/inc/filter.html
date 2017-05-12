@@ -46,12 +46,50 @@
     <span class="custom-control-description">211</span>
   </label>
 </div>
+<div class="btn-group">
+  <span class="badge badge-primary">符合年数 </span>
+
+  <label class="custom-control custom-radio">
+  <input id="hit0" name="radio" type="radio" class="custom-control-input">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description">仅 {{query.year}} 年</span>
+  </label>
+  <label class="custom-control custom-radio">
+  <input id="hit1" name="radio" type="radio" class="custom-control-input">
+  <span class="custom-control-indicator"></span>
+  <span class="custom-control-description">1 年符合</span>
+  </label>
+
+  <label class="custom-control custom-radio">
+    <input id="hit2" name="radio" type="radio" class="custom-control-input">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">2 年符合</span>
+  </label>
+
+  <label class="custom-control custom-radio">
+    <input id="hit3" name="radio" type="radio" class="custom-control-input">
+    <span class="custom-control-indicator"></span>
+    <span class="custom-control-description">3 年符合</span>
+  </label>
+</div>
 <script>
-// 处理大学所在城市的选择
+'use strict';
+//自动选择命中所选年
+$('.custom-control.custom-radio:first').trigger('click');
+// 处理大学所在城市//工程的选择
   $('#city').change(filter);
   $('#nef').change(filter);
   $('#too').change(filter);
-  function filter() {
+  let hit = 0;
+  $('#hit0').change(0, filter)
+  $('#hit1').change(1, filter);
+  $('#hit2').change(2, filter);
+  $('#hit3').change(3, filter);
+
+  function filter(e) {
+    if ($(this).attr('id').indexOf('hit') == 0) {
+      hit = e.data;
+    }
     $.ajax({
       type: 'GET',
       url: window.location.pathname,
@@ -60,7 +98,7 @@
         city: $('#city option:selected').text(),
         is985: $('#nef').is(':checked'),
         is211: $('#too').is(':checked'),
-
+        hit: hit,
         year: '{{query.year}}',
         pos: '{{query.pos}}',
         category: '{{query.category}}',
@@ -76,8 +114,6 @@
       //分页选中第一页
       $('.pagination li').removeClass('active');
       $('.pagination li:first').addClass('active');
-      //更新结果总数提示
-
       //刷新表格
       freshTable(data);
 

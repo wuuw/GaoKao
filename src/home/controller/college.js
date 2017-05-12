@@ -27,11 +27,12 @@ export default class extends Base {
           page: this.get('page') || 1, //页数: 默认 1
           city: this.get('city'),
           is985: this.get('is985'),
-          is211: this.get('is211')
+          is211: this.get('is211'),
+          hit: this.get('hit')
       };
       query.type = 'school_dif';
     }
-
+    console.log(query.hit);
     let collegeModel = this.model('college'), //文件../model/college.js
         admissionModel = this.model('admissionline'); //文件../model/admissionline.js
 
@@ -44,7 +45,13 @@ export default class extends Base {
       'Cstatus': 1 //有效标志位
     };
 
-    //为Ajax处理筛选请求时添加地址、工程等字段
+
+
+
+
+
+
+    //为Ajax处理筛选请求时添加地址、工程、命中年份等字段
     sql_1 = this.filter(query, sql_1);
     /*
     * sql_2语句, 总体SQL语句中的第二部分: Ccutoffline | Caverage
@@ -73,18 +80,32 @@ export default class extends Base {
         page = query.page; //查询页码
 
     //查询
-    let schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
-    query.type = 'school';
-    let json = {
-      query: query, //查询参数
-      line: line, //分数线
-      count: schools.count, //结果总数
-      totalPages: schools.totalPages, //总页数
-      page: schools.currentPage, //当前页
-      schools: schools.data //学校数组
-    };
-    //传递图表所用省控线
+    let schools = null,
+        json = null,
+        random = null;
+    //选择了命中
+    if (query.hit > 0) {
+      schools = await this.model('college').query(`call score_general(${query.hit}, ${rangeMin}, ${rangeMax}, '理科', '本科第一批', '四川省')`);
+      console.log(schools[0]);
+      json = {
+        query: query, //查询参数
+        line: line, //分数线
+        count: schools[0].length, //结果总数
+        schools: schools[0] //学校数组
+      };
+    } else {
+      schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
+      json = {
+        query: query, //查询参数
+        line: line, //分数线
+        count: schools.count, //结果总数
+        totalPages: schools.totalPages, //总页数
+        page: schools.currentPage, //当前页
+        schools: schools.data //学校数组
+      };
+    }
 
+    //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);

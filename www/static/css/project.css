@@ -149,11 +149,14 @@ nav.breadcrumb {
 .result .content .btn-group {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+}
+.resultCount {
+  margin-top: 10px;
 }
 .result .content .btn-group > * {
   margin: 0 15px 5px 5px;
   user-select: none;
+
 }
 
 .result .table.table-striped td{
