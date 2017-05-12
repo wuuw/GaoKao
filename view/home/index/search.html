@@ -4,7 +4,7 @@
 <section class="container search">
   <div class="card row">
     <ul class="nav nav-tabs nav-pills nav-tabs-material" role="tablist">
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown dd1">
         <a class="nav-link dropdown-toggle active" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           查 院 校
         </a>
@@ -16,7 +16,7 @@
           <a class="dropdown-item"  href="#school_dif" role="tab" data-toggle="tab" aria-controls="dropdown3" aria-expanded="true">线差</a>
         </div>
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown dd2">
         <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
           查 专 业
         </a>
@@ -25,6 +25,12 @@
 
           <a class="dropdown-item"  href="#major_dif" role="tab" data-toggle="tab" aria-controls="dropdown3">线差</a>
         </div>
+      </li>
+
+      <li class="nav-tem" style="position:absolute;right:0" >
+        <a class="nav-link text-primary search_tip" role="button" aria-haspopup="true" aria-expanded="false">
+          查院校 - 等位分
+        </a>
       </li>
     </ul>
 
@@ -57,10 +63,36 @@
 
 {% block script %}
 <script>
+'use strict';
   window.onload = function() {
     if(window.location.pathname.search(/(\/index){1,2}/) >= 0 || window.location.pathname == "/") {
       $('.outer_container').addClass('bk');
     }
   }
+  $('.nav-item.dropdown').on('hidden.bs.dropdown', function () {
+    setTimeout(function() {
+      let type = $('#myTabContent div.active').attr('id');
+      let tip = $('.search_tip');
+      switch (type) {
+        case 'school_eq':
+          tip.text('查院校 - 等位分');
+          break;
+        case 'school_rank':
+          tip.text('查院校 - 位次');
+          break;
+        case 'school_dif':
+          tip.text('查院校 - 线差');
+          break;
+        case 'major_dif':
+          tip.text('查专业 - 线差');
+          break;
+        case 'major_rank':
+          tip.text('查专业 - 位次');
+          break;
+      }
+    },500)
+
+
+  })
 </script>
 {% endblock %}

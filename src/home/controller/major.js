@@ -27,12 +27,11 @@ export default class extends Base {
           score: parseInt(this.get('score')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
-
           city: this.get('city'),
           is985: this.get('is985'),
           is211: this.get('is211')
       };
-      query.type = 'major';
+      query.type = 'major_dif';
     }
 
     //按照专业查找
@@ -57,8 +56,8 @@ export default class extends Base {
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
     //sql_2语句
-    let rangeMin = parseInt(query.score) - parseInt(query.range) - line, //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range) - line, //最高分
+    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
         //从../config/config.js 里读取查询的分数类型
         scoreType = this.config('majorType.' + query.scoreType);
 
@@ -199,7 +198,7 @@ export default class extends Base {
         is985: this.get('is985'),
         is211: this.get('is211')
       };
-      query.type = 'major';
+      query.type = 'major_rank';
     }
 
     //model
