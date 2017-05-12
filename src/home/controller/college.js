@@ -45,12 +45,6 @@ export default class extends Base {
       'Cstatus': 1 //有效标志位
     };
 
-
-
-
-
-
-
     //为Ajax处理筛选请求时添加地址、工程、命中年份等字段
     sql_1 = this.filter(query, sql_1);
     /*
