@@ -25,12 +25,11 @@ export default class extends Base {
           score: parseInt(this.get('score')), //分数: Number
           range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
-
           city: this.get('city'),
           is985: this.get('is985'),
           is211: this.get('is211')
       };
-      query.type = 'school';
+      query.type = 'school_dif';
     }
 
     let collegeModel = this.model('college'), //文件../model/college.js
@@ -47,17 +46,16 @@ export default class extends Base {
 
     //为Ajax处理筛选请求时添加地址、工程等字段
     sql_1 = this.filter(query, sql_1);
-    console.log(sql_1);
     /*
     * sql_2语句, 总体SQL语句中的第二部分: Ccutoffline | Caverage
     */
 
     // 查询省控线 line
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
-    console.log(line);
+
     //分差区间
-    let rangeMin = parseInt(query.score) - parseInt(query.range) - line, //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range) - line, //最高分
+    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
+        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
         //从 ../config/config.js 里读取查询的分数类型
         scoreType = this.config('schoolType.' + query.scoreType);
 
@@ -119,7 +117,7 @@ export default class extends Base {
           is985: this.get('is985'),
           is211: this.get('is211')
       };
-      query.type = 'school';
+      query.type = 'school_eq';
     }
 
     let collegeModel = this.model('college'),
@@ -187,7 +185,7 @@ export default class extends Base {
           is211: this.get('is211')
       };
       console.log(query);
-      query.type = 'school';
+      query.type = 'school_rank';
       //range百分比转换为数值
       query.range /= 100;
     }
