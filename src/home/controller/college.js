@@ -84,6 +84,7 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
+    console.log(json);
     //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
@@ -112,7 +113,6 @@ export default class extends Base {
           eq: parseFloat(this.get('eq')), //分数: Number
           range: parseFloat(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
-
           city: this.get('city'),
           is985: this.get('is985'),
           is211: this.get('is211')

@@ -59,7 +59,13 @@
               {% endif %}
             </td>
             <td>{{item.minScore}}</td>
-            <td>{{item.avgScore}}</td>
+            <td>
+              {%if item.avgScore %}
+                {{item.avgScore}}
+              {%else%}
+                -
+              {%endif%}
+            </td>
             <td>
               {{item.equipotential}}
             </td>

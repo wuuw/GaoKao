@@ -167,12 +167,12 @@ $('.custom-control.custom-radio:first').trigger('click');
               ${school.batch} (${line})
             </td>
             <td>${school.minScore}</td>
-            <td>${school.avgScore}</td>
+            <td>${school.avgScore || '-'}</td>
             <td>
               ${school.minScore - line}
             </td>
             <td>
-              ${school.avgScore - line}
+              ${school.avgScore ? school.avgScore - line : '-'}
             </td>
             <td>
               ${site}
@@ -196,7 +196,7 @@ $('.custom-control.custom-radio:first').trigger('click');
               ${school.batch} (${line})
             </td>
             <td>${school.minScore}</td>
-            <td>${school.avgScore}</td>
+            <td>${school.avgScore || '-'}</td>
             <td>
               ${school.equipotential}
             </td>
@@ -222,7 +222,7 @@ $('.custom-control.custom-radio:first').trigger('click');
               ${school.batch} (${line})
             </td>
             <td>${school.minScore}</td>
-            <td>${school.avgScore}</td>
+            <td>${school.avgScore || '-'}</td>
             <td>
               ${school.rank}
             </td>

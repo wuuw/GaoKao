@@ -57,21 +57,21 @@
     function handleSeInput() {
       if (seYear[0].selectedIndex == 1) {
         if (seBatch[0].selectedIndex == 1)
-          seEq.attr('placeholder', '等位分(590-900)');
+          seEq.attr('placeholder', '等位分(≥573)');
         if (seBatch[0].selectedIndex == 2)
-          seEq.attr('placeholder', '等位分(495-900)');
+          seEq.attr('placeholder', '等位分(≥477)');
       }
       if (seYear[0].selectedIndex == 2) {
         if (seBatch[0].selectedIndex == 1)
-          seEq.attr('placeholder', '等位分(590-900)');
+          seEq.attr('placeholder', '等位分(≥573)');
         if (seBatch[0].selectedIndex == 2)
-          seEq.attr('placeholder', '等位分(495-900)');
+          seEq.attr('placeholder', '等位分(≥477)');
       }
       if (seYear[0].selectedIndex == 3) {
         if (seBatch[0].selectedIndex == 1)
-          seEq.attr('placeholder', '等位分(620-900)');
+          seEq.attr('placeholder', '等位分(≥604)');
         if (seBatch[0].selectedIndex == 2)
-          seEq.attr('placeholder', '等位分(550-900)');
+          seEq.attr('placeholder', '等位分(≥535)');
       }
     }
     //学校-位次
@@ -81,13 +81,13 @@
     srYear.change(handleSrInput);
     function handleSrInput() {
       if (srYear[0].selectedIndex == 1) {
-        srRank.attr('placeholder', '位次(195000以内)');
+        srRank.attr('placeholder', '位次(≤194195)');
       }
       if (srYear[0].selectedIndex == 2) {
-        srRank.attr('placeholder', '位次(185000以内)');
+        srRank.attr('placeholder', '位次(≤183666)');
       }
       if (srYear[0].selectedIndex == 3) {
-        srRank.attr('placeholder', '位次(133671以内)');
+        srRank.attr('placeholder', '位次(≤132223)');
       }
     }
     //学校-线差
@@ -100,13 +100,13 @@
         sdScore.attr('placeholder', '线差(≥ -5)');
       }
       if (sdRange[0].selectedIndex == 2) {
-        sdScore.attr('placeholder', '线差(≥ -10');
+        sdScore.attr('placeholder', '线差(≥ -10)');
       }
       if (sdRange[0].selectedIndex == 3) {
-        sdScore.attr('placeholder', '线差(≥ -15');
+        sdScore.attr('placeholder', '线差(≥ -15)');
       }
       if (sdRange[0].selectedIndex == 4) {
-        sdScore.attr('placeholder', '线差(≥ 20');
+        sdScore.attr('placeholder', '线差(≥ -20)');
       }
     }
     //专业-线差
@@ -119,13 +119,13 @@
         mdScore.attr('placeholder', '线差(≥ -5)');
       }
       if (mdRange[0].selectedIndex == 2) {
-        mdScore.attr('placeholder', '线差(≥ -10');
+        mdScore.attr('placeholder', '线差(≥ -10)');
       }
       if (mdRange[0].selectedIndex == 3) {
-        mdScore.attr('placeholder', '线差(≥ -15');
+        mdScore.attr('placeholder', '线差(≥ -15)');
       }
       if (mdRange[0].selectedIndex == 4) {
-        mdScore.attr('placeholder', '线差(≥ 20');
+        mdScore.attr('placeholder', '线差(≥ -20)');
       }
     }
 
@@ -136,13 +136,21 @@
     mrYear.change(handleMrInput);
     function handleMrInput() {
       if (mrYear[0].selectedIndex == 1) {
-        mrRank.attr('placeholder', '位次(xxxxx以内)');
+        mrRank.attr('placeholder', '位次(≤194194)');
       }
       if (mrYear[0].selectedIndex == 2) {
-        mrRank.attr('placeholder', '位次(xxxxx以内)');
+        mrRank.attr('placeholder', '位次(≤183666)');
       }
       if (mrYear[0].selectedIndex == 3) {
-        mrRank.attr('placeholder', '位次(xxxxx以内)');
+        mrRank.attr('placeholder', '位次(≤132223)');
       }
+    }
+
+    window.onload = function() {
+      handleMrInput();
+      handleMdInput();
+      handleSdInput();
+      handleSeInput();
+      handleSrInput();
     }
   </script>
