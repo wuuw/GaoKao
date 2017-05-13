@@ -149,21 +149,22 @@
 
 
     // 2016年份, 使用学校查询不能参考平均分
-    // let sdYear = sd.find(`select[name='year']`),
-    //     sdType = sd.find(`select[name='scoreType']`);
-    // sdYear.change(handleSdYear);
-    // function handleSdYear() {
-    //   if (sdYear[0].selectedIndex == 1) {
-    //     sdType[0].selectedIndex = 2;
-    //     // sdType.attr('disabled','');
-    //   } else {
-    //     sdType[0].selectedIndex = 0;
-    //     sdType.removeAttr('disabled');
-    //   }
-    // }
+    let sdYear = sd.find(`select[name='year']`),
+        sdType = sd.find(`select[name='scoreType']`);
+    sdYear.change(handleSdYear);
+    function handleSdYear() {
+      if (sdYear[0].selectedIndex == 1) {
+        sdType[0].selectedIndex = 1;
+        sdType.find('option:nth-child(3)').attr('disabled', '');
+      } else {
+        sdType[0].selectedIndex = 1;
+        sdType.find('option:nth-child(3)').removeAttr('disabled');
+      }
+    }
     window.onload = function() {
       handleMrInput();
       handleSeInput();
       handleSrInput();
+      handleSdYear();
     }
   </script>

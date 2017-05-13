@@ -13,7 +13,6 @@ export default {
       host: '127.0.0.1',
       // host: '192.168.2.109',
       port: '3306',
-
       database: 'referencesystem',
 
       user: 'root',
