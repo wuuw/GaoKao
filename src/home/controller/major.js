@@ -213,8 +213,8 @@ export default class extends Base {
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
 
     //获得排名对应的分数
-    let rankMin = query.rank * (1 - query.range),
-        rankMax = query.rank * (1 + query.range);
+    let rankMin = Math.min(query.rank * (1 - query.range), 280000),
+        rankMax = Math.min(query.rank * (1 + query.range), 280000);
     let min = await rankingModel.rankToScore(query.year, query.pos, query.category, rankMax), //最低分
         max = await rankingModel.rankToScore(query.year, query.pos, query.category, rankMin); //最高分
 

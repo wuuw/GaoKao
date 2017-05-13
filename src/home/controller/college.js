@@ -192,8 +192,8 @@ export default class extends Base {
         collegeModel = this.model('college'),
         admissionModel = this.model('admissionline');
     //计算最大、最小排名
-    let rankMax = query.rank * (1 + query.range),
-        rankMin = query.rank * (1 - query.range);
+    let rankMax = Math.min(query.rank * (1 + query.range), 280000),
+        rankMin = Math.min(query.rank * (1 - query.range), 0);
 
     //通过排名，在ranking表中得到最低、最高分
     let max = await rankingModel.rankToScore(query.year, query.pos,  query.category, rankMin),
@@ -210,9 +210,6 @@ export default class extends Base {
 
     //为Ajax处理筛选请求时添加地址、工程等字段
     sql_1 = this.filter(query, sql_1);
-
-
-
 
     let order = 'Rbegin',
         sort = 'ASC',

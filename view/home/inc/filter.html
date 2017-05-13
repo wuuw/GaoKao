@@ -117,7 +117,6 @@ $('.custom-control.custom-radio:first').trigger('click');
       //刷新表格
       freshTable(data);
 
-
       //处理页码。有更多的页数，则添加页码;页码多余则去掉
       let lists = $('.pagination li');
       let pageCount = data.data.totalPages;
@@ -157,7 +156,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}">${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -186,7 +185,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}">${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -212,7 +211,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}">${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -238,7 +237,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}">${school.school_name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -265,7 +264,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}">${school.school_name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
@@ -289,8 +288,19 @@ $('.custom-control.custom-radio:first').trigger('click');
           break;
         default: break;
       }
-    $('.table thead').html(thead);
   });
+  //每次ajax请求，如果有结果，加入表头，删除提示，后面再插入提示
+  $('.table thead').html(thead);
+  $('.no-result').remove();
+  $('.pagination').css('display', 'flex');
+  //结果为0条，不执行forEach，则先删除提示，
+  if (items.length == 0) {
+    $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">0</b> 条结果</span>`);
+    $('.pagination').css('display', 'none');
+    $('.table thead').html('');
+    let alert = `{%include './noResult.html' %}`;
+    $('.table').append(alert)
+  }
   $('.table tbody').html(tbody);
 }
 </script>

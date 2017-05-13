@@ -27,6 +27,7 @@
     <div class="card">
       <table class="table table-striped">
         <!-- 学校查找 -->
+        {% if schools.length != 0 %}
         <thead>
           <tr>
             <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
@@ -38,12 +39,13 @@
             <th>院校招生网</th>
           </tr>
         </thead>
+        {%endif%}
         <tbody>
           {% for item in schools %}
           <tr>
             <th scope="row" class="name" style="text-align:left;padding-left:20px;padding-right:0;">
               <span style = "font-size:1.2em;">
-                <a class="key" href="/college/{{item.id}}">{{item.name}}</a>
+                <a class="key" href="/college/{{item.id}}" target="_blank">{{item.name}}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">{{item.project}}</span>
               </span>
             </th>
@@ -74,6 +76,9 @@
           {% endfor %}
         </tbody>
       </table>
+      {% if schools.length == 0 %}
+        {%include '../inc/noResult.html' %}
+      {%endif%}
       {% include '../inc/pagination.html' %}
     </div>
   </div>

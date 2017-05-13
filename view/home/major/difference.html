@@ -48,6 +48,7 @@
     <div class="card">
     <table class="table table-striped">
       <!-- 学校查找 -->
+      {% if majors.length != 0 %}
       <thead>
         <tr>
           <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
@@ -60,12 +61,13 @@
           <th>院校招生网</th>
         </tr>
       </thead>
+      {%endif%}
       <tbody>
         {% for item in majors %}
         <tr>
           <th scope="row" class="name" style="text-align:left;padding-left:20px;padding-right:0;">
             <span style="font-size:1.2em">
-              <a class="key" href="/college/{{item.id}}">{{item.school_name}}</a>
+              <a class="key" href="/college/{{item.id}}" target="_blank">{{item.school_name}}</a>
               <span style="color:#9c27b0;font-size:0.8em">
                 {{item.project}}
               </span>
@@ -79,7 +81,7 @@
           <td>{{item.maxScore}}</td>
           <td>
             {% if item.site %}
-            <a href="{{item.site}}">查看</a>
+            <a href="{{item.site}}" target="_blank">进入</a>
             {% else %}
             <a href="javascript:void(0)"></a>
             {% endif %}
@@ -88,6 +90,9 @@
         {% endfor %}
       </tbody>
     </table>
+    {% if majors.length == 0 %}
+      {%include '../inc/noResult.html' %}
+    {%endif%}
     {% include '../inc/pagination.html' %}
   </div>
 </div>
