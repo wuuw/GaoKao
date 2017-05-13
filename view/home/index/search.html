@@ -11,7 +11,7 @@
         <div class="dropdown-menu">
           <a class="dropdown-item active"  href="#school_eq" role="tab" data-toggle="tab" aria-controls="dropdown1" aria-expanded="true">等位分</a>
 
-          <a class="dropdown-item"  href="#school_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+          <a class="dropdown-item"  href="#school_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">位次</a>
 
           <a class="dropdown-item"  href="#school_dif" role="tab" data-toggle="tab" aria-controls="dropdown3" aria-expanded="true">线差</a>
         </div>
@@ -21,7 +21,7 @@
           查 专 业
         </a>
         <div class="dropdown-menu">
-          <a class="dropdown-item"  href="#major_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">排名</a>
+          <a class="dropdown-item"  href="#major_rank" role="tab" data-toggle="tab" aria-controls="dropdown2" aria-expanded="true">位次</a>
 
           <a class="dropdown-item"  href="#major_dif" role="tab" data-toggle="tab" aria-controls="dropdown3">线差</a>
         </div>
@@ -69,6 +69,8 @@
       $('.outer_container').addClass('bk');
     }
   }
+
+  //提示当前查询方式
   $('.nav-item.dropdown').on('hidden.bs.dropdown', function () {
     setTimeout(function() {
       let type = $('#myTabContent div.active').attr('id');
@@ -91,8 +93,6 @@
           break;
       }
     },500)
-
-
-  })
+  });
 </script>
 {% endblock %}

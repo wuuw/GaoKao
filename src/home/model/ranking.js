@@ -7,8 +7,8 @@ export default class extends think.model.base {
     *  根据排名获取等位分对应的实际分数
     */
     async rankToScore(year, pos, category, rank) {
-      let sql = `Ryear = ${year} and Rorigin = '${pos}' and Rcategory = '${category}'  and Rbegin < ${rank}`;
-      let order = `${rank} - Rbegin ASC`;
+      let sql = `Ryear = ${year} and Rorigin = '${pos}' and Rcategory = '${category}'  and Rbegin > ${rank}`;
+      let order = `Rbegin - ${rank} ASC`;
 
       let record = await this.where(sql).order(order).limit(1).select();
       return record[0].Rscore;

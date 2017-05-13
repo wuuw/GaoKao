@@ -28,6 +28,7 @@
     <div class="card">
       <table class="table table-striped">
         <!-- 学校查找 -->
+        {% if majors.length != 0 %}
         <thead>
           <tr>
             <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
@@ -41,6 +42,7 @@
             <th>院校招生网</th>
           </tr>
         </thead>
+        {%endif%}
         <tbody>
           {% for item in majors %}
           <tr>
@@ -77,6 +79,9 @@
           {% endfor %}
         </tbody>
       </table>
+        {% if majors.length == 0 %}
+          {%include '../inc/noResult.html' %}
+        {%endif%}
       {% include '../inc/pagination.html' %}
     </div>
   </div>

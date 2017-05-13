@@ -22,8 +22,8 @@ export default class extends Base {
           category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: one ||two
           scoreType: this.get('scoreType'), //分数类型: min || avg || max
-          score: parseInt(this.get('score')), //分数: Number
-          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          score: parseFloat(this.get('score')), //分数: Number
+          range: parseFloat(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
           city: this.get('city'),
           is985: this.get('is985'),
@@ -32,7 +32,6 @@ export default class extends Base {
       };
       query.type = 'school_dif';
     }
-    console.log(query.hit);
     let collegeModel = this.model('college'), //文件../model/college.js
         admissionModel = this.model('admissionline'); //文件../model/admissionline.js
 
@@ -55,8 +54,8 @@ export default class extends Base {
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
     //分差区间
-    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
+    let rangeMin = (query.score) - (query.range), //最低分
+        rangeMax = (query.score) + (query.range), //最高分
         //从 ../config/config.js 里读取查询的分数类型
         scoreType = this.config('schoolType.' + query.scoreType);
 
@@ -75,30 +74,16 @@ export default class extends Base {
 
     //查询
     let schools = null,
-        json = null,
-        random = null;
-    //选择了命中
-    if (query.hit > 0) {
-      schools = await this.model('college').query(`call score_general(${query.hit}, ${rangeMin}, ${rangeMax}, '理科', '本科第一批', '四川省')`);
-      console.log(schools[0]);
-      json = {
-        query: query, //查询参数
-        line: line, //分数线
-        count: schools[0].length, //结果总数
-        schools: schools[0] //学校数组
-      };
-    } else {
-      schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
-      json = {
-        query: query, //查询参数
-        line: line, //分数线
-        count: schools.count, //结果总数
-        totalPages: schools.totalPages, //总页数
-        page: schools.currentPage, //当前页
-        schools: schools.data //学校数组
-      };
-    }
-
+        json = null;
+    schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
+    json = {
+      query: query, //查询参数
+      line: line, //分数线
+      count: schools.count, //结果总数
+      totalPages: schools.totalPages, //总页数
+      page: schools.currentPage, //当前页
+      schools: schools.data //学校数组
+    };
     //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
@@ -124,8 +109,8 @@ export default class extends Base {
           year: this.get('year'), //年份: 2015 || 2014
           category: this.get('category'), //科类: 理科 || 文科
           batch: this.get('batch'), //批次: 本科第一批 || 本科第二批
-          eq: parseInt(this.get('eq')), //分数: Number
-          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          eq: parseFloat(this.get('eq')), //分数: Number
+          range: parseFloat(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
 
           city: this.get('city'),
@@ -138,8 +123,8 @@ export default class extends Base {
     let collegeModel = this.model('college'),
         admissionModel = this.model('admissionline');
 
-    let min = parseInt(query.eq) - parseInt(query.range),  //最低
-        max = parseInt(query.eq) + parseInt(query.range);  //最高
+    let min = (query.eq) - (query.range),  //最低
+        max = (query.eq) + (query.range);  //最高
 
 
     let sql_1 = {
@@ -190,16 +175,14 @@ export default class extends Base {
           pos: this.get('pos'), //生源地: 四川省
           year: this.get('year'), //年份: 2015 || 2014 || 2016
           category: this.get('category'), //科类: 理科 || 文科
-          rank: parseInt(this.get('rank')), //分数: Number
+          rank: parseFloat(this.get('rank')), //分数: Number
           range: parseFloat(this.get('range')), //波动区间: %5 || %10 || %15 || %20
           page: this.get('page') || 1, //页数: 默认 1
-
           //filter
           city: this.get('city'),
           is985: this.get('is985'),
           is211: this.get('is211')
       };
-      console.log(query);
       query.type = 'school_rank';
       //range百分比转换为数值
       query.range /= 100;

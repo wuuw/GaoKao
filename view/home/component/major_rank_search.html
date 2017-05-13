@@ -16,7 +16,7 @@
       <option selected="selected" value="理科">理科</option>
     </select>
     <div class="col-2">
-      <input name="rank" type="number" class="form-control" placeholder="考生排名">
+      <input name="rank" type="number" class="form-control" placeholder="位次">
     </div>
     <select name="range" class="custom-select col-2">
       <option selected="selected" disabled="disabled" value="0">浮动百分比</option>
@@ -40,3 +40,109 @@
     </select>
     <input class="btn btn-primary" type='button' value="搜索" onclick="validate()" />
   </form>
+  <script type="text/javascript">
+  'use strict';
+    let mr = $(`form[action='/major/rank']`),
+        md = $(`form[action='/major/difference']`),
+        sd = $(`form[action='/college/difference']`),
+        sr = $(`form[action='/college/rank']`),
+        se = $(`form[action='/college/equipotential']`);
+    //学校-等位分
+    let seYear = se.find(`select[name='year']`),
+        seBatch = se.find(`select[name='batch']`),
+        seEq = se.find(`input[name='eq']`);
+
+    seYear.change(handleSeInput);
+    seBatch.change(handleSeInput);
+    function handleSeInput() {
+      if (seYear[0].selectedIndex == 1) {
+        if (seBatch[0].selectedIndex == 1)
+          seEq.attr('placeholder', '等位分(590-900)');
+        if (seBatch[0].selectedIndex == 2)
+          seEq.attr('placeholder', '等位分(495-900)');
+      }
+      if (seYear[0].selectedIndex == 2) {
+        if (seBatch[0].selectedIndex == 1)
+          seEq.attr('placeholder', '等位分(590-900)');
+        if (seBatch[0].selectedIndex == 2)
+          seEq.attr('placeholder', '等位分(495-900)');
+      }
+      if (seYear[0].selectedIndex == 3) {
+        if (seBatch[0].selectedIndex == 1)
+          seEq.attr('placeholder', '等位分(620-900)');
+        if (seBatch[0].selectedIndex == 2)
+          seEq.attr('placeholder', '等位分(550-900)');
+      }
+    }
+    //学校-位次
+    let srYear = sr.find(`select[name='year']`),
+        srRank = sr.find(`input[name='rank']`);
+
+    srYear.change(handleSrInput);
+    function handleSrInput() {
+      if (srYear[0].selectedIndex == 1) {
+        srRank.attr('placeholder', '位次(195000以内)');
+      }
+      if (srYear[0].selectedIndex == 2) {
+        srRank.attr('placeholder', '位次(185000以内)');
+      }
+      if (srYear[0].selectedIndex == 3) {
+        srRank.attr('placeholder', '位次(133671以内)');
+      }
+    }
+    //学校-线差
+    let sdRange = sd.find(`select[name='range']`),
+        sdScore = sd.find(`input[name='score']`);
+
+    sdRange.change(handleSdInput);
+    function handleSdInput() {
+      if (sdRange[0].selectedIndex == 1) {
+        sdScore.attr('placeholder', '线差(≥ -5)');
+      }
+      if (sdRange[0].selectedIndex == 2) {
+        sdScore.attr('placeholder', '线差(≥ -10');
+      }
+      if (sdRange[0].selectedIndex == 3) {
+        sdScore.attr('placeholder', '线差(≥ -15');
+      }
+      if (sdRange[0].selectedIndex == 4) {
+        sdScore.attr('placeholder', '线差(≥ 20');
+      }
+    }
+    //专业-线差
+    let mdRange = md.find(`select[name='range']`),
+        mdScore = md.find(`input[name='score']`);
+
+    mdRange.change(handleMdInput);
+    function handleMdInput() {
+      if (mdRange[0].selectedIndex == 1) {
+        mdScore.attr('placeholder', '线差(≥ -5)');
+      }
+      if (mdRange[0].selectedIndex == 2) {
+        mdScore.attr('placeholder', '线差(≥ -10');
+      }
+      if (mdRange[0].selectedIndex == 3) {
+        mdScore.attr('placeholder', '线差(≥ -15');
+      }
+      if (mdRange[0].selectedIndex == 4) {
+        mdScore.attr('placeholder', '线差(≥ 20');
+      }
+    }
+
+    //专业-位次
+    let mrYear = mr.find(`select[name='year']`),
+        mrRank = mr.find(`input[name='rank']`);
+
+    mrYear.change(handleMrInput);
+    function handleMrInput() {
+      if (mrYear[0].selectedIndex == 1) {
+        mrRank.attr('placeholder', '位次(xxxxx以内)');
+      }
+      if (mrYear[0].selectedIndex == 2) {
+        mrRank.attr('placeholder', '位次(xxxxx以内)');
+      }
+      if (mrYear[0].selectedIndex == 3) {
+        mrRank.attr('placeholder', '位次(xxxxx以内)');
+      }
+    }
+  </script>

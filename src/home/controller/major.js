@@ -24,8 +24,8 @@ export default class extends Base {
           batch: this.get('batch'), //批次: one ||two
           scoreType: this.get('scoreType'), //分数类型: min || avg || max
           major: this.get('major'), //专业编号: 1-10
-          score: parseInt(this.get('score')), //分数: Number
-          range: parseInt(this.get('range')), //波动区间: 5 || 10 || 15 || 20
+          score: parseFloat(this.get('score')), //分数: Number
+          range: parseFloat(this.get('range')), //波动区间: 5 || 10 || 15 || 20
           page: this.get('page') || 1, //页数: 默认 1
           city: this.get('city'),
           is985: this.get('is985'),
@@ -56,8 +56,8 @@ export default class extends Base {
     let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
     //sql_2语句
-    let rangeMin = parseInt(query.score) - parseInt(query.range), //最低分
-        rangeMax = parseInt(query.score) + parseInt(query.range), //最高分
+    let rangeMin = (query.score) - (query.range), //最低分
+        rangeMax = (query.score) + (query.range), //最高分
         //从../config/config.js 里读取查询的分数类型
         scoreType = this.config('majorType.' + query.scoreType);
 
@@ -189,7 +189,7 @@ export default class extends Base {
         pos: this.get('pos'),
         year: this.get('year'),
         category: this.get('category'),
-        rank: parseInt(this.get('rank')),
+        rank: parseFloat(this.get('rank')),
         range: parseFloat(this.get('range')) / 100, // 100,
         major: this.get('major'),
         page: this.get('page') || 1,
