@@ -27,9 +27,11 @@
         {% else %}
         平均线差区间:
         {% endif %}
-        <b style="color:#fff;font-size:1.1em">
-          {{query.score - query.range}} - {{query.score + query.range}}
-        </b>
+        {% if query.range != 0 %}
+        <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}}</b>
+        {%else%}
+        <b style="color:#fff;font-size:1.1em">≤ {{query.score}}</b>
+        {%endif%}
       </span>
     </div>
     {% include "../inc/filter.html" %}

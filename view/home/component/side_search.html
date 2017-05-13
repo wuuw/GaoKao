@@ -70,7 +70,15 @@
     $('select[name=pos]').val(`{{query.pos}}` || 0); //生源地
     $('select[name=subject]').val(`{{query.category}}` || 0); //科目
     $('input[name=eq]').val(`{{query.eq}}`); //等位分
-    $('select[name=range]').val(`{{query.range}}` || 0); //浮动区间
+     //浮动区间
+    if (`{{query.range}}` != '0') {
+      $('select[name=range]').val(`{{query.range}}`);
+    } else {
+      $('select[name=range]').each(function(index) {
+        $('select[name=range]')[index].selectedIndex = 1;
+      });
+    }
+
     $('select[name=batch]').val(`{{query.batch}}` || 0); //批次
     $('input[name=rank]').val(`{{query.rank}}`); //排名
     $('input[name=score]').val(`{{query.score}}`); //高考分数

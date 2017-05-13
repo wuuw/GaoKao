@@ -60,8 +60,11 @@ export default class extends Base {
         scoreType = this.config('schoolType.' + query.scoreType);
 
     //筛选分数区间的学校
-    let sql_2 = `${scoreType} - ${line} >= ${rangeMin} and ${scoreType} - ${line} <= ${rangeMax}`;
-
+    let sql_2 = null;
+    if (query.range)
+      sql_2 = `${scoreType} - ${line} >= ${rangeMin} and ${scoreType} - ${line} <= ${rangeMax}`;
+    else
+      sql_2 = `${scoreType} - ${line} <= ${query.score}`;
     /** 其他配置项
     * order: 排序的字段
     * sort: DESC 降序， ASC 升序
@@ -84,7 +87,6 @@ export default class extends Base {
       page: schools.currentPage, //当前页
       schools: schools.data //学校数组
     };
-    console.log(json);
     //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
@@ -138,6 +140,10 @@ export default class extends Base {
     //为Ajax处理筛选请求时添加地址、工程等字段
     sql_1 = this.filter(query, sql_1);
 
+    //区间选择不限
+    if (!query.range) {
+      sql_1.Cequipotential = {'<': query.eq}
+    }
 
     let order = 'Cequipotential',
         sort = 'DESC',
@@ -207,6 +213,11 @@ export default class extends Base {
       'Ccategory': query.category,
       'Cstatus': 1
     };
+
+    //区间不限
+    if (!query.range) {
+      sql_1.Ccutoffline = {'<': min}
+    }
 
     //为Ajax处理筛选请求时添加地址、工程等字段
     sql_1 = this.filter(query, sql_1);

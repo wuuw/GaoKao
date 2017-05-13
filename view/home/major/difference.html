@@ -26,15 +26,17 @@
       </span>
       <span style="color:#ddd">
         {% if query.scoreType == 'min' %}
-        调档线差区间:
+        最低分线差区间:
         {% elif query.scoreType == 'avg' %}
-        平均线差区间:
+        平均分线差区间:
         {% else %}
-        最高线差区间:
+        最高分线差区间:
         {% endif %}
-        <b style="color:#fff;font-size:1.1em">
-          {{query.score - query.range}} - {{query.score + query.range}}
-        </b>
+        {% if query.range != 0 %}
+          线差区间: <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}}</b>
+        {%else%}
+          线差区间: <b style="color:#fff;font-size:1.1em">≤ {{query.score}}</b>
+        {%endif%}
       </span>
       <span style="color:#ddd">
         查询专业:

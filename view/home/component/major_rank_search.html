@@ -19,7 +19,8 @@
       <input name="rank" type="number" class="form-control" placeholder="位次">
     </div>
     <select name="range" class="custom-select col-2">
-      <option selected="selected" disabled="disabled" value="0">浮动百分比</option>
+      <option selected="selected" disabled="disabled" value="-1">浮动百分比</option>
+      <option value="0">不限</option>
       <option value="5">± %5</option>
       <option value="10">± %10</option>
       <option value="15">± %15</option>
@@ -91,43 +92,43 @@
       }
     }
     //学校-线差
-    let sdRange = sd.find(`select[name='range']`),
-        sdScore = sd.find(`input[name='score']`);
-
-    sdRange.change(handleSdInput);
-    function handleSdInput() {
-      if (sdRange[0].selectedIndex == 1) {
-        sdScore.attr('placeholder', '线差(≥ -5)');
-      }
-      if (sdRange[0].selectedIndex == 2) {
-        sdScore.attr('placeholder', '线差(≥ -10)');
-      }
-      if (sdRange[0].selectedIndex == 3) {
-        sdScore.attr('placeholder', '线差(≥ -15)');
-      }
-      if (sdRange[0].selectedIndex == 4) {
-        sdScore.attr('placeholder', '线差(≥ -20)');
-      }
-    }
+    // let sdRange = sd.find(`select[name='range']`),
+    //     sdScore = sd.find(`input[name='score']`);
+    //
+    // sdRange.change(handleSdInput);
+    // function handleSdInput() {
+    //   if (sdRange[0].selectedIndex == 1) {
+    //     sdScore.attr('placeholder', '线差(≥ -5)');
+    //   }
+    //   if (sdRange[0].selectedIndex == 2) {
+    //     sdScore.attr('placeholder', '线差(≥ -10)');
+    //   }
+    //   if (sdRange[0].selectedIndex == 3) {
+    //     sdScore.attr('placeholder', '线差(≥ -15)');
+    //   }
+    //   if (sdRange[0].selectedIndex == 4) {
+    //     sdScore.attr('placeholder', '线差(≥ -20)');
+    //   }
+    // }
     //专业-线差
-    let mdRange = md.find(`select[name='range']`),
-        mdScore = md.find(`input[name='score']`);
-
-    mdRange.change(handleMdInput);
-    function handleMdInput() {
-      if (mdRange[0].selectedIndex == 1) {
-        mdScore.attr('placeholder', '线差(≥ -5)');
-      }
-      if (mdRange[0].selectedIndex == 2) {
-        mdScore.attr('placeholder', '线差(≥ -10)');
-      }
-      if (mdRange[0].selectedIndex == 3) {
-        mdScore.attr('placeholder', '线差(≥ -15)');
-      }
-      if (mdRange[0].selectedIndex == 4) {
-        mdScore.attr('placeholder', '线差(≥ -20)');
-      }
-    }
+    // let mdRange = md.find(`select[name='range']`),
+    //     mdScore = md.find(`input[name='score']`);
+    //
+    // mdRange.change(handleMdInput);
+    // function handleMdInput() {
+    //   if (mdRange[0].selectedIndex == 1) {
+    //     mdScore.attr('placeholder', '线差(≥ -5)');
+    //   }
+    //   if (mdRange[0].selectedIndex == 2) {
+    //     mdScore.attr('placeholder', '线差(≥ -10)');
+    //   }
+    //   if (mdRange[0].selectedIndex == 3) {
+    //     mdScore.attr('placeholder', '线差(≥ -15)');
+    //   }
+    //   if (mdRange[0].selectedIndex == 4) {
+    //     mdScore.attr('placeholder', '线差(≥ -20)');
+    //   }
+    // }
 
     //专业-位次
     let mrYear = mr.find(`select[name='year']`),
@@ -148,8 +149,6 @@
 
     window.onload = function() {
       handleMrInput();
-      handleMdInput();
-      handleSdInput();
       handleSeInput();
       handleSrInput();
     }

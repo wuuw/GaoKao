@@ -96,6 +96,7 @@ export default class extends think.model.base {
                   "Mbatch as batch, " + //批次
                   "Morigin as origin, " + //生源地
                   "Rbegin as rank, " + //初位排名
+                  "Rover as over, " + //初位排名
                   "Cwebsite as site" //末尾排名
       //联合查询 on 条件
       let onMajor = {

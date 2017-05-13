@@ -61,7 +61,12 @@ export default class extends Base {
         //从../config/config.js 里读取查询的分数类型
         scoreType = this.config('majorType.' + query.scoreType);
 
-    let sql_2 = `${scoreType} - ${line} >= ${rangeMin} and ${scoreType} - ${line} <= ${rangeMax}`;
+    let sql_2 = null;
+    if (query.range) {
+      sql_2 = `${scoreType} - ${line} >= ${rangeMin} and ${scoreType} - ${line} <= ${rangeMax}`;
+    } else {
+      sql_2 = `${scoreType} - ${line} <= ${rangeMax}`;
+    }
 
     //其他配置项
     let order = `${scoreType}`,
@@ -233,8 +238,12 @@ export default class extends Base {
       is211: query.is211
     };
 
-
-    let sql_2 = `Mcutoffline BETWEEN ${min} and ${max}`;
+    let sql_2 = null;
+    if (query.range) {
+      sql_2 = `Mcutoffline BETWEEN ${min} and ${max}`;
+    } else {
+      sql_2 = `Mcutoffline < ${min}`;
+    }
 
     let order = "Rscore",
         sort = 'DESC',

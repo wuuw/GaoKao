@@ -28,6 +28,7 @@ export default class extends think.model.base {
                   "Caverage as avgScore, " + //平均分
                   "Cbatch as batch, " + //批次
                   "Cwebsite as site, " + //官网
+                  "Rover as over, " + //官网
                   "Rbegin as rank"; //位次
       //联合查询 on 条件
       let on = {
