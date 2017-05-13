@@ -193,7 +193,7 @@ export default class extends Base {
         admissionModel = this.model('admissionline');
     //计算最大、最小排名
     let rankMax = Math.min(query.rank * (1 + query.range), 280000),
-        rankMin = Math.min(query.rank * (1 - query.range), 0);
+        rankMin = Math.min(query.rank * (1 - query.range), 280000);
 
     //通过排名，在ranking表中得到最低、最高分
     let max = await rankingModel.rankToScore(query.year, query.pos,  query.category, rankMin),
