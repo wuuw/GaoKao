@@ -213,7 +213,6 @@ export default class extends Base {
       'Ccategory': query.category,
       'Cstatus': 1
     };
-
     //区间不限
     if (!query.range) {
       sql_1.Ccutoffline = {'<': min}
