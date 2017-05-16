@@ -29,7 +29,8 @@ export default class extends Base {
           page: this.get('page') || 1, //页数: 默认 1
           city: this.get('city'),
           is985: this.get('is985'),
-          is211: this.get('is211')
+          is211: this.get('is211'),
+          hit: Number(this.get('hit'))
       };
       query.type = 'major_dif';
     }
@@ -80,16 +81,33 @@ export default class extends Base {
     };
 
     //查询
-    let majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page, filter);
+    let majors = null,
+        json = null;
+    if (query.hit > 0) {
+      let sql = {};
+      sql = this.filter(query, sql);
 
-    let json = {
-      query: query,
-      count: majors.count, //结果总数
-      totalPages: majors.totalPages, //总页数
-      page: majors.currentPage, //当前页
-      line: line, //省控线
-      majors: majors.data //学校数组
-    };
+      majors = await this.model('major').query(`call major_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '${major}', '${query.category}', '${query.batch}', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',0,20,@total)`);
+
+      let count = await this.model('college').query('select @total');
+      json = {
+        query: query, //查询参数
+        count: count[0]['@total'], //结果总数
+        totalPages: Math.ceil(count[0]['@total']/20), //总页数
+        page: query.page, //当前页
+        majors: majors[0] //学校数组
+      };
+    } else {
+      majors = await collegeModel.joinMajor(sql_1, sql_2, order, sort, page, filter);
+      json = {
+        query: query,
+        count: majors.count, //结果总数
+        totalPages: majors.totalPages, //总页数
+        page: majors.currentPage, //当前页
+        line: line, //省控线
+        majors: majors.data //学校数组
+      };
+    }
 
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
@@ -148,7 +166,7 @@ export default class extends Base {
   //     'Mstatus': 1
   //   };
   //
-  //   //为Ajax处理筛选请求时添加地址、工程等字段
+  //   //为Ajax处理筛选请求时添加地区、工程等字段
   //   sql_1 = this.filter(query, sql_1);
   //
   //   let sql_2 = `Maverage <= ${max} and Maverage >= ${min}`;
@@ -198,10 +216,10 @@ export default class extends Base {
         range: parseFloat(this.get('range')) / 100, // 100,
         major: this.get('major'),
         page: this.get('page') || 1,
-
         city: this.get('city'),
         is985: this.get('is985'),
-        is211: this.get('is211')
+        is211: this.get('is211'),
+        hit: Number(this.get('hit'))
       };
       query.type = 'major_rank';
     }
@@ -249,16 +267,40 @@ export default class extends Base {
         sort = 'DESC',
         page = query.page;
 
-    let majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page, filter);
+
+    //查询
+    let majors = null,
+        json = null;
+
+    if (query.hit > 0) {
+      let sql = {};
+
+      sql = this.filter(query, sql);
+
+      majors = await this.model('major').query(`call major_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '${major}', '${query.category}', '%%', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',0,20,@total)`);
+
+      let count = await this.model('college').query('select @total');
+      json = {
+        query: query, //查询参数
+        count: count[0]['@total'], //结果总数
+        totalPages: Math.ceil(count[0]['@total']/20), //总页数
+        page: query.page, //当前页
+        majors: majors[0] //学校数组
+      };
+    } else {
+      majors = await collegeModel.joinMajorAndRanking(sql_1, sql_2, order, sort, page, filter);
+      json = {
+        query: query,
+        line: line,
+        count: majors.count, //结果总数
+        totalPages: majors.totalPages, //总页数
+        page: majors.currentPage, //当前页
+        majors: majors.data //学校数组
+      };
+    }
+
     query.range *= 100;
-    let json = {
-      query: query,
-      line: line,
-      count: majors.count, //结果总数
-      totalPages: majors.totalPages, //总页数
-      page: majors.currentPage, //当前页
-      majors: majors.data //学校数组
-    };
+
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);

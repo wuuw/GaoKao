@@ -20,6 +20,7 @@
       <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
       <span style="color:#ddd">生源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
       <span style="color:#ddd">科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
+      <span style="color:#ddd">省线: <b style="color:#fff;font-size:1.1em">{{line}}</b></span>
       <span style="color:#ddd">等位分: <b style="color:#fff;font-size:1.1em">{{query.eq}}</b></span>
       {% if query.range != 0 %}
       <span style="color:#ddd">等位分区间: <b style="color:#fff;font-size:1.1em">{{query.eq - query.range}} - {{query.eq + query.range}}</b></span>
@@ -36,8 +37,8 @@
         <thead>
           <tr>
             <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
-            <th>所在地</th>
-            <th>录取批次(省控线)</th>
+            <th>地区</th>
+            <th>录取批次</th>
             <th>调档线</th>
             <th>平均分</th>
             <th>等位分</th>
@@ -50,17 +51,13 @@
           <tr>
             <th scope="row" class="name" style="text-align:left;padding-left:20px;padding-right:0;">
               <span style = "font-size:1.2em;">
-                <a class="key" href="/college/{{item.id}}" target="_blank">{{item.name}}</a>
+                <a class="key" href="/college/{{item.id}}" target="_blank">{{item.school_name}}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">{{item.project}}</span>
               </span>
             </th>
-            <td>{{item.position}}</td>
+            <td>{{item.location}}</td>
             <td>
-              {% if item.batch.substr(3, 1) == '一' %}
-                {{item.batch}} ({{line}})
-              {% else %}
-                {{item.batch}} ({{line}})
-              {% endif %}
+                {{item.batch}}
             </td>
             <td>{{item.minScore}}</td>
             <td>

@@ -20,9 +20,9 @@ export default class extends think.model.base {
     async joinCollege(sql_1, sql_2, order, sort, page) {
       ///field
       let field = "Cyear as year, " + //年份
-                  "Cname as name, " + //学校名
-                  "Cid as id, " + //代码
-                  "Caddress as position, " + //学校地址
+                  "Cname as school_name, " + //学校名
+                  "CcollegeID as id, " + //代码
+                  "Caddress as location, " + //学校地区
                   "Cproject as project, " + //工程
                   "Ccutoffline as minScore, " + //最低分
                   "Caverage as avgScore, " + //平均分

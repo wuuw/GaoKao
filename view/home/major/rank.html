@@ -36,9 +36,9 @@
         <thead>
           <tr>
             <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
-            <th>所在地</th>
+            <th>地区</th>
             <th>专业</th>
-            <th>录取批次(省控线)</th>
+            <th>录取批次</th>
             <th>专业最低分</th>
             <th>专业平均分</th>
             <th>专业最高分</th>
@@ -56,16 +56,12 @@
                 <span style="color:#9c27b0;font-size:0.8em;">{{item.project}}</span>
               </span>
             </th>
-            <td>{{item.school_pos}}</td>
-            <td>{{item.name}}</td>
+            <td>{{item.location}}</td>
+            <td>{{item.major_name}}</td>
 
 
             <td>
-              {% if item.batch.slice(3, 4) == '一' %}
-              {{item.batch}}({{line[0].line}})
-              {%else%}
-              {{item.batch}}({{line[1].line}})
-              {% endif %}
+              {{item.batch}}
             </td>
 
             <td>{{item.minScore}}</td>

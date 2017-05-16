@@ -87,7 +87,6 @@
 <nav class="breadcrumb">
   <a class="breadcrumb-item" href="/">首页</a>
   <a class="breadcrumb-item" href="/home/index/search">搜索</a>
-  <a class="breadcrumb-item" href='javascript:history.back(-1)'>搜索结果</a>
   <span class="breadcrumb-item active">{{school.name}}</span>
 </nav>
 <section class="detail row align-items-start flex-row">
@@ -113,7 +112,7 @@
                 {%if school.tips[2]%}<span>{{school.tips[2]}}</span>{%endif%}
                 {%if school.tips[3]%}<span>{{school.tips[3]}}</span>{%endif%}
                 <div class="flex-row d-flex flex-wrap justify-content-start">
-                    {%if school.pos %}<p>{{school.pos}}</p>{%endif%}
+                    {%if school.pos %}<p>{{school.location}}</p>{%endif%}
                     {%if school.belong %}<p>{{school.belong}}</p>{%endif%}
                     {%if school.acs %}<p>{{school.acs}}</p>{%endif%}
                     {%if school.type %}<p>{{school.type}}</p>{%endif%}

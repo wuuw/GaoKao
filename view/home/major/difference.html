@@ -20,10 +20,7 @@
       <span style="color:#ddd">参考年份: <b style="color:#fff;font-size:1.1em">{{query.year}}</b></span>
       <span style="color:#ddd">生源: <b style="color:#fff;font-size:1.1em">{{query.pos}}</b></span>
       <span style="color:#ddd">科类: <b style="color:#fff;font-size:1.1em">{{query.category}}</b></span>
-      <span style="color:#ddd">
-        分数:
-        <b style="color:#fff;font-size:1.1em">{{query.score + line}}</b>
-      </span>
+      <span style="color:#ddd">省线: <b style="color:#fff;font-size:1.1em">{{line}}</b></span>
       <span style="color:#ddd">
         {% if query.scoreType == 'min' %}
         最低分线差区间:
@@ -33,15 +30,15 @@
         最高分线差区间:
         {% endif %}
         {% if query.range != 0 %}
-          线差区间: <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}}</b>
+          <b style="color:#fff;font-size:1.1em">{{query.score - query.range}} - {{query.score + query.range}}</b>
         {%else%}
-          线差区间: <b style="color:#fff;font-size:1.1em">≤ {{query.score}}</b>
+          <b style="color:#fff;font-size:1.1em">≤ {{query.score}}</b>
         {%endif%}
       </span>
       <span style="color:#ddd">
         查询专业:
         <b style="color:#fff;font-size:1.1em">
-          {{majors[0].name}}
+          {{majors[0].major_name}}
         </b>
       </span>
     </div>
@@ -54,9 +51,9 @@
       <thead>
         <tr>
           <th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th>
-          <th>所在地</th>
+          <th>地区</th>
           <th>专业名称</th>
-          <th>录取批次(省控线)</th>
+          <th>录取批次</th>
           <th>专业最低分</th>
           <th>专业平均分</th>
           <th>专业最高分</th>
@@ -75,9 +72,9 @@
               </span>
             </span>
           </th>
-          <td>{{item.school_pos}}</td>
-          <td>{{item.name}}</td>
-          <td>{{item.batch}} ({{line}})</td>
+          <td>{{item.location}}</td>
+          <td>{{item.major_name}}</td>
+          <td>{{item.batch}}</td>
           <td>{{item.minScore}}</td>
           <td>{{item.avgScore}}</td>
           <td>{{item.maxScore}}</td>

@@ -90,7 +90,7 @@ export default function(type,test,major,result,scoreType,sql){
 	    flag=1;
 	}
 	if(result.data[i].position==null){
-	    msg="返回学校所在地错误  -->  没有所在地";
+	    msg="返回学校地区错误  -->  没有地区";
 	    flag=1;
 	}
 	if(result.data[i].site==null){

@@ -74,6 +74,10 @@
 </div>
 <script>
 'use strict';
+//如果选择查院校-线差-平均分，则消除3年符合选项
+if (window.location.pathname == '/college/difference' && $(`form[action='/college/difference']`).find(`select[name='scoreType']`)[0].selectedIndex == 2) {
+  $('.custom-radio:nth-child(5)').css('display', 'none')
+};
 //自动选择命中所选年
 $('.custom-control.custom-radio:first').trigger('click');
 // 处理大学所在城市//工程的选择
@@ -116,17 +120,6 @@ $('.custom-control.custom-radio:first').trigger('click');
       $('.pagination li:first').addClass('active');
       //刷新表格
       freshTable(data);
-
-      //处理页码。有更多的页数，则添加页码;页码多余则去掉
-      let lists = $('.pagination li');
-      let pageCount = data.data.totalPages;
-      lists.each(function() {
-        $(this).css('display', 'block');
-      })
-      lists.slice(pageCount).each(function() {
-        $(this).css('display', 'none');
-      });
-
     });
   }
 
@@ -152,24 +145,24 @@ $('.custom-control.custom-radio:first').trigger('click');
       switch (window.location.pathname) {
         case '/college/difference':
           $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
-          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`;
+          thead = `<tr><th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>地区</th><th>录取批次</th><th>调档线</th><th>平均分</th><th>调档线差</th><th>平均线差</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
               </span>
             </th>
-            <td>${school.position}</td>
+            <td>${school.location}</td>
             <td>
-              ${school.batch} (${line})
+              ${school.batch}
             </td>
-            <td>${school.minScore}</td>
+            <td>${school.minScore || '-'}</td>
             <td>${school.avgScore || '-'}</td>
             <td>
-              ${school.minScore - line}
+              ${school.minScore - line || '-'}
             </td>
             <td>
               ${school.avgScore ? school.avgScore - line : '-'}
@@ -181,24 +174,24 @@ $('.custom-control.custom-radio:first').trigger('click');
           break;
         case '/college/equipotential':
           $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-等位分</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
-          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>等位分</th><th>院校招生网</th></tr>`;
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>地区</th><th>录取批次</th><th>调档线</th><th>平均分</th><th>等位分</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
               </span>
             </th>
-            <td>${school.position}</td>
+            <td>${school.location}</td>
             <td>
-              ${school.batch} (${line})
+              ${school.batch}
             </td>
-            <td>${school.minScore}</td>
+            <td>${school.minScore || '-'}</td>
             <td>${school.avgScore || '-'}</td>
             <td>
-              ${school.equipotential}
+              ${school.equipotential || '-'}
             </td>
             <td>
               ${site}
@@ -207,24 +200,24 @@ $('.custom-control.custom-radio:first').trigger('click');
           break;
         case '/college/rank':
           $('.resultCount').html(`使用 <b style="color:#9c27b0">院校-位次</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
-          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>录取批次(省控线)</th><th>调档线</th><th>平均分</th><th>调档位次</th><th>院校招生网</th></tr>`;
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>地区</th><th>录取批次</th><th>调档线</th><th>平均分</th><th>调档位次</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
-                <a class="key" href="/college/${school.id}" target='_blank'>${school.name}</a>
+                <a class="key" href="/college/${school.id}" target='_blank'>${school.school_name}</a>
                 <span style="color:#9c27b0;font-size:0.8em;">
                   ${school.project}
                 </span>
               </span>
             </th>
-            <td>${school.position}</td>
+            <td>${school.location}</td>
             <td>
-              ${school.batch} (${line})
+              ${school.batch}
             </td>
-            <td>${school.minScore}</td>
+            <td>${school.minScore || '-'}</td>
             <td>${school.avgScore || '-'}</td>
             <td>
-              ${school.rank}
+              ${school.rank || '-'}
             </td>
             <td>
               ${site}
@@ -233,7 +226,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           break;
         case '/major/difference':
           $('.resultCount').html(`使用 <b style="color:#9c27b0">专业-线差</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
-          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>院校招生网</th></tr>`;
+          thead = `<tr><th  style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>地区</th><th>专业名称</th><th>录取批次</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
@@ -243,16 +236,16 @@ $('.custom-control.custom-radio:first').trigger('click');
                 </span>
               </span>
             </th>
-            <td>${school.school_pos}</td>
+            <td>${school.location}</td>
             <td>
-              ${school.name}
+              ${school.major_name}
             </td>
             <td>
-              ${school.batch} (${line})
+              ${school.batch}
             </td>
-            <td>${school.minScore}</td>
-            <td>${school.avgScore}</td>
-            <td>${school.maxScore}</td>
+            <td>${school.minScore || '-'}</td>
+            <td>${school.avgScore || '-'}</td>
+            <td>${school.maxScore || '-'}</td>
             <td>
               ${site}
             </td>
@@ -260,7 +253,7 @@ $('.custom-control.custom-radio:first').trigger('click');
           break;
         case '/major/rank':
           $('.resultCount').html(`使用 <b style="color:#9c27b0">专业-位次</b> 查询方式，共匹配到 <b style="color:#9c27b0">${data.data.count}</b> 条结果</span>`);
-          thead = `<tr><th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>所在地</th><th>专业名称</th><th>录取批次(省控线)</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>最低分位次</th><th>院校招生网</th></tr>`;
+          thead = `<tr><th style="text-align:left;padding-left:20px;padding-right:0;">高校名称</th> <th>地区</th><th>专业名称</th><th>录取批次</th><th>专业最低分</th><th>专业平均分</th><th>专业最高分</th><th>最低分位次</th><th>院校招生网</th></tr>`;
           tbody += `<tr>
             <th scope='row' class='name' style='text-align:left;padding-left:20px;padding-right:0;'>
               <span style='font-size:1.2em;'>
@@ -270,12 +263,12 @@ $('.custom-control.custom-radio:first').trigger('click');
                 </span>
               </span>
             </th>
-            <td>${school.school_pos}</td>
+            <td>${school.location}</td>
             <td>
-              ${school.name}
+              ${school.major_name}
             </td>
             <td>
-              ${school.batch} (${line})
+              ${school.batch}
             </td>
             <td>${school.minScore}</td>
             <td>${school.avgScore}</td>
@@ -299,8 +292,19 @@ $('.custom-control.custom-radio:first').trigger('click');
     $('.pagination').css('display', 'none');
     $('.table thead').html('');
     let alert = `{%include './noResult.html' %}`;
-    $('.table').append(alert)
+    $('.table').append(alert);
   }
   $('.table tbody').html(tbody);
+
+  //处理页码。有更多的页数，则添加页码;页码多余则去掉
+  let lists = $('.pagination li');
+  lists.remove();
+  // let totalPages = data.data.totalPages;
+  // lists.each(function() {
+  //   $(this).css('display', 'block');
+  // });
+  // lists.slice(totalPages).each(function() {
+  //   $(this).css('display', 'none');
+  // });
 }
 </script>

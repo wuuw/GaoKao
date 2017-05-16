@@ -28,7 +28,7 @@ export default class extends Base {
           city: this.get('city'),
           is985: this.get('is985'),
           is211: this.get('is211'),
-          hit: this.get('hit')
+          hit: Number(this.get('hit'))
       };
       query.type = 'school_dif';
     }
@@ -44,7 +44,7 @@ export default class extends Base {
       'Cstatus': 1 //有效标志位
     };
 
-    //为Ajax处理筛选请求时添加地址、工程、命中年份等字段
+    //为Ajax处理筛选请求时添加地区、工程、命中年份等字段
     sql_1 = this.filter(query, sql_1);
     /*
     * sql_2语句, 总体SQL语句中的第二部分: Ccutoffline | Caverage
@@ -78,22 +78,36 @@ export default class extends Base {
     //查询
     let schools = null,
         json = null;
-    schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
-    json = {
-      query: query, //查询参数
-      line: line, //分数线
-      count: schools.count, //结果总数
-      totalPages: schools.totalPages, //总页数
-      page: schools.currentPage, //当前页
-      schools: schools.data //学校数组
-    };
+    if (query.hit > 0) {
+      schools = await this.model('college').query(`call college_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+
+      let count = await this.model('college').query('select @total');
+
+      json = {
+        query: query, //查询参数
+        count: count[0]['@total'], //结果总数
+        totalPages: Math.ceil(count[0]['@total']/20), //总页数
+        page: query.page, //当前页
+        schools: schools[0] //学校数组
+      };
+    } else {
+      schools = await collegeModel.selectAll(sql_1, sql_2, order, sort, page);
+      json = {
+        query: query, //查询参数
+        line: line, //分数线
+        count: schools.count, //结果总数
+        totalPages: schools.totalPages, //总页数
+        page: schools.currentPage, //当前页
+        schools: schools.data //学校数组
+      };
+    }
+
     //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);
       this.assign({lineForChart: await this.getLineForTable(query.pos, query.category)});
     }
-
     return this.display();
   }//diffrenceAction
 
@@ -117,7 +131,8 @@ export default class extends Base {
           page: this.get('page') || 1, //页数: 默认 1
           city: this.get('city'),
           is985: this.get('is985'),
-          is211: this.get('is211')
+          is211: this.get('is211'),
+          hit: Number(this.get('hit'))
       };
       query.type = 'school_eq';
     }
@@ -137,7 +152,7 @@ export default class extends Base {
       'Cequipotential': ['BETWEEN', min, max],
       'Cstatus': 1
     };
-    //为Ajax处理筛选请求时添加地址、工程等字段
+    //为Ajax处理筛选请求时添加地区、工程等字段
     sql_1 = this.filter(query, sql_1);
 
     //区间选择不限
@@ -148,17 +163,37 @@ export default class extends Base {
     let order = 'Cequipotential',
         sort = 'DESC',
         page = query.page;
-    let schools = await collegeModel.selectAll(sql_1, null, order, sort, page),
-        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch);
 
-    let json = {
-      query: query, //查询参数
-      line: line, //分数线
-      count: schools.count, //结果总数
-      totalPages: schools.totalPages, //总页数
-      page: schools.currentPage, //当前页
-      schools: schools.data //学校数组
-    };
+    //查询
+    let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, query.batch),
+        schools = null,
+        json = null;
+
+    if (query.hit > 0) {
+      console.log(query.hit);
+      schools = await this.model('college').query(`call college_general(${query.hit}, 'eq', ${min}, ${max}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+
+      let count = await this.model('college').query('select @total');
+
+      json = {
+        query: query, //查询参数
+        count: count[0]['@total'], //结果总数
+        totalPages: Math.ceil(count[0]['@total']/20), //总页数
+        page: query.page, //当前页
+        schools: schools[0] //学校数组
+      };
+    } else {
+      schools = await collegeModel.selectAll(sql_1, null, order, sort, page)
+      json = {
+        query: query, //查询参数
+        line: line, //分数线
+        count: schools.count, //结果总数
+        totalPages: schools.totalPages, //总页数
+        page: schools.currentPage, //当前页
+        schools: schools.data //学校数组
+      };
+    }
+
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
       this.assign(json);
@@ -187,7 +222,8 @@ export default class extends Base {
           //filter
           city: this.get('city'),
           is985: this.get('is985'),
-          is211: this.get('is211')
+          is211: this.get('is211'),
+          hit: Number(this.get('hit'))
       };
       query.type = 'school_rank';
       //range百分比转换为数值
@@ -218,26 +254,44 @@ export default class extends Base {
       sql_1.Ccutoffline = {'<': min}
     }
 
-    //为Ajax处理筛选请求时添加地址、工程等字段
+    //为Ajax处理筛选请求时添加地区、工程等字段
     sql_1 = this.filter(query, sql_1);
 
     let order = 'Rbegin',
         sort = 'ASC',
         page = query.page;
 
-    let schools = await rankingModel.joinCollege(sql_1, null, order, sort, page),
-        line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null);
-    //range数值转为百分比
-    query.range *= 100;
+    //查询
+    let line = await admissionModel.getProvinceLine(query.year, query.pos, query.category, null),
+        schools = null,
+        json = null;
 
-    let json = {
-      query: query, //查询参数
-      line: line, //省控线
-      count: schools.count, //结果总数
-      totalPages: schools.totalPages, //总页数
-      page: schools.currentPage, //当前页
-      schools: schools.data //学校数组
-    };
+    if (query.hit > 0) {
+      schools = await this.model('college').query(`call college_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '${query.category}', '%%', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+
+      let count = await this.model('college').query('select @total');
+
+      json = {
+        query: query, //查询参数
+        count: count[0]['@total'], //结果总数
+        totalPages: Math.ceil(count[0]['@total']/20), //总页数
+        page: query.page, //当前页
+        schools: schools[0] //学校数组
+      };
+    } else {
+      schools = await rankingModel.joinCollege(sql_1, null, order, sort, page)
+      //range数值转为百分比
+      query.range *= 100;
+      json = {
+        query: query, //查询参数
+        line: line, //省控线
+        count: schools.count, //结果总数
+        totalPages: schools.totalPages, //总页数
+        page: schools.currentPage, //当前页
+        schools: schools.data //学校数组
+      };
+    }
+
     //传递图表所用省控线
     if (this.isAjax('get')) this.success(json);
     if (this.isGet()) {
@@ -258,7 +312,7 @@ export default class extends Base {
       id: id
     };
     //查询院校历史分数线
-    let school_line_record = await this.model('college').where({'Cid':id,'Cstatus': 1}).order('Cbatch ASC, Cyear ASC').field('Cname as name, Caddress as pos, Ccutoffline as min, Caverage as avg, Cbatch as batch, Cyear as year').select();
+    let school_line_record = await this.model('college').where({'CcollegeID':id,'Cstatus': 1}).order('Cbatch ASC, Cyear ASC').field('Cname as school_name, Caddress as location, Ccutoffline as min, Caverage as avg, Cbatch as batch, Cyear as year').select();
     //查询四川省调档线
 
     //从新浪教育爬取

@@ -20,14 +20,18 @@ export default class extends think.controller.base {
 
    filter(query, sql) {
      if (query.is985 === 'true') {
-       sql['Cproject'] = '985、211';
+       sql['Cproject'] = ['like', '985、211'];
      } else if(query.is211 === 'true') {
-       sql['Cproject'] = '211';
+       sql['Cproject'] = ['like', '%211%'];
+     } else {
+       sql['Cproject'] = ['like', '%%'];
      }
 
      if (query.city) {
        if (query.city !== '所有地区') {
-         sql['Caddress'] = query.city;
+         sql['Caddress'] = ['like', `${query.city}`];
+       } else {
+         sql['Caddress'] = ['like', `%%`];
        }
      }
      return sql;

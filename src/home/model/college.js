@@ -4,11 +4,11 @@
  */
 export default class extends think.model.base {
   //查询所有
-  async selectAll(sql_1, sql_2, order, sort, page) {
+  async selectAll(sql_1, sql_2, order, sort, page, hit) {
     let field = "Cyear as year, " + //年份
-                "Cid as id, " + //id
-                "Cname as name, " + //学校名称
-                "Caddress as position, " + //地址
+                "CcollegeID as id, " + //id
+                "Cname as school_name, " + //学校名称
+                "Caddress as location, " + //地区
                 "Ccutoffline as minScore, " + //最低分
                 "Caverage as avgScore, " + //平均分
                 "Ccategory as category, " + //科目
@@ -17,12 +17,14 @@ export default class extends think.model.base {
                 "Corigin as origin, " + //生源地
                 "Cproject as project," + //985 || 211
                 "Cequipotential as equipotential"; //等位分
-    let record = await this.where(sql_1).where(sql_2).order(order + ' ' + sort).field(field).page(page).countSelect();
+    let record = null;
+    record = await this.where(sql_1).where(sql_2).order(order + ' ' + sort).field(field).page(page).countSelect();
+
     return record;
   }
 
 
-    //与ref_major表联合查询，结果返回包含专业所在学校地址及所属工程信息
+    //与ref_major表联合查询，结果返回包含专业所在学校地区及所属工程信息
     /*
     *
     */
@@ -30,11 +32,11 @@ export default class extends think.model.base {
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名
-                  "Caddress as school_pos, " + //学校地址
-                  "Cproject as project, " + //学校地址
-                  "Cwebsite as site, " + //学校地址
-                  "Cid as id, " + //代码
-                  "Mname as name, " + //专业名
+                  "Caddress as location, " + //学校地区
+                  "Cproject as project, " + //学校地区
+                  "Cwebsite as site, " + //学校地区
+                  "CcollegeID as id, " + //代码
+                  "Mname as major_name, " + //专业名
                   "Mcutoffline as minScore, " + //最低分
                   "Maverage as avgScore, " + //平均分
                   "Mhighest as maxScore, " + //最高分
@@ -76,7 +78,7 @@ export default class extends think.model.base {
       }).where(filterCond).order(order + ' ' + sort).field(field).page(page).countSelect();
     }
 
-    //与ref_major/ref_ranking表联合查询，结果返回包含专业所在学校地址及所属工程信息
+    //与ref_major/ref_ranking表联合查询，结果返回包含专业所在学校地区及所属工程信息
     //以及相应分数对应的一分一段排名
     /*
     *
@@ -85,10 +87,10 @@ export default class extends think.model.base {
       ///field
       let field = "Myear as year, " + //年份
                   "m.Cname as school_name, " + //学校名
-                  "Caddress as school_pos, " + //学校地址
-                  "Cproject as project, " + //学校地址
-                  "Cid as id, " + //代码
-                  "Mname as name, " + //专业名
+                  "Caddress as location, " + //学校地区
+                  "Cproject as project, " + //学校地区
+                  "CcollegeID as id, " + //代码
+                  "Mname as major_name, " + //专业名
                   "Mcutoffline as minScore, " + //分数
                   "Maverage as avgScore, " + //分数
                   "Mhighest as maxScore, " + //分数
