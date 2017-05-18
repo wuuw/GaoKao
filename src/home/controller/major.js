@@ -86,8 +86,10 @@ export default class extends Base {
     if (query.hit > 0) {
       let sql = {};
       sql = this.filter(query, sql);
-
-      majors = await this.model('major').query(`call major_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '${major}', '${query.category}', '${query.batch}', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',0,20,@total)`);
+      if (rangeMin == rangeMax) {
+        rangeMin = 0;
+      }
+      majors = await this.model('major').query(`call major_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '%${major}%', '${query.category}', '${query.batch}', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',${(query.page-1)*20},20,@total)`);
 
       let count = await this.model('college').query('select @total');
       json = {
@@ -274,10 +276,11 @@ export default class extends Base {
 
     if (query.hit > 0) {
       let sql = {};
-
       sql = this.filter(query, sql);
-
-      majors = await this.model('major').query(`call major_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '${major}', '${query.category}', '%%', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',0,20,@total)`);
+      if (rankMin == rankMax) {
+        rankMax = 300000;
+      }
+      majors = await this.model('major').query(`call major_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '%${major}%', '${query.category}', '%%', '${query.pos}','${sql.Cproject[1]}','${sql.Caddress[1]}',${(query.page-1)*20},20,@total)`);
 
       let count = await this.model('college').query('select @total');
       json = {

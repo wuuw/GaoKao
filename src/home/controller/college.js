@@ -79,7 +79,10 @@ export default class extends Base {
     let schools = null,
         json = null;
     if (query.hit > 0) {
-      schools = await this.model('college').query(`call college_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+      if (rangeMin == rangeMax) {
+        rangeMin = 0;
+      }
+      schools = await this.model('college').query(`call college_general(${query.hit}, '${query.scoreType}', ${rangeMin}, ${rangeMax}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',${(query.page-1)*20},20,@total)`);
 
       let count = await this.model('college').query('select @total');
 
@@ -170,8 +173,10 @@ export default class extends Base {
         json = null;
 
     if (query.hit > 0) {
-      console.log(query.hit);
-      schools = await this.model('college').query(`call college_general(${query.hit}, 'eq', ${min}, ${max}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+      if (min == max) {
+        min = 100;
+      }
+      schools = await this.model('college').query(`call college_general(${query.hit}, 'eq', ${min}, ${max}, '${query.category}', '${query.batch}', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',${(query.page-1)*20},20,@total)`);
 
       let count = await this.model('college').query('select @total');
 
@@ -267,10 +272,12 @@ export default class extends Base {
         json = null;
 
     if (query.hit > 0) {
-      schools = await this.model('college').query(`call college_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '${query.category}', '%%', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',0,20,@total)`);
+      if (rankMin == rankMax) {
+        rankMax = 300000;
+      }
+      schools = await this.model('college').query(`call college_general(${query.hit}, 'rank', ${rankMin}, ${rankMax}, '${query.category}', '%%', '${query.pos}','${sql_1.Cproject[1]}','${sql_1.Caddress[1]}',${(query.page-1)*20},20,@total)`);
 
       let count = await this.model('college').query('select @total');
-
       json = {
         query: query, //查询参数
         count: count[0]['@total'], //结果总数
@@ -313,19 +320,88 @@ export default class extends Base {
     };
     //查询院校历史分数线
     let school_line_record = await this.model('college').where({'CcollegeID':id,'Cstatus': 1}).order('Cbatch ASC, Cyear ASC').field('Cname as school_name, Caddress as location, Ccutoffline as min, Caverage as avg, Cbatch as batch, Cyear as year').select();
-    //查询四川省调档线
+
+
+
+      console.log(id);
+      //查询专业历史分数
+      let school_name = await this.model('college').where(`CcollegeID = ${id}`).limit(1).select();
+      school_name = school_name[0].Cname;
+
+
+      let major2014,
+          major2015,
+          major2016;
+
+      major2014 = await this.model('major').where(`Cname='${school_name}' and Myear=2014`).where({'Mname': ['IN', this.config('majors')]}).field('Mcutoffline as min, Maverage as avg, Mhighest as max, Mname as major').order('Mname ASC').select();
+      major2015 = await this.model('major').where(`Cname='${school_name}' and Myear=2015`).where({'Mname': ['IN', this.config('majors')]}).field('Mcutoffline as min, Maverage as avg, Mhighest as max, Mname as major').order('Mname ASC').select();
+      major2016 = await this.model('major').where(`Cname='${school_name}' and Myear=2016`).where({'Mname': ['IN', this.config('majors')]}).field('Mcutoffline as min, Maverage as avg, Mhighest as max, Mname as major').order('Mname ASC').select();
+
+      let majorList = [],
+          min2014 = [],
+          avg2014 = [],
+          max2014 = [],
+
+          min2015 = [],
+          avg2015 = [],
+          max2015 = [],
+
+          min2016 = [],
+          avg2016 = [],
+          max2016 = [];
+
+      major2014.forEach(function(item) {
+        if (majorList.indexOf(item.major) < 0) {
+          majorList.push(item.major);
+        }
+        min2014.push(item.min);
+        avg2014.push(item.avg);
+        max2014.push(item.max);
+      })
+      major2015.forEach(function(item) {
+        if (majorList.indexOf(item.major) < 0) {
+          majorList.push(item.major);
+        }
+        min2015.push(item.min);
+        avg2015.push(item.avg);
+        max2015.push(item.max);
+      })
+      major2016.forEach(function(item) {
+        if (majorList.indexOf(item.major) < 0) {
+          majorList.push(item.major);
+        }
+        min2016.push(item.min);
+        avg2016.push(item.avg);
+        max2016.push(item.max);
+      });
+
+      let MajorData = {
+        majorList: majorList,
+        min2016: min2016,
+        avg2016: avg2016,
+        max2016: max2016,
+        min2015: min2015,
+        avg2015: avg2015,
+        max2015: max2015,
+        min2014: min2014,
+        avg2014: avg2014,
+        max2014: max2014
+      }
+      if (this.isAjax('post')) {
+        this.success(MajorData)
+      }
 
     //从新浪教育爬取
     let brief = this.schoolTips(id),
-        intro = this.schoolIntor(id)
+        intro = this.schoolIntor(id);
 
     brief.then(res=>{
       let $ = cheerio.load(res.data);
       //name & tips
-      schoolData.name = $('.collegeName').text();
+      schoolData.school_name = school_name;
       schoolData.tips = [$('.collegeNameTips:nth-child(1)').text(), $('.collegeNameTips:nth-child(2)').text(), $('.collegeNameTips:nth-child(3)').text(), $('.collegeNameTips:nth-child(4)').text()];
       //info
-      schoolData.pos = $('.middleContent.clearfix div.black14:nth-child(1)').text();
+      schoolData.location = $('.middleContent.clearfix div.black14:nth-child(1)').text();
       schoolData.belong = $('.middleContent.clearfix div.black14:nth-child(2)').text();
       schoolData.acs = $('.middleContent.clearfix div.black14:nth-child(3)').text();
       schoolData.master = $('.middleContent.clearfix div.black14:nth-child(4)').text();
@@ -343,17 +419,18 @@ export default class extends Base {
         });
         //本一线
         let schoolLine_1 = school_line_record.filter(item => {
-          return item.name === schoolData.name && item.batch === '本科第一批';
+          return item.school_name === schoolData.school_name && item.batch === '本科第一批';
         });
         //本二线
         let schoolLine_2 = school_line_record.filter(item => {
-          return item.name === schoolData.name && item.batch === '本科第二批';
+          return item.school_name === schoolData.school_name && item.batch === '本科第二批';
         });
         //学校本一线 && 本二线
-
         schoolData.schoolLine_1 = schoolLine_1;
         schoolData.schoolLine_2 = schoolLine_2;
-        let fullProv = schoolLine_1[0].pos || schoolLine_2[0].pos;
+
+        let fullProv = schoolLine_1[0].location || schoolLine_2[0].location;
+
         if (fullProv == '内蒙古自治区') {
           fullProv = '内蒙古';
         } else if (fullProv == '黑龙江省') {
@@ -362,11 +439,21 @@ export default class extends Base {
           fullProv = fullProv.slice(0, 2);
         }
         schoolData.prov = fullProv;
-        // this.success(schoolData);
-        this.assign({'school': schoolData});
+
+        this.assign('school', schoolData);
+
+        if (this.isAjax('get')) {
+          let data = [];
+          data.push(schoolData.schoolLine_1);
+          data.push(schoolData.schoolLine_2);
+          this.success(data);
+        }
         return this.display();
       });
     })
+  }
 
+  async nullAction() {
+    return this.display();
   }
 }

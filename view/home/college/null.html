@@ -87,16 +87,15 @@
 <nav class="breadcrumb">
   <a class="breadcrumb-item" href="/">首页</a>
   <a class="breadcrumb-item" href="/home/index/search">搜索</a>
-  <span class="breadcrumb-item active">{{school.school_name}}</span>
+  <span class="breadcrumb-item active">暂无该校信息</span>
 </nav>
 <section class="detail row align-items-start flex-row">
     <nav id="detailNav" class="navbar navbar-light bg-faded col-2 flex-column">
-        <img class="schoolLogo" src="http://sinastorage.com/kaoshi.edu.sina.com.cn/college_logo/{{school.id}}.jpg" alt="" />
         <ul class="nav nav-pills flex-column">
-            <li class="nav-item"><a class="nav-link active" href="#brief_label">学校概况</a></li>
-            <li class="nav-item"><a class="nav-link" href="#school_label">学校分数线</a></li>
-            <li class="nav-item"><a class="nav-link" href="#major_label">专业分数线</a></li>
-            <li class="nav-item"><a class="nav-link" href="#job_label">就业信息</a></li>
+            <li class="nav-item"><a class="nav-link active">学校概况</a></li>
+            <li class="nav-item"><a class="nav-link" >学校分数线</a></li>
+            <li class="nav-item"><a class="nav-link" >专业分数线</a></li>
+            <li class="nav-item"><a class="nav-link" >就业信息</a></li>
         </ul>
     </nav>
 
@@ -104,21 +103,10 @@
         <section class="row1 d-flex flex-row align-items-start justify-content-between">
             <div id="intro" style="padding-top:5px;">
                 <p class="name d-flex align-items-center">
-                    <span>{{school.school_name}}</span>
-                    <button class="btn btn-primary" style="margin-left:20px;" onclick="toggleMap()">查看地图</button>
+                    <span>暂无该校信息</span>
                 </p>
-                {%if school.tips[0]%}<span>{{school.tips[0]}}</span>{%endif%}
-                {%if school.tips[1]%}<span>{{school.tips[1]}}</span>{%endif%}
-                {%if school.tips[2]%}<span>{{school.tips[2]}}</span>{%endif%}
-                {%if school.tips[3]%}<span>{{school.tips[3]}}</span>{%endif%}
                 <div class="flex-row d-flex flex-wrap justify-content-start">
-                    {%if school.pos %}<p>{{school.location}}</p>{%endif%}
-                    {%if school.belong %}<p>{{school.belong}}</p>{%endif%}
-                    {%if school.acs %}<p>{{school.acs}}</p>{%endif%}
-                    {%if school.type %}<p>{{school.type}}</p>{%endif%}
-                    {%if school.ess %}<p>{{school.ess}}</p>{%endif%}
-                    {%if school.master %}<p>{{school.master}}</p>{%endif%}
-                    {%if school.doctor %}<p>{{school.doctor}}</p>{%endif%}
+
                 </div>
             </div>
         </section>
@@ -156,15 +144,9 @@
 
         <!-- 学校/专业分数线 -->
         <p class="title" id="school_label">学校分数线</p>
-        <section class="row3 d-flex flex-column justify-content-between">
-          {% include '../chart/schoolLine.html' %}
-          <p class="title" id="major_label">专业分数线</p>
-          {% include '../chart/majorLine.html' %}
-        </section>
 
         <!-- 就业信息iframe -->
         <p class="title" id="job_label">就业信息</p>
-        <iframe src="http://kaoshi.edu.sina.com.cn/college/c/ipin?id={{school.id}}" height="800px" style="border:none"></iframe>
 
 
     </div>

@@ -1,10 +1,11 @@
 <!-- 总页数大于1则显示页码 -->
-{% if totalPages > 1 %}
+
 <nav id='pagination' aria-label="Page navigation example">
   <ul class="pagination justify-content-center">
     <!-- <li class="page-item {%if page == 1%}disabled{%endif%}">
       <a class="page-link" tabindex="-1"> < </a>
     </li> -->
+    <li class='page-item'><span style="position:relative;top:2px;right:10px;" class="badge badge-default text-primary">共{{totalPages}}页</span></li>
     {% if totalPages <= 9 %}
       {% for i in range(1, totalPages + 1) -%}
       <li class="page-item {% if i == query.page %}active{%endif%}">
@@ -23,12 +24,10 @@
     </li> -->
   </ul>
 </nav>
-{%endif%}
 
 <script type="text/javascript">
   "use strict";
   //绑定click事件
-  function bindPage(n) {
     let lists = $(".pagination li"),
         page = null;
     lists.each(function(index) {
@@ -55,12 +54,11 @@
             range: parseInt('{{query.range}}'),
             scoreType: '{{query.scoreType}}',
             major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
-            page: index + 1
+            page: index
           }
         }).done(function(data){
           freshTable(data);
-        });
-      })
-    });
-  }
+        });//done
+      });//on
+    });//each
 </script>

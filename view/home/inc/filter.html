@@ -270,10 +270,10 @@ $('.custom-control.custom-radio:first').trigger('click');
             <td>
               ${school.batch}
             </td>
-            <td>${school.minScore}</td>
-            <td>${school.avgScore}</td>
-            <td>${school.maxScore}</td>
-            <td>${school.rank}</td>
+            <td>${school.minScore || '-'}</td>
+            <td>${school.avgScore || '-'}</td>
+            <td>${school.maxScore || '-'}</td>
+            <td>${school.rank || '-'}</td>
             <td>
               ${site}
             </td>
@@ -296,15 +296,96 @@ $('.custom-control.custom-radio:first').trigger('click');
   }
   $('.table tbody').html(tbody);
 
-  //处理页码。有更多的页数，则添加页码;页码多余则去掉
+  //处理页码
+  //首先删除所有的li
   let lists = $('.pagination li');
   lists.remove();
-  // let totalPages = data.data.totalPages;
-  // lists.each(function() {
-  //   $(this).css('display', 'block');
-  // });
-  // lists.slice(totalPages).each(function() {
-  //   $(this).css('display', 'none');
-  // });
+
+  let totalPages = data.data.totalPages,
+      page = parseInt(data.data.page);
+  //添加li
+  //总页数小于等于9 则一次性全部显示
+  //否则
+  $('ul.pagination').append(`<li class='page-item'><span style="position:relative;top:2px;right:10px" class="badge badge-default text-primary">共${totalPages}页</span></li>`);
+  if (totalPages <= 9) {
+    for (let i = 1; i <= totalPages; i++) {
+      let li = null;
+      if (i == page) {
+        li = $(`<li class='page-item active'><a class='page-link'>${i}</a></li>`);
+      } else {
+        li = $(`<li class='page-item'><a class='page-link'>${i}</a></li>`);
+      }
+      bindClick(i, li, data);
+      $('ul.pagination').append(li);
+    }
+  } else {
+    if (page <= 4) {
+      for (let i = 1; i <= 9; i++) {
+        let li = null;
+        if (i == page) {
+          li = $(`<li class='page-item active'><a class='page-link'>${i}</a></li>`);
+        } else {
+          li = $(`<li class='page-item'><a class='page-link'>${i}</a></li>`);
+        }
+        bindClick(i, li, data);
+        $('ul.pagination').append(li);
+      }
+    } else if (page >= totalPages - 3) {
+      for (let i = totalPages - 8; i <= totalPages; i++) {
+        let li = null;
+        if (i == page) {
+          li = $(`<li class='page-item active'><a class='page-link'>${i}</a></li>`);
+        } else {
+          li = $(`<li class='page-item'><a class='page-link'>${i}</a></li>`);
+        }
+        bindClick(i, li, data);
+        $('ul.pagination').append(li);
+      }
+    } else {
+      for (let i = page-4; i <= page+4; i++) {
+        let li = null;
+        if (i == page) {
+          li = $(`<li class='page-item active'><a class='page-link'>${i}</a></li>`);
+        } else {
+          li = $(`<li class='page-item'><a class='page-link'>${i}</a></li>`);
+        }
+        bindClick(i, li, data);
+        $('ul.pagination').append(li);
+      }
+    }
+  }
+}
+
+function bindClick(page, li, data) {
+  //每一条新的li绑定点击事件
+  li.on('click', function(){
+    lists.removeClass('active');
+    $(this).addClass('active');
+    //ajax请求数据
+    $.ajax({
+      type: 'GET',
+      url: window.location.pathname,
+      dataType: 'json',
+      data: {
+        city: $('#city option:selected').text(),
+        is985: $('#nef').is(':checked'),
+        is211: $('#too').is(':checked'),
+        year: '{{query.year}}',
+        pos: '{{query.pos}}',
+        category: '{{query.category}}',
+        batch: '{{query.batch}}',
+        score: parseInt('{{query.score}}'),
+        eq: '{{query.eq}}',
+        hit: data.data.query.hit,
+        rank: '{{query.rank}}',
+        range: parseInt('{{query.range}}'),
+        scoreType: '{{query.scoreType}}',
+        major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
+        page: page
+      }
+    }).done(function(data){
+      freshTable(data);
+    });
+  });
 }
 </script>

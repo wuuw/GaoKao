@@ -1,139 +1,188 @@
 <div id="schoolLine"></div>
 <script>
-// $.ajax({
-//   type: 'GET',
-//   url: '/college/10163',
-// })
+
 let schoolLine = echarts.init(document.getElementById('schoolLine'));
-let avg_batch_1 = [], //学校录取一批调档线
-    min_batch_1 = [], //....最低分
-    avg_batch_2 = [], //学校录取二批调档线
-    min_batch_2 = []; //。。。。最低分
 
-// batch_1.forEach(item => {
-//   console.log(item.min);
-// });
-// batch_2.forEach(item => {
-//   console.log(item.min);
-// });
+let id = window.location.pathname.split('/college/')[1];
 
+$.ajax({
+  url: window.location.pathname,
+  dataType: 'json',
+  type: 'GET',
+  data: {
+    id: id
+  }
+}).done(function(data) {
+  //处理返回的分数数据
 
-let schoolLineOption = {
-    title: {
-        text: '本校历年调档线&平均分（四川省）',
-        left: 'center'
-    },
-    tooltip : {
-        trigger: 'axis',
-        axisPointer: {
-            type: 'cross',
-            label: {
-                backgroundColor: '#6a7985'
-            }
-        }
-    },
-    legend: {
-        data:['第二批省控线', '第一批省控线', '调档线', '平均分'],
-        x: 'left',
-        top: 28,
-        left: '4%'
-    },
-    grid: {
-        left: '0%',
-        right: '5%',
-        show: true,
-        bottom: '3%',
-        containLabel: true,
-        backgroundColor: '#efefef'
-    },
-    xAxis : [
-        {
-            type : 'category',
-            boundaryGap : false,
-            data : ['2014', '2015', '2016']
-        }
-    ],
-    yAxis : [
-        {
-            type : 'value',
-            min: 400,
-            max: 700
-        }
-    ],
-    series : [
-        {
-            name:'平均分',
-            type:'line',
-            areaStyle: {
-              normal: {
-                opacity: 1
+  let batch_1_min = [],
+      batch_1_avg = [],
+      batch_2_min = [],
+      batch_2_avg = [];
+
+  data.data[0].forEach(function(item) {
+    batch_1_min.push(item.min);
+    batch_1_avg.push(item.avg);
+  });
+  data.data[1].forEach(function(item) {
+    batch_2_min.push(item.min);
+    batch_2_avg.push(item.avg);
+  });
+  let schoolLineOption = {
+      title: {
+          text: '本校历年调档线&平均分（四川省）',
+          left: 'center'
+      },
+      tooltip : {
+          trigger: 'axis',
+          axisPointer: {
+              type: 'cross',
+              label: {
+                  backgroundColor: '#6a7985'
               }
-            },
-            data:[589, 580, 613],
-            label:{
-              normal:{
-                show:true,
-                position:'top',
-                offset: [20, -5],
-                textStyle:{
-                  fontSize:14,
-                  color: ''
+          }
+      },
+      legend: {
+          data:['第二批省控线', '第一批省控线', '一批调档线', '一批平均分', '二批调档线', '二批平均分'],
+          x: 'left',
+          top: 28,
+          left: '4%'
+      },
+      grid: {
+          left: '0%',
+          right: '5%',
+          show: true,
+          bottom: '3%',
+          containLabel: true,
+          backgroundColor: '#efefef'
+      },
+      xAxis : [
+          {
+              type : 'category',
+              boundaryGap : false,
+              data : ['2014', '2015', '2016']
+          }
+      ],
+      yAxis : [
+          {
+              type : 'value',
+              min: 400,
+              max: 700
+          }
+      ],
+      series : [
+          {
+              name:'一批平均分',
+              type:'line',
+              areaStyle: {
+                normal: {
+                  opacity: 1
+                }
+              },
+              data:batch_1_avg,
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 15],
+                  textStyle:{
+                    fontSize:14,
+                    color: '#000'
+                    }
                   }
                 }
-              }
-        },
-        {
-            name:'调档线',
-            type:'line',
-            areaStyle: {normal: {opacity: 1}},
-            data:[570, 561, 589],
-            label:{
-              normal:{
-                show:true,
-                position:'top',
-                offset: [20, -5],
-                textStyle:{
-                  fontSize:14,
-                  color: ''
+          },
+          {
+              name:'一批调档线',
+              type:'line',
+              areaStyle: {normal: {opacity: 1}},
+              data:batch_1_min,
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 25],
+                  textStyle:{
+                    fontSize:14,
+                    color: '#d48265'
+                    }
                   }
                 }
-              }
-        },
-        {
-            name:'第一批省控线',
-            type:'line',
-            areaStyle: {normal: {opacity: 1}},
-            data:[540, 528, 532],
-            label:{
-              normal:{
-                show:true,
-                position:'top',
-                offset: [20, -5],
-                textStyle:{
-                  fontSize:14,
-                  color: ''
+          },
+          {
+              name:'二批平均分',
+              type:'line',
+              areaStyle: {
+                normal: {
+                  opacity: 1
+                }
+              },
+              data:batch_2_avg,
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 5],
+                  textStyle:{
+                    fontSize:14,
+                    color: ''
+                    }
                   }
                 }
-              }
-        },
-        {
-            name:'第二批省控线',
-            type:'line',
-            areaStyle: {normal: {opacity: 1}},
-            data:[475, 445, 453],
-            label:{
-              normal:{
-                show:true,
-                position:'top',
-                offset: [20, -5],
-                textStyle:{
-                  fontSize:14,
-                  color: ''
+          },
+          {
+              name:'二批调档线',
+              type:'line',
+              areaStyle: {normal: {opacity: 1}},
+              data:batch_2_min,
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 5],
+                  textStyle:{
+                    fontSize:14,
+                    color: ''
+                    }
                   }
                 }
-              }
-        }
-    ]
-};
-schoolLine.setOption(schoolLineOption);
+          },
+          {
+              name:'第一批省控线',
+              type:'line',
+              areaStyle: {normal: {opacity: 1}},
+              data:[540, 528, 532],
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 25],
+                  textStyle:{
+                    fontSize:14,
+                    color: '#000'
+                    }
+                  }
+                }
+          },
+          {
+              name:'第二批省控线',
+              type:'line',
+              areaStyle: {normal: {opacity: 1}},
+              data:[475, 445, 453],
+              label:{
+                normal:{
+                  show:true,
+                  position:'top',
+                  offset: [20, 5],
+                  textStyle:{
+                    fontSize:14,
+                    color: '#000'
+                    }
+                  }
+                }
+          }
+      ]
+  };
+  schoolLine.setOption(schoolLineOption);
+})
 </script>
