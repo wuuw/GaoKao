@@ -48,21 +48,19 @@
 
   <script>
     "use strict";
-    //获取当前href
+
+    //获取当前URL
     let href = window.location.href;
-
-    //if 结果页面  else 首页, 判断以对side_search 进行不同布局
+    //如果是结果页面
     if (href.indexOf('college') >= 0 ||  href.indexOf('major') >= 0) {
-      //获得所有子节点（form item)
+      //获得所有表单的子节点
       let children = $('form').children();
-
-      //去掉col-2属性
+      //去掉col-2属性（响应式设计）
       children.each(function(index, ele) {
         if ($(this).hasClass('col-2')) {
           $(this).removeClass('col-2');
         }
       });
-
     }
 
   //设置选中项目

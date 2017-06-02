@@ -115,6 +115,7 @@ $('.custom-control.custom-radio:first').trigger('click');
         major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%}
       }
     }).done(function(data) {
+      console.log(data);
       //分页选中第一页
       $('.pagination li').removeClass('active');
       $('.pagination li:first').addClass('active');
@@ -361,30 +362,31 @@ function bindClick(page, li, data) {
   li.on('click', function(){
     lists.removeClass('active');
     $(this).addClass('active');
+
     //ajax请求数据
     $.ajax({
-      type: 'GET',
-      url: window.location.pathname,
-      dataType: 'json',
-      data: {
-        city: $('#city option:selected').text(),
-        is985: $('#nef').is(':checked'),
-        is211: $('#too').is(':checked'),
-        year: '{{query.year}}',
-        pos: '{{query.pos}}',
-        category: '{{query.category}}',
-        batch: '{{query.batch}}',
-        score: parseInt('{{query.score}}'),
-        eq: '{{query.eq}}',
-        hit: data.data.query.hit,
-        rank: '{{query.rank}}',
-        range: parseInt('{{query.range}}'),
-        scoreType: '{{query.scoreType}}',
+      type: 'GET',                              //请求方法
+      url: window.location.pathname,            //请求路由
+      dataType: 'json',                         //数据格式
+      data: {                                   //请求参数
+        city: $('#city option:selected').text(),//院校所在省份
+        is985: $('#nef').is(':checked'),        //是否为985
+        is211: $('#too').is(':checked'),        //是否为211
+        year: '{{query.year}}',                 //参考年份
+        pos: '{{query.pos}}',                   //考生生源地
+        category: '{{query.category}}',         //考生科类
+        batch: '{{query.batch}}',               //批次
+        score: parseInt('{{query.score}}'),     //考生分数
+        eq: '{{query.eq}}',                     //考生等位分
+        hit: data.data.query.hit,               //匹配预测命中年数
+        rank: '{{query.rank}}',                 //考生排名
+        range: parseInt('{{query.range}}'),     //浮动区间
+        scoreType: '{{query.scoreType}}',       //参考分数类型
         major: {%if query.major %}'{{query.major}}'{%else%}null{%endif%},
-        page: page
+        page: page                              //查询页数
       }
-    }).done(function(data){
-      freshTable(data);
+    }).done(function(data){                     //注册回调函数
+      freshTable(data);                         //无刷新式更新页面
     });
   });
 }

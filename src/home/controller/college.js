@@ -7,11 +7,12 @@ export default class extends Base {
   init(http){
     super.init(http);
   }
-  //学校-线差查询   Action
+
   /**
+  * 学校-线差查询
   * @return {Promise}
-  *
   */
+
   async differenceAction() {
     //获取前端query参数
     let query = null;
@@ -35,7 +36,7 @@ export default class extends Base {
     let collegeModel = this.model('college'), //文件../model/college.js
         admissionModel = this.model('admissionline'); //文件../model/admissionline.js
 
-  //sql_1语句, 总体SQL语句中的第一部分
+     //sql_1语句, 总体SQL语句中的第一部分
     let sql_1 = {
       'Corigin': query.pos, //生源
       'Cyear': query.year, //年份
@@ -113,13 +114,11 @@ export default class extends Base {
     }
     return this.display();
   }//diffrenceAction
-
-
-  //学校-等位分查询  Action
   /**
+  * 学校-等位分查询
   * @return {Promise}
-  *
   */
+
   async equipotentialAction() {
     //获取get参数
     let query = null;
@@ -207,12 +206,11 @@ export default class extends Base {
 
     return this.display();
   }//equipotentialAction
-
-  //学校-位次分查询
   /**
+  * 学校-位次分查询
   * @return {Promise}
-  *
   */
+
   async rankAction() {
     //获取get参数
     let query = null;
@@ -307,12 +305,11 @@ export default class extends Base {
     }
     return this.display();
   }
-
-
   /**
   * 高校详情页面
   * @return {Promise}
   */
+
   async detailAction() {
     let id = this.get('id');
     let schoolData = {
@@ -396,6 +393,8 @@ export default class extends Base {
         intro = this.schoolIntor(id);
 
     brief.then(res=>{
+
+
       let $ = cheerio.load(res.data);
       //name & tips
       schoolData.school_name = school_name;
